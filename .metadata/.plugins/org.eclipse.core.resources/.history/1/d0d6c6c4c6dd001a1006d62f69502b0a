@@ -1,0 +1,24 @@
+package exam;
+
+public class MyCalculator {
+	
+	private int firstNum = 15;
+	private int secondNum = 4;
+	private Calculator calculator;
+	
+	
+	
+	public MyCalculator() {
+		super();
+		calculator.addition(firstNum, secondNum);
+		calculator.substraction(firstNum, secondNum);
+		calculator.multiply(firstNum, secondNum);
+		calculator.divide(firstNum, secondNum);
+	}
+
+
+	
+	
+	
+
+}

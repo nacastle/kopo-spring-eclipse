@@ -1,0 +1,15 @@
+package di.xml.n02;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+
+public class DriverMain {
+	
+	public static void main(String[] args) {
+
+	
+		
+	}
+
+}

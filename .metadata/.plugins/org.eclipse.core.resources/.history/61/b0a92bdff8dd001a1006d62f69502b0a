@@ -1,0 +1,26 @@
+package di.java;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class Config {
+	
+	
+	
+//	public Config() {
+//		super();
+//		// TODO Auto-generated constructor stub
+//		System.out.println("한국타이어 생성");
+//	}
+	
+	public Car getCar() {
+		return new Car();
+	}
+
+	@Bean
+	public Tire getTire() {
+		return new HankookTire();  // 컨테이너에 올라가서 메인함수 실행시켜주면 new로 올라감
+	}
+	
+}

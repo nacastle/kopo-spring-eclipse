@@ -1,0 +1,10 @@
+package di.basic;
+
+public class Tire {
+	
+	public String getBrand() {
+		
+	}
+	
+
+}

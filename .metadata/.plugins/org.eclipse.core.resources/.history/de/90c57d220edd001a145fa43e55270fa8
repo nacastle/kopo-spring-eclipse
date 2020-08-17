@@ -1,0 +1,7 @@
+package di.basic;
+
+public class Car {
+	
+	private Tire tire; //의존관계 발생
+
+}

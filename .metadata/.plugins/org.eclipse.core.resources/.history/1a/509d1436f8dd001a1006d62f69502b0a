@@ -1,0 +1,22 @@
+package di.java;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class Config {
+	
+	
+	
+	public Config() {
+		super();
+		// TODO Auto-generated constructor stub
+		System.out.println("한국타이어 생성");
+	}
+
+	@Bean
+	public Tire getTire() {
+		return new HankookTire();
+	}
+	
+}

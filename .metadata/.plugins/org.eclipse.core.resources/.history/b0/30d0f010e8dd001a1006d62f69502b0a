@@ -1,0 +1,13 @@
+package di.anno.n02;
+
+public class NexenTire implements Tire{
+
+	@Override
+	public String getBrand() {
+		// TODO Auto-generated method stub
+		return "넥센타이어";
+	}
+	
+	
+
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+					http://www.springframework.org/schema/beans/spring-beans.xsd">
+					
+					
+	<bean class="di.collection.MapAddress" id="map">
+		<property name="address">
+			<map>
+				<entry>
+					<key><value>홍길동</value></key>
+					<value>서울시 서초구</value>
+				</entry>
+				<entry>
+					<key><value>강길동</value></key>
+					<value>서울시 강동구</value>
+				</entry>
+				<entry>
+					<key><value>나길동</value></key>
+					<value>서울시 송파구</value>
+				</entry>
+			</map>
+		
+		</property>
+	
+	</bean>
+	
+	
+	
+</beans>

@@ -1,0 +1,12 @@
+package exam;
+
+public class main {
+	
+	public static void main(String[] args) {
+		
+		MyCalculator mc = new MyCalculator();
+		
+		mc.caculate();
+	}
+
+}

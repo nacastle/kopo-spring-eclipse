@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+					http://www.springframework.org/schema/beans/spring-beans.xsd">
+</beans>
+
+<bean class="exam.Calculator" id="cal"></bean>
+<bean class="exam.MyCalculator" id="myCal"></bean>
+	
+	
+	<bean class="di.xml.n01.Car" id="car2">
+		<property name="tire" ref="kumho"></property>  <!-- property는 setter의 의미 -->
+<!-- 		<property name="tire" ref="hankook"></property>  property는 setter의 의미 -->
+	</bean>

@@ -1,0 +1,10 @@
+package hw;
+
+public class Figure {
+	
+	private int width;
+	private int height;
+	private float radius;
+	
+
+}

@@ -1,0 +1,11 @@
+package exam;
+
+public class Calculator {
+	
+	public void addition(int firstNum, int secondNum) {
+		
+		int sum = firstNum + secondNum;
+		
+	}
+
+}

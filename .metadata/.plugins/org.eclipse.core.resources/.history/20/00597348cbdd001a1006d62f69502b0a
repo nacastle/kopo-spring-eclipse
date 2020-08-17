@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+					http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean class="di.test.Calculator" id="cal"></bean>
+
+
+	<bean class="di.test.MyCalculator" id="myCal">
+		<property name="firstNum" value="15"></property>   <!-- name 자바에 있는 이름이랑 맞춰줘야함 -->
+		<property name="secondNum" value="4"></property>
+		<property ref="cal" ></property>
+	</bean>
+</beans>

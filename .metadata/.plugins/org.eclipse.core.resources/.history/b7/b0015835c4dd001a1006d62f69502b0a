@@ -1,0 +1,13 @@
+package exam;
+
+public class Calculator {
+	
+//	private int result;
+	
+	public void addition(int firstNum, int secondNum) {
+		
+		System.out.println(firstNum + secondNum);
+		
+	}
+
+}

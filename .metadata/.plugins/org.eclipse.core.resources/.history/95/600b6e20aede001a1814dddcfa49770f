@@ -1,0 +1,16 @@
+package hw;
+
+public class Rectangle extends Figure {
+	
+	
+	public float getArea() {
+		
+		int area = getWidth() * getHeight();
+		
+		return 12;
+		
+	}
+	
+	
+
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="org.springframework.context.support.ClassPathXmlApplicationContext"/>
+    <fullyQualifiedTypeName name="org.springframework.context.support.FileSystemXmlApplicationContext"/>
+    <fullyQualifiedTypeName name="basic.Hello"/>
+    <fullyQualifiedTypeName name="basic.HelloSingle"/>
+    <fullyQualifiedTypeName name="di.basic.Tire"/>
+    <fullyQualifiedTypeName name="di.basic.Car"/>
+    <fullyQualifiedTypeName name="di.basic.KumhoTire"/>
+    <fullyQualifiedTypeName name="di.basic.HankookTire"/>
+    <fullyQualifiedTypeName name="di.xml.n01.HankookTire"/>
+    <fullyQualifiedTypeName name="di.xml.n01.Car"/>
+    <fullyQualifiedTypeName name="org.springframework.context.support.GenericApplicationContext"/>
+    <fullyQualifiedTypeName name="di.xml.n02.HankookTire"/>
+    <fullyQualifiedTypeName name="di.xml.n02.Car"/>
+    <fullyQualifiedTypeName name="exam.MyCalculator"/>
+    <fullyQualifiedTypeName name="exam.Calculator"/>
+    <fullyQualifiedTypeName name="di.test.MyCalculator"/>
+    <fullyQualifiedTypeName name="com.sun.tools.javac.util.List"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.awt.List"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="di.collection.ListAddress"/>
+    <fullyQualifiedTypeName name="di.collection.MapAddress"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="java.util.Map.Entry"/>
+    <fullyQualifiedTypeName name="di.anno.n02.Tire"/>
+    <fullyQualifiedTypeName name="javax.annotation.Resource"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Value"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.Configuration"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.Bean"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.AnnotationConfigApplicationContext"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Qualifier"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.ComponentScan"/>
+    <fullyQualifiedTypeName name="di.java.HankookTire"/>
+    <fullyQualifiedTypeName name="hw.Figure"/>
+    <fullyQualifiedTypeName name="org.springframework.context.ApplicationContext"/>
+    <fullyQualifiedTypeName name="org.springframework.context.support.GenericXmlApplicationContext"/>
+    <fullyQualifiedTypeName name="hw.FigureInfo"/>
+    <fullyQualifiedTypeName name="hw.Rectangle"/>
+    <fullyQualifiedTypeName name="java.lang.Math"/>
+</qualifiedTypeNameHistroy>

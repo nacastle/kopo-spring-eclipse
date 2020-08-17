@@ -1,0 +1,14 @@
+package di.basic;
+
+public class DriverMain {
+	
+	public static void main(String[] args) {
+		Tire tire = new HankookTire();
+//		Car car = new Car(tire);
+		
+		Car car = new Car();
+		car.setTire(tire);
+		car.prnTireBrand();
+	}
+
+}

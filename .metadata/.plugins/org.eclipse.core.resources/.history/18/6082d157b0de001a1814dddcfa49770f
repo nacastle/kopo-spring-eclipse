@@ -1,0 +1,22 @@
+package hw;
+
+public class Rectangle extends Figure {
+	
+	
+	
+	
+
+	@Override
+	public float getArea() {
+		// TODO Auto-generated method stub
+		return super.getArea();
+	}
+	
+	
+	
+	
+	
+	
+	
+
+}
