@@ -34,8 +34,8 @@ a {
 
 body {
 	min-height: 0;
-	padding-top: 3.2rem;
-	padding-bottom: 4rem;
+ 	padding-top: 3rem; 
+ 	padding-bottom: 4rem; 
 	
 }
 
@@ -89,9 +89,6 @@ body {
 	left: 50%;
 	opacity: 1;
 }
-/* nav div a:nth-child(3).on ~ span {	left: 200px; opacity: 1;} */
-/* nav div a:nth-child(4).on ~ span {	left: 300px; opacity: 1;} */
-/* nav div a:nth-child(5).on ~ span {	left: 400px; opacity: 1;} */
 
 .na-nav2 {
 	height: 3rem;
@@ -104,6 +101,7 @@ body {
 	color: black;
 	text-align: center;
 	padding: .3rem !important;
+/* 	height: 3rem; */
 }
 
 .na-nav2 a.bottom-on {
@@ -111,23 +109,11 @@ body {
 }
 
  
-/* .table { */
-/* 	margin-bottom: 2.9rem; */
-/* } */
-
-
-/*
-.table td, .table th {
-    padding-left: 3%;
-    vertical-align: middle;
-    border-top: 1px solid #dee2e6;
-}
-
- */
  
  .na-content {
  margin: 0rem 1rem;
- text-align: center;
+/*  text-align: center; */
+position: relative;
  }
  
  table {
@@ -141,7 +127,7 @@ body {
  
  
  table th {
-	width: 27%;
+	width: 35%;
 	height: 1.8rem;
 /* 	padding-left: 3%; */
 	text-align: center;
@@ -169,37 +155,34 @@ table th img {
 	max-height: 100%;
 } */
 
-  hr { width: 90vw  }   
+  hr { width: 100%; margin: 0.5rem 0;   }   
  
  label { margin: 0; }
  
-/*  input[type="date"]:not(.has-value):before{ */
-/*   color: lightgray; */
-/*   content: attr(placeholder); */
-/* } */
 
-input[type="datetime-local"]::before {
-	color: #999999;
-	content: attr(placeholder);
-}
-input[type="datetime-local"] {
-	color: #ffffff;
-}
-input[type="datetime-local"]:focus,
-input[type="datetime-local"]:valid {
-	color: #666666;
-}
-input[type="datetime-local"]:focus::before,
-input[type="datetime-local"]:valid::before {
-	content: "" !important;
+
+.btn-like {
+
+	padding:0; border: 0; margin-right: 3%; 
+
 }
 
+.btn-dislike {
+	padding:0; border: 0; margin-right: 3%; 
+
+}
 
 </style>
 
-
   <script type="text/javascript">
+  
   $(document).ready(function(){
+	
+	  $("div i").click(function() {
+			$(this).toggle();
+			$(this).siblings().toggle();
+		})
+	  
 	  $('.na-nav a').on('click',function(){
 		 $(this).addClass('top-on');
 		 $(this).siblings().removeClass('top-on');
@@ -210,102 +193,83 @@ input[type="datetime-local"]:valid::before {
 		});
 	  });
   
-//   $('input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="time"], input[type="week"]').each(function() {
-// 	    var el = this, type = $(el).attr('type');
-// 	    if ($(el).val() == '') $(el).attr('type', 'text');
-// 	    $(el).focus(function() {
-// 	        $(el).attr('type', type);
-// 	        el.click();
-// 	    });
-// 	    $(el).blur(function() {
-// 	        if ($(el).val() == '') $(el).attr('type', 'text');
-// 	    });
-// 	});
   
   </script>    
   </head>
 
-  <body>
+  <body style="    padding-bottom: 0rem;">
   
-     <nav class="navbar fixed-top" style=" background:white; color:black; padding: .1rem 1rem;">
+   <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem;">
    		<div style="float: left;">
-<!--     	  <a href="#" style="color: black; margin-right: -3rem;">출품완료</a> -->
-    	  <a  href="#" style="font-size: 1.25rem; position:relative; top:0.2rem; left: 0rem; font-weight: bold; color:black;">출품완료</a>
+    	  <a href="#" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+    	  <a  href="#" style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">입찰하기</a>
   	 	</div>
       
 <!--       	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;"> -->
       		
-<!--       		<input type="submit" class="form-control" value="완료" style="border:0; float: right; font-weight: bold; font-size: 1.25rem; color:black;" > -->
+<!--       		<i class="btn-dislike fa fa-heart-o fa-lg" aria-hidden="true"></i> -->
+<!--       		<i class="btn-like fa fa-heart fa-lg" aria-hidden="true" style="display: none"></i> -->
       			
 <!-- 		</div> -->
     </nav>
-    
-<!--     <div class="col-md-8 order-md-1"> -->
-<!--           <h5 class="mb-3"> </h5> -->
-<!--             <div class="row"> -->
-<!--               <div class="col-md-6 mb-3"> -->
-<!--                 <label for="firstName">아이디</label> -->
-<!--                 <input type="text" class="form-control" id="firstName" placeholder="" value="" required> -->
-<!--                 <div class="invalid-feedback"> -->
-<!--                   Valid 아이디 is required. -->
-<!--                 </div> -->
-<!--               </div> -->
-<!--               <div class="col-md-6 mb-3"> -->
+  
               <div class="na-content">
-              	<div style="width: 5rem; padding-left: 0.5rem;">출품 내역
-              		<hr style="width: 100%; margin-top: 0.2rem; margin-bottom: 0.3rem">
-              	</div>
+              	입찰 상품
+              	<table>
+              		<tr>
+              			<th>상품명</th>
+						<td> 로지텍 K580 새거</td>
+					</tr>	              		
+              		<tr>
+              			<th>경매마감일자</th>
+						<td> 2020-08-31 13:50:00
+						</td>
+					</tr>	              		
+              		<tr>
+              			<th>시작가 </th>
+						<td> 30,000 원
+						</td>
+					</tr>	              		
+              		<tr>
+              			<th> 입찰방식	</th>
+						<td>공개</td>
+					</tr>	              		
+              		<tr>
+              			<th>상품번호</th>
+						<td>G000000001</td>
+					</tr>	              		
+              	</table>
+              	<br>
               	
-              		<div style="font-size:0.8rem; text-align: right;">
-					등록일시 : ${datetime}              		
+              	입찰하기
+		<table>
+			<tr>
+				<th>현재 최고입찰가</th>
+				<td>41,000 원</td>
+			</tr>
+			<tr>
+				<th>입찰금액</th>
+				<td>현재 <strong>41,000</strong> 원부터 입찰하실 수 있습니다.
+					<form action="">
+						<div class="input-group">
+							<!-- 				<span class="input-group-addon">\</span>  -->
+							<input type="number" class="form-control" style="width: 90%;"
+								placeholder="입찰가"> &nbsp;&nbsp; <span
+								style="margin-top: 1rem;">원</span>
+						</div>
+					</form>
+				</td>
+			</tr>
+		</table>
+		<div style="width: 100%; text-align:center; ">
+			<button type="button" class="btn btn-outline-success " style="width:35%; margin-top:0.8rem;">입찰하기</button>
+		</div>
+
+
+	</div>
               	
-              		</div>
-
-					<table>
-						<tbody>
-							<tr>
-								<th>상품번호</th>
-								<td>G000000001</td>
-							</tr>
-							<tr>
-								<th>경매번호</th>
-								<td>A000000001</td>
-							</tr>
-							<tr>
-								<th>상품명</th>
-								<td>로지텍 K580 새거</td>
-							</tr>
-							<tr>
-								<th>마감일자</th>
-								<td>2020-08-31 13:50:00</td>
-							</tr>
-							<tr>
-								<th>시작가</th>
-								<td>30,000 원</td>
-							</tr>
-							<tr>
-								<th>카테고리</th>
-								<td>디지털/가전</td>
-							</tr>
-							<tr>
-								<th>입찰방식</th>
-								<td>공개 입찰</td>
-							</tr>
-							<tr>
-								<th>출품자</th>
-								<td>nacastle</td>
-							</tr>
-						</tbody>
-					</table>
-					
-<!-- 					<button type="button" class="btn btn-outline-success btn-small" style="margin-left:22%; margin-top:0.8rem;">내 경매글 보러가기</button> -->
-					<button type="button" class="btn btn-outline-success btn-small" style="width:60%; margin-top:0.8rem;">내 경매글 보러가기</button>
-					</div>
-
-<!-- 				</div> -->
-<!--             </div> -->
-
-<!--         </div> -->
+              	
+              	
   
   
     
@@ -313,13 +277,19 @@ input[type="datetime-local"]:valid::before {
 	
 
     
-    <nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 1rem;">
+<!-- <nav class="na-nav2 navbar fixed-bottom navbar-expand-sm " style="display:unset; background: #27b2a5; padding: .6rem 1rem;"> -->
+    
+<!--     <div> -->
+<!--     	<span style="font-size: 0.6rem;">현재가 </span><strong>45,000 원 </strong> | <span style="color: red;">8명 입찰중&nbsp;&nbsp;</span> -->
+<!-- 			<button class="btn btn-warning " -->
+<!-- 				style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: orange; border: orange; vertical-align: middle;">입찰하기</button> -->
+<!-- 		</div> -->
+<!--     </nav> -->
 
-		<a class="p-2 bottom-on" href="#"> <div><i class="fa fa-home fa-lg"></i></div> 홈</a> 
-		<a class="p-2" href="#" ><div><i class="fa fa-bars fa-lg"></i></div> 카테고리</a> 
-		<a class="p-2" href="#" ><div><i class="fa fa-arrow-circle-up fa-lg"></i></div>출품하기</a> 
-		<a class="p-2" href="#" ><div><i class="fa fa-user fa-lg"></i></div>MY</a> 
-    </nav>
+		<!-- 		<a class="p-2 bottom-on" href="#"> <div><i class="fa fa-home fa-lg"></i></div> 홈</a>  -->
+<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-bars fa-lg"></i></div> 카테고리</a>  -->
+<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-arrow-circle-up fa-lg"></i></div>출품하기</a>  -->
+<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-user fa-lg"></i></div>MY</a>  -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- 	<script -->
