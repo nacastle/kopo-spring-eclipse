@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Product example for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../product/product.css" rel="stylesheet">
+    <link href="../sticky-footer/sticky-footer.css" rel="stylesheet">
+    
+  </head>
+
+  <body>
+
+    <nav class="site-header sticky-top py-1" style="background: #27b2a5">
+      <div class="container d-flex flex-column flex-md-row justify-content-between">
+      	<h5 class="masthead-brand" style="font-weight:bold; margin-top:2%; color: white;">본인 인증</h5>
+      </div>
+    </nav>
+    
+    <form class="needs-validation" novalidate>
+     <div class="col-md-8 order-md-1">
+          <h5 class="mb-3"> </h5>
+            <div class="row">
+<!--               <div class="col-md-6 mb-3"> -->
+<!--                 <label for="firstName">아이디</label> -->
+<!--                 <input type="text" class="form-control" id="firstName" placeholder="" value="" required> -->
+<!--                 <div class="invalid-feedback"> -->
+<!--                   Valid 아이디 is required. -->
+<!--                 </div> -->
+<!--               </div> -->
+              <div class="col-md-6 mb-3">
+                <label for="firstName">은행 선택</label>
+                
+                
+
+					<table class="table table-hover table-bordered" style="text-align: center;">
+						<tbody>
+							<tr>
+								<td style="width: 6rem;">하나</td>
+								<td style="width: 6rem;">우리</td>
+								<td style="width: 6rem;">국민</td>
+							</tr>
+							<tr>
+								<td>기업</td>
+								<td>신한</td>
+								<td>농협</td>
+							</tr>
+							<tr>
+<!-- 								<td colspan="2">Larry the Bird</td> -->
+								<td>수협</td>
+								<td style="font-size: 0.8rem">카카오뱅크</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+              <div class="col-md-6 mb-3">
+                <label for="lastName">계좌번호</label>
+                <input type="number" class="form-control" id="accountNumber" placeholder="계좌번호 '-' 없이 입력" value="" required>
+                <div class="invalid-feedback">
+                  Valid 계좌번호 is required.
+                </div>
+              </div>
+            </div>
+
+        </div>
+        
+        <div class="footer" style="background: white;">
+      		<div class="container">
+            	<button class="btn btn-primary btn-lg btn-block" type="submit" style="font-weight:bold; border:#27b2a5; background: #27b2a5; color: white;">인증하기</button>
+      		</div>
+    	</div>
+    	
+     </form>
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../../../dist/js/bootstrap.min.js"></script>
+    <script src="../../../../assets/js/vendor/holder.min.js"></script>
+    <script>
+      Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+      });
+    </script>
+  </body>
+</html>

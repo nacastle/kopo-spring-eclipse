@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.BoardDAO">    <!-- mapper 별로 구분하기 위한...ex)Board와 Member mapper를 구분하기 위한.. -->
+
+	<resultMap type="board" id="boardMap">
+<!-- 		<result column="no" property="no"/>    property 는 setter를 의미... no 컬럼을 no(setNo)에 매칭시켜줄거라는 의미 -->
+<!-- 		<result column="title" property="title"/> -->
+<!-- 		<result column="writer" property="writer"/> -->
+<!-- 		<result column="content" property="content"/> -->
+		<result column="view_cnt" property="viewCnt"/>    <!-- 컬럼명이 다른애만 매칭해줘도됨 -->
+		<result column="reg_date" property="regDate"/>
+	
+	</resultMap>
+
+	<sql id="selectAll">
+		select no, title, content, writer, view_cnt as viewCnt,
+		reg_date as regDate
+		from t_board
+	</sql>
+
+	<insert id="insertBoard" parameterType="kopo.vo.BoardVO">    <!-- dao.BoardDAO.insertBoard -->
+		insert into t_board(no,title,writer, content)
+		values(seq_t_board_no.nextval, #{title}, #{writer}, #{content})
+
+	</insert>
+
+
+	<select id="selectBoard" resultType="board">    <!-- kopo.vo.BoardVO -->
+		<!-- select no, title, content, writer, view_cnt as viewCnt, reg_date as 
+			regDate -->
+<!-- 		from t_board -->
+		<include refid="selectAll"></include>
+		order by no desc
+
+	</select>
+
+	<select id="selectByNo" resultType="board" parameterType="int">
+<!-- 		select no, title, content, writer, view_cnt as viewCnt, reg_date as	regDate -->
+<!-- 		from t_board -->
+		<include refid="selectAll"></include>
+		where no = #{no}   <!-- 어떤 이름이든 상관없다... param타입이 int라서 ? -->
+	</select>
+
+	<select id="selectByNo2" resultType="board"
+		parameterType="board">
+<!-- 		select no, title, content, writer, view_cnt as viewCnt, reg_date as	regDate -->
+<!-- 		from t_board -->
+		<include refid="selectAll"></include>
+		where no = #{no}   <!-- getter 불러옴...이름 똑같아야할듯 -->
+	</select>
+
+	<select id="selectByNo3" resultMap="boardMap"
+		parameterType="board">
+		select no, title, content, writer, view_cnt, reg_date
+		from t_board
+		where no = #{no}   <!-- getter 불러옴...이름 똑같아야할듯 -->
+	</select>
+	
+	
+	<select id="selectWhere" parameterType="board" resultType="board" >
+       <include refid="selectAll" />
+<!--        where title =#{title} and writer=#{writer} -->
+       <where>
+          <if test="title != null">
+             title =#{title}
+          </if>
+          <if test="writer != null">
+             and writer=#{writer}      <!-- 알아서 and가 떼어졌다 붙었다 함 -->
+          </if>
+       </where>
+       
+    </select>
+    
+    <select id="selectWhere2" parameterType="board" resultType="board">
+    	<include refid="selectAll"></include>
+    	where title like '${title}%'    <!-- ${} -> statement 객체  statement 객체라서 ''이거 신경써줘야함/ #{} -> preparedStatement 객체 -->
+    </select>
+    
+    <select id="selectNos" parameterType="board" resultType="board">
+    	<include refid="selectAll"></include>
+    	where no in 
+<!--     	( -->
+    		<foreach collection="nos" item="bno" separator="," open="(" close=")">        <!-- nos => setInt(nos) -->
+    			#{bno}
+    		</foreach>
+<!--     	) -->
+    
+    </select>
+    
+    <select id="selectNos2" parameterType="int[]" resultType="board">
+    	<include refid="selectAll"></include>
+    	where no in 
+<!--     	( -->
+    		<foreach collection="array" item="bno" separator="," open="(" close=")">     <!-- array = nos... 숫자 배열이므로 array -->
+    			#{bno}
+    		</foreach>
+<!--     	) -->
+    </select>
+    
+    <select id="selectNos3" parameterType="int[]" resultType="board">
+    	<include refid="selectAll"></include>
+    	where no in 
+<!--     	( -->
+    		<foreach collection="array" separator="," open="(" close=")" index="index">     <!-- array = nos,  index = 몇번째 인자?-->
+    			#{array[index]}
+<!--     			#{index} -->
+    		</foreach>
+<!--     	) -->
+    </select>
+    
+    <select id="selectMap" parameterType="map" resultType="board">   <!-- param타입이 맵 객체일수도 있다. -->
+    	<include refid="selectAll"></include>
+    	where title = #{title} and writer = #{writer}
+    </select>
+    
+    <select id="selectMap2" parameterType="int" resultType="map">  <!-- result타입이 맵 형태일수도 있다. -->
+    	<include refid="selectAll"></include>
+    	where no = #{no123}     <!-- 속성이름 안맞춰도됨 -->
+    </select>
+    
+    
+    
+    
+
+</mapper>

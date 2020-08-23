@@ -11,8 +11,38 @@
     http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<context:component-scan base-package="kr.co.mlec" />
-    <mvc:annotation-driven />    <!-- mvc annotation 쓰겠다는 뜻 -->
+    <mvc:annotation-driven >    <!-- mvc annotation 쓰겠다는 뜻 -->
+    	<mvc:message-converters>
+    		<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">     <!-- json 형태로 변환되게끔 -->
+    			<property name="supportedMediaTypes">
+    				<list>
+    					<value>text/html; charset=UTF-8</value>
+    					<value>application/json; charset=UTF-8</value>
+    				</list>
+    			
+    			</property>
+    		</bean>
+    	
+    	
+    		<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+    			<property name="supportedMediaTypes">
+    				<list>
+    					<value>text/html; charset=UTF-8</value>
+    				</list>
+    			</property>
+    		
+    		</bean>
+    	</mvc:message-converters>
+    
+    </mvc:annotation-driven>
+    
 	<mvc:default-servlet-handler />
+	
+	
+	<mvc:view-controller path="/file/uploadForm.do" view-name="file/fileUploadForm"/>  <!-- path로 경로 검색했을때 view-name으로 포워드해줘라 -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+		<property name="maxUploadSize" value="10485760"></property>
+	</bean>
 	<mvc:view-resolvers>     <!-- 뷰(jsp) 연동 -->
 		<mvc:jsp prefix="/WEB-INF/jsp/" suffix=".jsp" />     <!-- prefix 아래에 있는 jsp 폴더를 포워드하겠다는... -->
 	</mvc:view-resolvers>
