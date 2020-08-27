@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Fixed top navbar example for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.3/js/bootstrap.min.js" rel="stylesheet">
+    <link href="/BootstrapTest/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="navbar-top-fixed.css" rel="stylesheet">
+<!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+<!--     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+	
+	
+
+
+
+
+<style type="text/css">
+a {
+	text-decoration: none !important;
+}
+
+body {
+	min-height: 0;
+ 	padding-top: 3rem; 
+ 	padding-bottom: 4rem; 
+	
+}
+
+.na-nav {
+	position: relative;
+	left: 0;
+	top: 0.5rem;
+	width: 100%;
+	background: #fff;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
+}
+
+.na-nav div {
+	position: relative;
+	display: flex;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.na-nav div a {
+	flex: 1;
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	color: #8f8f8f;
+	font-weight: bold;
+}
+
+.na-nav div a.top-on {
+	color: #000;
+}
+
+.na-nav div>span {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 33.33%;
+	height: 3px;
+	background: #27b2a5;
+	opacity: 0;
+	transition: all .5s;
+}
+
+.na-nav div a:nth-child(1).top-on ~ span {
+	left: 0;
+	opacity: 1;
+}
+
+.na-nav div a:nth-child(2).top-on ~ span {
+	left: 33.33%;
+	opacity: 1;
+}
+.na-nav div a:nth-child(3).top-on ~ span {
+	left: 66.66%;
+	opacity: 1;
+}
+
+.na-nav2 {
+	height: 3rem;
+
+}
+
+.na-nav2 a {
+	font-size: 0.7rem;
+	width: 25%;
+	color: black;
+	text-align: center;
+	padding: .3rem !important;
+/* 	height: 3rem; */
+}
+
+.na-nav2 a.bottom-on {
+	color: white;
+}
+
+ 
+ 
+ .na-content {
+ margin: 0rem 1rem;
+/*  text-align: center; */
+position: relative;
+ }
+ 
+ table {
+/*  	margin-top: 0.7rem; */
+/*  	font-size: 0.7rem; */
+ 	width: 100%;
+/*  	border: 1 solid rgb(158, 158, 158); */
+	border-collapse: collapse;
+ 
+ }
+ 
+ .table th {
+    padding: 1rem .5rem;
+ }
+ .table td {
+    padding: 1rem .5rem;
+ }
+ 
+ table th {
+	width: 15%;
+	height: 1.8rem;
+/* 	padding-left: 3%; */
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+/*  	padding: 0.1rem; */
+/*  	border: 0; */
+/* 	background: rgb(22, 160, 133); */
+/* 	color: white; */
+}
+ table td {
+/* 	width: 73%; */
+	height: 1.8rem;
+/* 	padding-left: 3%; */
+
+	text-align: right;
+	vertical-align: middle;
+ 	padding: 0.1rem;
+ 	padding-left: 0.5rem;
+/*  	border: 0; */
+/* 	background:white; */
+}
+
+/* 
+table th img {
+	max-width: 100%;
+	max-height: 100%;
+} */
+
+  hr { width: 100%; margin: 0.5rem 0;   }   
+ 
+ label { margin: 0; }
+ 
+
+
+.btn-like {
+
+	padding:0; border: 0; margin-right: 3%; 
+
+}
+
+.btn-dislike {
+	padding:0; border: 0; margin-right: 3%; 
+
+}
+
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 12rem;
+}
+
+</style>
+
+  <script type="text/javascript">
+  
+  $(document).ready(function(){
+	
+// 	  $("div i").click(function() {
+// 			$(this).toggle();
+// 			$(this).siblings().toggle();
+// 		})
+	  
+	  $('.na-nav a').on('click',function(){
+		 $(this).addClass('top-on');
+		 $(this).siblings().removeClass('top-on');
+		});
+	  $('.na-nav2 a').on('click',function(){
+		 $(this).addClass('bottom-on');
+		 $(this).siblings().removeClass('bottom-on');
+		});
+	  });
+  
+  
+  </script>    
+  </head>
+
+  <body style="    padding-bottom: 0rem;">
+  
+   <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem; border-bottom: 0.1rem solid rgb(224, 224, 224)">
+   		<div style="float: left;">
+    	  <a href="#" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+    	  <a  href="#" style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">경매모임통장</a>
+  	 	</div>
+      
+<!--       	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;"> -->
+      		
+<!--       		<i class="btn-dislike fa fa-heart-o fa-lg" aria-hidden="true"></i> -->
+<!--       		<i class="btn-like fa fa-heart fa-lg" aria-hidden="true" style="display: none"></i> -->
+      			
+<!-- 		</div> -->
+
+    </nav>
+  
+    <div class="na-content" style="margin-top: 2rem;">
+    	<div style="text-decoration: underline;">낙찰가</div>
+    	<div style="display:table; font-size: 1.5rem; font-weight: bold; background: rgb(26, 188, 156); "> 45,000 원 (nacastle) </div>
+	</div>
+	
+	<nav class="na-nav">
+			<div>
+				<a  href="#"><span>입/출금</span></a> 
+				<a  href="#"><span>경매참여자</span></a> 
+				<a class="top-on" href="#"><span>경매결과</span></a> 
+				<span></span>
+			</div>
+
+	</nav>
+		<table class="table table-hover" style="margin-bottom: 0rem; font-weight: bold; margin: 0 auto; width: 96%; margin-top: .5rem;">
+<!-- 			<thead> -->
+<!-- 				<tr> -->
+<!-- 					<th scope="col">#</th> -->
+<!-- 					<th scope="col">First</th> -->
+<!-- 					<th scope="col">Last</th> -->
+<!-- 					<th scope="col">Handle</th> -->
+<!-- 				</tr> -->
+<!-- 			</thead> -->
+			<tbody>
+				<tr>
+					<th scope="row">1</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle <span style="background: rgb(243, 156, 18); color: white; font-weight: bold;" >낙찰</span></div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">2</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">3</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">4</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">5</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">6</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">7</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">8</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">9</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">10</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">11</th>
+					<td style="width: 40%; text-align: center;">
+						<div>nacastle</div>
+					</td>
+					<td>
+						<div style="color:rgb(39, 178, 165);">45,000 원</div>
+					</td>
+				</tr>
+				
+				
+			</tbody>
+		</table>
+
+	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm "
+		style="display: unset; background: white; padding: .6rem 1rem; text-align: center;">
+
+		<button type="button" class="btn btn-warning btn-sm"
+			style="font-weight: bold; width: 45%;">출금</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<button type="button" class="btn btn-success btn-sm"
+			style="background: rgb(22, 160, 133); font-weight: bold; width: 45%;">입찰</button>
+	</nav>
+
+
+              	
+              	
+              	
+  
+  
+    
+    
+	
+
+    
+<!-- <nav class="na-nav2 navbar fixed-bottom navbar-expand-sm " style="display:unset; background: #27b2a5; padding: .6rem 1rem;"> -->
+    
+<!--     <div> -->
+<!--     	<span style="font-size: 0.6rem;">현재가 </span><strong>45,000 원 </strong> | <span style="color: red;">8명 입찰중&nbsp;&nbsp;</span> -->
+<!-- 			<button class="btn btn-warning " -->
+<!-- 				style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: orange; border: orange; vertical-align: middle;">입찰하기</button> -->
+<!-- 		</div> -->
+<!--     </nav> -->
+
+		<!-- 		<a class="p-2 bottom-on" href="#"> <div><i class="fa fa-home fa-lg"></i></div> 홈</a>  -->
+<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-bars fa-lg"></i></div> 카테고리</a>  -->
+<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-arrow-circle-up fa-lg"></i></div>출품하기</a>  -->
+<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-user fa-lg"></i></div>MY</a>  -->
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- 	<script -->
+<!-- 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- 	<script -->
+<!-- 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+		
+<!-- 	<script src="http://code.jquery.com/jquery-latest.min.js"></script> -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../../../dist/js/bootstrap.min.js"></script>
+    <script src="/BootstrapTest/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.11/dist/js/bootstrap-select.min.js"></script> -->
+    
+  </body>
+</html>

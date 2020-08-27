@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Fixed top navbar example for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="navbar-top-fixed.css" rel="stylesheet">
+<!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+<!--     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- 	<link href="/fontawesome-free-5.14.0-web/css/fontawesome.css" rel="stylesheet"> -->
+<!--   	<link href="/fontawesome-free-5.14.0-web/css/brands.css" rel="stylesheet"> -->
+<!--   	<link href="/fontawesome-free-5.14.0-web/css/solid.css" rel="stylesheet"> -->
+<!--   	<link href="/fontawesome-free-5.14.0-web/css/all.css" rel="stylesheet"> load all styles -->
+
+
+<style type="text/css">
+a {
+	text-decoration: none !important;
+}
+
+body {
+	min-height: 0;
+}
+
+.na-nav {
+	position: fixed;
+	left: 0;
+	top: 2.7rem;
+	width: 100%;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+}
+
+.na-nav div {
+	position: relative;
+	display: flex;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.na-nav div a {
+	flex: 1;
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	color: #8f8f8f;
+	font-weight: bold;
+}
+
+.na-nav div a.top-on {
+	color: #000;
+}
+
+.na-nav div>span {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 33.33%;
+	height: 3px;
+	background: #27b2a5;
+	opacity: 0;
+	transition: all .5s;
+}
+
+.na-nav div a:nth-child(1).top-on ~ span {
+	left: 0;
+	opacity: 1;
+}
+
+.na-nav div a:nth-child(2).top-on ~ span {
+	left: 33.33%;
+	opacity: 1;
+}
+.na-nav div a:nth-child(3).top-on ~ span {
+	left: 66.66%;
+	opacity: 1;
+}
+/* nav div a:nth-child(3).on ~ span {	left: 200px; opacity: 1;} */
+/* nav div a:nth-child(4).on ~ span {	left: 300px; opacity: 1;} */
+/* nav div a:nth-child(5).on ~ span {	left: 400px; opacity: 1;} */
+.na-nav2 a {
+	font-size: 0.7rem;
+	width: 20%;
+	color: black;
+	text-align: center;
+	padding: .3rem !important;
+}
+
+.na-nav2 i {
+	margin-bottom: 0.3rem;
+}
+
+.na-nav2 a.bottom-on {
+	color: white;
+}
+
+.table {
+	margin-bottom: 2.9rem;
+}
+
+.table th {
+	width: 40%;
+	height: 5rem;
+ 	vertical-align: middle; 
+ 	padding: 0; 
+	text-align: center;
+}
+
+.table td {
+
+padding: 0.3rem;
+padding-top: 0.5rem;
+
+}
+
+ 
+ table th img {
+	max-width: 100%;
+	max-height: 100%;
+/* 	width: 100%; */
+	padding: 0.3rem;
+}
+
+.ongoing {
+background: rgb(26, 188, 156);
+}
+
+.waiting {
+background: rgb(243, 156, 18);
+}
+
+.urgent {
+background: rgb(231, 76, 60);
+}
+
+.closed {
+background: rgb(190, 190, 190);
+}
+
+[type=button]{
+font-weight: bold;
+}
+
+.confirmbtn {
+margin-top: -0.2rem;
+margin-bottom: 0.2rem;
+}
+
+.confirmed {
+background: rgb(142, 68, 173);
+color: white;
+
+}
+
+</style>
+
+<script
+  src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+	  $('.na-nav a').on('click',function(){
+		 $(this).addClass('top-on');
+		 $(this).siblings().removeClass('top-on');
+		});
+	  $('.na-nav2 a').on('click',function(){
+		 $(this).addClass('bottom-on');
+		 $(this).siblings().removeClass('bottom-on');
+		});
+	  });
+  
+  </script>    
+  </head>
+
+  <body>
+  
+  
+   <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem;">
+   		<div style="float: left;">
+    	  <a href="#" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+    	  <a  href="#" style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">입찰내역</a>
+  	 	</div>
+  	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
+      			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>
+      			&nbsp;&nbsp;&nbsp;
+      			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
+		</div>
+      
+    </nav>
+    
+    <nav class="na-nav">
+    	<div>
+    		<a href="#"><span>경매진행</span></a>
+    		<a href="#"><span>경매마감</span></a>
+    		<a class="top-on" href="#"><span>낙찰확정</span></a>
+    		<span></span>
+    	</div>
+    
+    </nav>
+    
+    	<table class="table table-hover" style="margin-top: 0.8rem; border-top: 0rem;">
+		<tbody>
+			<tr onclick="location.href='https://www.naver.com/'">
+				<th scope="row">
+					<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
+					<img src="/BootstrapTest/img/k580.jpg">
+				</th>
+				<td>
+					<div style="font-weight: bold; font-size: 1rem;">로지텍 K580 새거</div>
+					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: 2020-08-31 13:50:00</div>
+					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">낙찰가: 45,000 원</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="border-top: 0rem;margin-top: -0.4rem; margin-bottom: 0.3rem;">
+					<button type="button" class="btn btn-secondary btn-block" style="margin-top: -0.5rem; margin-bottom: 0.2rem;" onclick="test()">낙찰확정 완료</button>
+				</td>
+			</tr>
+			
+			<tr onclick="location.href='https://www.naver.com/'">
+				<th scope="row">
+					<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
+					<img src="/BootstrapTest/img/k580.jpg">
+				</th>
+				<td>
+					<div style="font-weight: bold; font-size: 1rem;">로지텍 K580 새거</div>
+					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: 2020-08-31 13:50:00</div>
+					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">낙찰가: 45,000 원</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="border-top: 0rem;margin-top: -0.4rem; margin-bottom: 0.3rem;">
+					<button type="button" class="btn btn-secondary btn-block" style="margin-top: -0.5rem; margin-bottom: 0.2rem;" onclick="test()">낙찰확정 완료</button>
+				</td>
+			</tr>
+			
+			<tr onclick="location.href='https://www.naver.com/'">
+				<th scope="row">
+					<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
+					<img src="/BootstrapTest/img/k580.jpg">
+				</th>
+				<td>
+					<div style="font-weight: bold; font-size: 1rem;">로지텍 K580 새거</div>
+					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: 2020-08-31 13:50:00</div>
+					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">낙찰가: 45,000 원</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="border-top: 0rem;margin-top: -0.4rem; margin-bottom: 0.3rem;">
+					<button type="button" class="btn btn-secondary btn-block" style="margin-top: -0.5rem; margin-bottom: 0.2rem;" onclick="test()">낙찰확정 완료</button>
+				</td>
+			</tr>
+			
+			<tr onclick="location.href='https://www.naver.com/'">
+				<th scope="row">
+					<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
+					<img src="/BootstrapTest/img/k580.jpg">
+				</th>
+				<td>
+					<div style="font-weight: bold; font-size: 1rem;">로지텍 K580 새거</div>
+					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: 2020-08-31 13:50:00</div>
+					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">낙찰가: 45,000 원</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="border-top: 0rem;margin-top: -0.4rem; margin-bottom: 0.3rem;">
+					<button type="button" class="btn btn-secondary btn-block" style="margin-top: -0.5rem; margin-bottom: 0.2rem;" onclick="test()">낙찰확정 완료</button>
+				</td>
+			</tr>
+			
+			
+			
+		</tbody>
+	</table>
+
+
+	
+
+
+	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;">
+
+		<a class="p-2" href="#"> <div><i class="fa fa-home fa-lg"></i></div> 홈</a> 
+		<a class="p-2" href="#" ><div><i class="fa fa-bars fa-lg"></i></div> 카테고리</a>
+		<a class="p-2" href="#" ><div><i class="fa fa-hourglass-half fa-lg" aria-hidden="true"></i></div>내 경매</a>
+		<a class="p-2" href="#" ><div><i class="fa fa-arrow-circle-up fa-lg"></i></div>출품하기</a> 
+		<a class="p-2 bottom-on" href="#" ><div><i class="fa fa-user fa-lg"></i></div>MY</a> 
+    </nav>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- 	<script -->
+<!-- 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- 	<script -->
+<!-- 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+		
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../../../dist/js/bootstrap.min.js"></script>
+  </body>
+</html>

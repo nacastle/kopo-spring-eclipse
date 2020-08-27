@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Aug 25 10:38:00 KST 2020
+jakarta.validation-api-2.0.2-sources.jar>central=
+jakarta.validation-api-2.0.2.pom>central=
+jakarta.validation-api-2.0.2.jar>central=
