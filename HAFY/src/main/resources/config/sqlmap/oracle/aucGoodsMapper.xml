@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="auction.dao.AucGoodsDAO">
+
+<resultMap type="aucGoodsVO" id="aucGoodsMap">
+		<result column="start_price" property="startPrice" />
+		<result column="reg_date" property="regDate" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="member_nick" property="memberNick" />
+		<result column="view_cnt" property="viewCnt" />
+		<result column="like_cnt" property="likeCnt" />
+	
+</resultMap>
+	
+<resultMap type="goodsPhotoVO" id="goodsPhotoMap">
+		<result column="ori_name" property="oriName" />
+		<result column="save_name" property="saveName" />
+		<result column="file_size" property="fileSize" />
+		<result column="auc_no" property="aucNo" />
+</resultMap>
+
+<resultMap type="likeVO" id="likeMap">
+		<result column="member_nick" property="memberNick" />
+		<result column="auc_no" property="aucNo" />
+</resultMap>
+
+
+	<select id="selectIsLike" parameterType="likeVO" resultMap="likeMap">
+		select member_nick, auc_no
+			from hf_like
+		where member_nick = #{memberNick} and auc_no = #{aucNo}
+	
+	</select>
+
+	<insert id="insertLike" parameterType="likeVO">
+		insert into hf_like(member_nick, auc_no) 
+			values(#{memberNick}, #{aucNo})
+	</insert>
+
+	<delete id="deleteLike" parameterType="likeVO">
+		delete hf_like 
+			where member_nick = #{memberNick} and auc_no = #{aucNo}
+	</delete>
+
+
+	<update id="decrementLikeCnt" parameterType="int">
+		update hf_auc_goods 
+			set like_cnt = like_cnt - 1
+		where no = #{no}
+	</update>
+	
+	<update id="incrementLikeCnt" parameterType="int">
+		update hf_auc_goods 
+			set like_cnt = like_cnt + 1
+		where no = #{no}
+	</update>
+	
+	<update id="incrementViewCnt" parameterType="int">
+		update hf_auc_goods 
+			set view_cnt = view_cnt + 1
+		where no = #{no}
+	</update>
+	
+	<insert id="insertAucGoods" parameterType="aucGoodsVO">
+		insert into hf_auc_goods(no, reg_date, name, method, category,
+			start_price, start_date, end_date, detail, member_nick)
+		values(#{no}, #{regDate}, #{name}, #{method}, #{category}, #{startPrice}, #{startDate}, #{endDate},
+			#{detail}, #{memberNick})
+	</insert>
+	
+	<insert id="insertGoodsPhoto" parameterType="goodsPhotoVO">
+			insert into hf_goods_photo(no, ori_name, save_name,
+				file_size, auc_no)
+			values
+			(
+			 seq_hf_goods_photo_no.nextval,
+				#{oriName}, #{saveName}, #{fileSize}, #{aucNo}
+			)
+	</insert>
+
+	<select id="genAucNo" parameterType="int" resultType="int">
+		select seq_hf_auc_goods_no.nextval from dual
+	</select>
+	
+	<select id="selectAucGoodsByNo" resultType="aucGoodsVO" resultMap="aucGoodsMap">      
+		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
+				view_cnt, like_cnt 
+		 from hf_auc_goods
+			where no = #{aucNo}                                        
+	</select>    
+	
+	<select id="selectAllAucContents" resultType="aucGoodsVO" resultMap="aucGoodsMap">      
+		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
+				view_cnt, like_cnt 
+		 from hf_auc_goods
+	</select>                                                     
+	            
+	            
+	     <!-- 사진 파일 리스트 VO로 받아오려는거 성공...자바빈클래스의 특징인 기본생성자 미씽 문제 -->                                                  
+	<select id="selectPhotoListByAucNo" parameterType="int" resultType="goodsPhotoVO" >      
+		select no, auc_no as aucNo, save_name as saveName, ori_name as oriName, file_size as fileSize
+		 from hf_goods_photo
+		 where auc_no = #{aucNo}
+	</select>                  
+	                                   
+	                                                     
+	<select id="selectPhotoNameByAucNo" parameterType="int" resultType="String">
+		select save_name from hf_goods_photo where auc_no = #{aucNo} order by no
+	</select>                                                     
+	                                                              
+<!-- 	<update id="registerPwd" parameterType="map"> -->         
+<!-- 		update hf_member set tranz_pwd = #{tranzPwd} -->      
+<!-- 		where nickname = #{nickname} -->                      
+<!-- 	</update> -->                                                	
+
+	<!-- <select id="login" parameterType="memberVO" resultType="memberVO"> -->
+	<!-- select id, password -->
+	<!-- from t_member -->
+	<!-- where id=#{id} and password=#{password} -->
+
+
+	<!-- </select> -->
+</mapper>
+
+

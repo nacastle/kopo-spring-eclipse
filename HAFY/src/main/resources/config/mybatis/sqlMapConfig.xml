@@ -5,9 +5,12 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias type="kr.ac.kopo.board.vo.BoardVO" alias="boardVO"/>
-		<typeAlias type="kr.ac.kopo.member.vo.MemberVO" alias="memberVO"/>
-		<typeAlias type="kr.ac.kopo.reply.vo.ReplyVO" alias="replyVO"/>
+		<typeAlias type="hafy.member.vo.MemberVO" alias="memberVO"/>
+		<typeAlias type="hafy.mAccount.vo.MAccountVO" alias="mAccountVO"/>
+		<typeAlias type="hafy.aucGoods.vo.AucGoodsVO" alias="aucGoodsVO"/>
+		<typeAlias type="hafy.aucGoods.vo.GoodsPhotoVO" alias="goodsPhotoVO"/>
+		<typeAlias type="hafy.aucGoods.vo.LikeVO" alias="likeVO"/>
+		
 	</typeAliases>
 	
 

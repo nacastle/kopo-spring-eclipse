@@ -17,31 +17,31 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="pwd"/>
+		<item key="selection" value="form"/>
 		<list key="findhistory">
-			<item value="pwd"/>
-			<item value="onke"/>
-			<item value="s"/>
-			<item value="phoneCheck"/>
-			<item value="전화번"/>
-			<item value="통신"/>
-			<item value="maxLe"/>
-			<item value="max"/>
-			<item value="emax"/>
-			<item value="주민"/>
-			<item value="addressCheck"/>
-			<item value="addre"/>
-			<item value="passwordCheck2"/>
-			<item value="password2"/>
-			<item value="아이디"/>
+			<item value="form"/>
+			<item value="q"/>
+			<item value="content"/>
+			<item value="select"/>
+			<item value="하나은행"/>
+			<item value="btn-dislike"/>
+			<item value="display"/>
+			<item value="dislike"/>
+			<item value="css"/>
+			<item value="heart"/>
+			<item value="reload"/>
+			<item value="method"/>
+			<item value="t"/>
+			<item value="te"/>
+			<item value="tes"/>
 		</list>
 		<list key="replacehistory">
 			<item value="na-botNav"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="979"/>
-		<item key="DIALOG_Y_ORIGIN" value="266"/>
+		<item key="DIALOG_X_ORIGIN" value="9"/>
+		<item key="DIALOG_Y_ORIGIN" value="171"/>
 		<item key="DIALOG_WIDTH" value="288"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
@@ -49,6 +49,13 @@
 	<section name="org.eclipse.jst.jsp.ui.internal.preferences.ui.JSPTemplatePreferencePage$JSPEditTemplateDialog_dialogBounds">
 		<item key="DIALOG_X_ORIGIN" value="126"/>
 		<item key="DIALOG_Y_ORIGIN" value="166"/>
+		<item key="DIALOG_WIDTH" value="612"/>
+		<item key="DIALOG_HEIGHT" value="331"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+	</section>
+	<section name="org.eclipse.wst.html.ui.internal.preferences.ui.HTMLTemplatePreferencePage$HTMLEditTemplateDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="343"/>
+		<item key="DIALOG_Y_ORIGIN" value="249"/>
 		<item key="DIALOG_WIDTH" value="612"/>
 		<item key="DIALOG_HEIGHT" value="331"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>

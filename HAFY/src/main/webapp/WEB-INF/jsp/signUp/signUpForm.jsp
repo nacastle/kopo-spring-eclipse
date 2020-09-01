@@ -6,6 +6,20 @@
 	<jsp:include page="/WEB-INF/jsp/include/lib/topLibs.jsp"></jsp:include>
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
+<style>
+
+.fa {
+	font-size: 0.8rem;
+}
+
+.col-md-6 {
+    -webkit-box-flex: 0;
+/*     -ms-flex: 0 0 50%; */
+    flex: none;
+    max-width: 100%;
+}
+
+</style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
 
 </head>
@@ -17,43 +31,43 @@
       </div>
     </nav>
     
-   <form action="${pageContext.request.contextPath }/signUpProcess" name="sForm" autocomplete="off"
+   <form action="${pageContext.request.contextPath }/signUpSuccess" name="sForm" autocomplete="off"
    		method="post" onsubmit="return doSignUp()">
      <div class="col-md-8 order-md-1">
           <h5 class="mb-3"> </h5>
             <div class="row">
               
               <div class="col-md-6 mb-3">
-              <label for="username">아이디</label>
+              <label for="username">닉네임</label>
               <div class="input-group">
-                <input type="text" class="form-control" name="id" placeholder="아이디" onkeydown="hideCheck()">
+                <input type="text" class="form-control" name="nickname" placeholder="닉네임" onkeydown="hideCheck()">
                 <div class="input-group-prepend">
                   <span class="input-group-text">중복검사</span>
                 </div>
               </div>
-              <div class="check" id="idCheck" style="color: red; display: none;">
-                  	아이디를 입력해주세요
+              <div class="check" id="nicknameCheck" style="color: red; display: none;">
+                  	닉네임을 입력해주세요
                 </div>
-                <div id="idCheck2" style="color: red; display: none;">
-                  	아이디가 중복됩니다. 다른 아이디를 입력해주세요.
+                <div id="nicknameCheck2" style="color: red; display: none;">
+                  	닉네임이 중복됩니다. 다른 닉네임을 입력해주세요.
                 </div>
             </div>
               
-              <div class="col-md-6 mb-3">
-                <label>패스워드</label>
-                <input type="password" class="form-control" name="password" onkeydown="hideCheck()">
-                <div class="check" id="passwordCheck" style="color: red; display: none;">
-                  	패스워드를 입력해주세요
-                </div>
-              </div>
+<!--               <div class="col-md-6 mb-3"> -->
+<!--                 <label>패스워드</label> -->
+<!--                 <input type="password" class="form-control" name="password" onkeydown="hideCheck()"> -->
+<!--                 <div class="check" id="passwordCheck" style="color: red; display: none;"> -->
+<!--                   	패스워드를 입력해주세요 -->
+<!--                 </div> -->
+<!--               </div> -->
               
-              <div class="col-md-6 mb-3">
-                <label>패스워드 확인</label>
-                <input type="password" class="form-control" name="password2" onkeydown="hideCheck()" >
-                <div class="check" id="passwordCheck2" style="color: red; display: none;">
-                  	패스워드가 불일치합니다.
-                </div>
-              </div>
+<!--               <div class="col-md-6 mb-3"> -->
+<!--                 <label>패스워드 확인</label> -->
+<!--                 <input type="password" class="form-control" name="password2" onkeydown="hideCheck()" > -->
+<!--                 <div class="check" id="passwordCheck2" style="color: red; display: none;"> -->
+<!--                   	패스워드가 불일치합니다. -->
+<!--                 </div> -->
+<!--               </div> -->
               
               
               <div class="col-md-6 mb-3">
@@ -65,10 +79,18 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="lastName" style="display: block;">주민등록번호</label>
-                <input type="number" class="form-control" maxlength="6" name="resNo1" 
+                <input type="text" class="form-control" maxlength="6" name="resNo" 
                 	style="width: 45%; display: inline;" oninput="numberMaxLength(this);" onkeydown="hideCheck()" > - 
-                <input type="password" class="form-control" maxlength="7" name="resNo2" 
-                	style="width: 45%; display: inline;" onkeydown="hideCheck()" >
+<!--                 <input type="password" class="form-control" maxlength="7" name="resNo2"  -->
+                <input type="text" class="form-control" maxlength="1" oninput="numberMaxLength(this);" name="sex" 
+                	style="width: 2.3rem; display: inline;" onkeydown="hideCheck()" >
+                	&nbsp;
+                	<i class="fa fa-circle" aria-hidden="true"></i>
+                	<i class="fa fa-circle" aria-hidden="true"></i>
+                	<i class="fa fa-circle" aria-hidden="true"></i>
+                	<i class="fa fa-circle" aria-hidden="true"></i>
+                	<i class="fa fa-circle" aria-hidden="true"></i>
+                	<i class="fa fa-circle" aria-hidden="true"></i>
 <!--                 <div class="invalid-feedback"> -->
                 <div class="check" id="resCheck" style="color: red; display: none;">
                   	주민등록번호를 입력해주세요.
@@ -97,7 +119,7 @@
             <div class="row">
               <div class="col-md-5 mb-3">
                 <label for="country">통신사</label>
-                <select class="custom-select d-block w-100" name="company" onchange="hideCheck()">
+                <select class="custom-select d-block w-100" name="phoneCompany" onchange="hideCheck()">
                   <option value="">선택</option>
                   <option>SKT</option>
                   <option>LG</option>
@@ -111,7 +133,7 @@
             
             <div class="mb-3">
               <label for="phone">전화번호<!--  <span class="text-muted">(Optional)</span> --></label>
-              <input type="number" class="form-control" name="phone" placeholder="'-' 를 제외하고 입력해주세요." onkeydown="hideCheck()">
+              <input type="text" class="form-control" name="phone" placeholder="'-' 를 제외하고 입력해주세요." onkeydown="hideCheck()">
               <div class="check" id="phoneCheck" style="color: red; display: none;">
                	전화번호를 입력해주세요.
               </div>
@@ -162,34 +184,34 @@
 
     			var f = document.sForm;
     			
-    			if (f.id.value == "") {
-    				f.id.focus()
-    				$("#idCheck").show();
+    			if (f.nickname.value == "") {
+    				f.nickname.focus()
+    				$("#nicknameCheck").show();
     				return false
     			}
-    			if (f.password.value == "") {
-    				f.password.focus()
-    				$("#passwordCheck").show();
-    				return false
-    			}
-    			if (f.password.value != f.password2.value) {
-    				f.password2.focus()
-    				$("#passwordCheck2").show();
-    				return false
-    			}
+//     			if (f.password.value == "") {
+//     				f.password.focus()
+//     				$("#passwordCheck").show();
+//     				return false
+//     			}
+//     			if (f.password.value != f.password2.value) {
+//     				f.password2.focus()
+//     				$("#passwordCheck2").show();
+//     				return false
+//     			}
     			
     			if (f.name.value == "") {
     				f.name.focus()
     				$("#nameCheck").show();
     				return false
     			}
-    			if (f.resNo1.value == "") {
-    				f.resNo1.focus()
+    			if (f.resNo.value == "") {
+    				f.resNo.focus()
     				$("#resCheck").show();
     				return false
     			}
-    			if (f.resNo2.value == "") {
-    				f.resNo2.focus()
+    			if (f.sex.value == "") {
+    				f.sex.focus()
     				$("#resCheck").show();
     				return false
     			}
@@ -204,8 +226,8 @@
     				$("#addressCheck").show();
     				return false
     			}
-    			if (f.company.value == "") {
-    				f.company.focus()
+    			if (f.phoneCompany.value == "") {
+    				f.phoneCompany.focus()
     				$("#companyCheck").show();
     				return false
     			}

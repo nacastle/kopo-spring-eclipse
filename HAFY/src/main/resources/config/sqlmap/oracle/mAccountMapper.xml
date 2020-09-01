@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mAccount.dao.MAccountDAO">
+
+
+<!-- 입찰해서 회원계좌에서 돈 출금되기 -->
+<update id="withdrawMAccount" parameterType="map">
+	update hf_m_account
+		set balance = balance - #{bidMoney}
+	where account_no = #{mAccountNo}
+</update>
+
+<select id="selectMAccountList" parameterType="String" resultType="mAccountVO">
+	select account_no as accountNo, bank, member_nick
+		from hf_m_account
+	where member_nick = #{memberNick}
+
+</select>
+
+
+<insert id="insert" parameterType="mAccountVO">
+	insert into hf_m_account(bank, account_no, member_nick)
+		values(#{bank}, #{accountNo}, #{memberNick})
+</insert>
+
+<!-- <update id="registerPwd" parameterType="map"> -->
+<!-- 	update hf_member set tranz_pwd = #{tranzPwd} -->
+<!-- 		where nickname = #{nickname} -->
+<!-- </update> -->
+
+<!-- <select id="login" parameterType="memberVO" resultType="memberVO"> -->
+<!-- 	select id, password -->
+<!-- 	from t_member -->
+<!-- 	where id=#{id} and password=#{password} -->
+
+
+<!-- </select> -->
+
+</mapper>

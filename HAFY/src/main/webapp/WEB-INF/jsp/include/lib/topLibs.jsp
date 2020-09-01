@@ -9,3 +9,12 @@
 	
 	<!-- 내가 만든 css -->   
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/na/css/style.css">
+    
+    <!-- select 태그  꾸미기 -->
+	<link href="${pageContext.request.contextPath}/resources/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	
+	<!-- font-Awesome 아이콘 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" >
+	
+    
+    
