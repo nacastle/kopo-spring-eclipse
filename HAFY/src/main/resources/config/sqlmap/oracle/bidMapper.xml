@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bid.dao.BidDAO">
+
+<resultMap type="aTranzVO" id="aTranzMap">
+	<result column="tranz_date" property="tranzDate"/>
+	<result column="tranz_account_no" property="tranzAccountNo"/>
+	<result column="tranz_money" property="tranzMoney"/>
+	<result column="tranz_member_nick" property="tranzMemberNick"/>
+	<result column="tranz_type" property="tranzType"/>
+	<result column="auc_no" property="aucNo"/>
+	<result column="member_balance" property="memberBalance"/>
+</resultMap>
+
+<resultMap type="aAccountVO" id="aAccountMap">
+	<result column="bidder_nick" property="bidderNick" />
+	<result column="auc_no" property="aucNo" />
+	<result column="bid_money" property="bidMoney" />
+</resultMap>
+
+<insert id="insertAAccountBid" parameterType="aAccountVO">
+	insert into hf_a_account(auc_no, bidder_nick, bid_money)
+		values(#{aucNo}, #{bidderNick}, #{bidMoney})
+</insert>
+
+<update id="addBidMoney" parameterType="aAccountVO">
+	update hf_a_account 
+	set bid_money = bid_money + #{bidMoney}
+	where auc_no = #{aucNo} and bidder_nick = #{bidderNick}
+</update>
+
+<insert id="insertBidTranz" parameterType="aTranzVO">
+	insert into hf_a_tranz(tranz_account_no, tranz_money, tranz_member_nick, tranz_type, auc_no, member_balance)
+		values(
+		#{tranzAccountNo}, #{tranzMoney}, #{tranzMemberNick}, #{tranzType}, #{aucNo},
+			(select bid_money from hf_a_account where bidder_nick = #{tranzMemberNick} and auc_no = #{aucNo} ) + #{tranzMoney} 
+		 )
+</insert>
+
+<insert id="insertBidTranzNoBalance" parameterType="aTranzVO">
+	insert into hf_a_tranz(tranz_account_no, tranz_money, tranz_member_nick, tranz_type, auc_no, member_balance)
+		values(
+		#{tranzAccountNo}, #{tranzMoney}, #{tranzMemberNick}, #{tranzType}, #{aucNo}, #{tranzMoney} 
+		 )
+</insert>
+
+<select id="isBidding" parameterType="aAccountVO" resultMap="aAccountMap">
+	select *
+	from hf_a_account
+	where bidder_nick = #{bidderNick} and auc_no = #{aucNo}
+</select>
+
+<select id="selectAAccount" parameterType="int" resultMap="aAccountMap">
+	select *
+	from hf_a_account
+	where auc_no = #{aucNo}
+</select>
+
+<select id="selectATranzByAucNo" parameterType="int"  resultMap="aTranzMap">
+	select *
+		from hf_a_tranz
+	where auc_no = #{aucNo}
+	order by tranz_date desc
+</select>
+
+
+</mapper>

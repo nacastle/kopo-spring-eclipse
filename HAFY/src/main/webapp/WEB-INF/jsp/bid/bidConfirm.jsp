@@ -182,11 +182,15 @@ table th img {
   
               <div class="na-content" style="text-align: center;">
               
-              <img style="width: 6rem; margin-top: 3rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
-              <div style="margin-bottom:4rem; font-size: 1.6rem;">
-              ${bidBank } ${bidAccountNo } 에서<br>
+              <img style="width: 8rem; margin-top: 3rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
+              <div style="margin-bottom:0rem; font-size: 1.6rem;">	
               ${bidMoney } 원으로<br>
-              	입찰합니다.
+              	입찰합니다.<br><br>
+              <div style="font-size: 1rem;">
+              ${bidBank }<br> 
+              ${bidAccountNo }<br>
+              </div>
+              
                </div>
                
 		<div style="width: 100%; text-align: center;">

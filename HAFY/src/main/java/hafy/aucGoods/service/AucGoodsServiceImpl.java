@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import hafy.aucGoods.dao.AucGoodsDAO;
 import hafy.aucGoods.vo.AucGoodsVO;
@@ -59,7 +60,8 @@ public class AucGoodsServiceImpl implements AucGoodsService{
 		aucGoodsDAO.incrementLikeCnt(aucNo);
 		
 	}
-
+	
+	@Transactional
 	@Override
 	public Map<AucGoodsVO, List<GoodsPhotoVO>> selectAucByNo(int aucNo) {
 		// TODO Auto-generated method stub

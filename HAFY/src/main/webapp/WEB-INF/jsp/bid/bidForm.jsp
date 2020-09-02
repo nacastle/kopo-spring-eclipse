@@ -101,7 +101,7 @@ position: relative;
  
  table {
  	margin-top: 0.7rem;
- 	font-size: 0.7rem;
+ 	font-size: 0.9rem;
  	width: 100%;
 /*  	border: 1 solid rgb(158, 158, 158); */
 	border-collapse: unset;
@@ -180,7 +180,8 @@ table th img {
   
               <div class="na-content">
               	입찰 상품
-              	<form action="${pageContext.request.contextPath}/bidConfirm/${aucGoodsVO.no}" method="post">
+              	<form action="${pageContext.request.contextPath}/bidConfirm/${aucGoodsVO.no}" 
+              	name ="bForm" method="post" onsubmit="return checkBidMoney(${highestBid})">
               	<table>
               		<tr>
               			<th>상품명</th>
@@ -193,7 +194,7 @@ table th img {
 					</tr>	              		
               		<tr>
               			<th>시작가 </th>
-						<td> ${aucGoodsVO.startPrice}
+						<td> ${aucGoodsVO.startPrice} 원&nbsp;
 						</td>
 					</tr>	              		
               		<tr>
@@ -210,24 +211,27 @@ table th img {
               	입찰하기
 		<table>
 			<tr>
-				<th>현재 최고입찰가</th>
-				<td>{needed} 원</td>
+				<th>현 최고입찰가</th>
+				<td>${highestBid} 원</td>
 			</tr>
 			
 			<tr>
 				<th>입찰금액</th>
-				<td>현재 <strong>{needed}</strong> 원부터 <br>	입찰하실 수 있습니다.
+				<td>현재 <strong>${highestBid}</strong> 원부터 <br>	입찰하실 수 있습니다.
 					
 						<div class="input-group">
 							<!-- 				<span class="input-group-addon">\</span>  -->
-							<input type="number" name="bidMoney" class="form-control" style="width: 90%;"
-								placeholder="입찰가"> &nbsp;&nbsp; <span
-								style="margin-top: 1rem;">원</span>
+							<input type="number" name="bidMoney" class="form-control" style="width: 80%;"
+								placeholder="입찰가" onkeypress="modifyBid()"> &nbsp;&nbsp; 
+								<span style="margin-top: 1rem;">원</span>
 						</div>
 					
 				</td>
 			</tr>
 		</table>
+		
+		<div id="bidError" style="color: orange; display: none; text-align: right;">최고입찰가를 초과하는 금액을<br> 입찰하셔야합니다.</div>
+		
 		<div style="margin-top:1.5rem; text-align: center;">
 			<select style=" margin-bottom: 2%;" name="bidAccount" class="selectpicker">
 			<c:forEach items="${mAccountList }" var="mAccount"> 
@@ -249,12 +253,22 @@ table th img {
     
     <script type="text/javascript">
   
-  $(document).ready(function(){
+	function checkBidMoney(highestBid) {
+		
+		let bidMoney = document.bForm.bidMoney.value
+		
+		if (bidMoney < highestBid) {
+			$("#bidError").show();
+			return false;
+		}
+		return true;
+	}
 	
-// 	  $("div i").click(function() {
-// 			$(this).toggle();
-// 			$(this).siblings().toggle();
-// 		})
+	function modifyBid() {
+		$("#bidError").hide();
+		
+	}
+
 	  
 	  $('.na-nav a').on('click',function(){
 		 $(this).addClass('top-on');
@@ -264,7 +278,6 @@ table th img {
 		 $(this).addClass('bottom-on');
 		 $(this).siblings().removeClass('bottom-on');
 		});
-	  });
   
   
   </script>    

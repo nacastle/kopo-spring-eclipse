@@ -45,7 +45,7 @@
     function autoSubmit() {
     	let pwdLength = document.pForm.tranzPwd.value.length; 
     	if(pwdLength == 5) {
-    		alert("읽긴읽나?")
+//     		alert("읽긴읽나?")
     		document.pForm.submit();
     		
     	}

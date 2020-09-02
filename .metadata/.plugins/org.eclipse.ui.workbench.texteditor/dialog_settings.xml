@@ -17,25 +17,27 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="form"/>
+		<item key="selection" value="selectATranzByAucNo"/>
 		<list key="findhistory">
-			<item value="form"/>
-			<item value="q"/>
-			<item value="content"/>
-			<item value="select"/>
-			<item value="하나은행"/>
-			<item value="btn-dislike"/>
-			<item value="display"/>
-			<item value="dislike"/>
-			<item value="css"/>
-			<item value="heart"/>
-			<item value="reload"/>
-			<item value="method"/>
-			<item value="t"/>
-			<item value="te"/>
-			<item value="tes"/>
+			<item value="selectATranzByAucNo"/>
+			<item value="aTranzMap"/>
+			<item value="tranz_date"/>
+			<item value="tranzdate"/>
+			<item value="tranzDate"/>
+			<item value="autoSubmit"/>
+			<item value="post"/>
+			<item value="selectAAcountByBidder"/>
+			<item value="selectAAccountByBidder"/>
+			<item value="acount"/>
+			<item value="goPwdInput"/>
+			<item value="history"/>
+			<item value="session"/>
+			<item value="bidMoney"/>
+			<item value="보러가"/>
 		</list>
 		<list key="replacehistory">
+			<item value="tranzDate"/>
+			<item value="memberNick"/>
 			<item value="na-botNav"/>
 		</list>
 	</section>

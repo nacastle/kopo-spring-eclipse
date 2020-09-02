@@ -100,6 +100,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**/"/>  <!-- /뒤에 depth가 몇이든 간에 -->
+			
 <!-- 			<mvc:exclude-mapping path="/login"/> login uri를 제외하고 인터셉터로 거치게끔 -->
 <!-- 			<mvc:exclude-mapping path="/logout"/> login uri를 제외하고 인터셉터로 거치게끔 -->
 <!-- 			<mvc:exclude-mapping path="/board"/> login uri를 제외하고 인터셉터로 거치게끔 -->

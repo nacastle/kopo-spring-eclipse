@@ -192,7 +192,7 @@ table th img {
                </div>
                
 		<div style="width: 100%; text-align: center;">
-			<button type="button" class="btn btn-success" onclick="goPwdInput(${aucNo})"
+			<button type="button" class="btn btn-success" onclick="goAAcount(${aucNo})"
 				style="background: rgb(22, 160, 133); font-weight: bold; margin-top: 1.2rem;">경매모임계좌 보러가기</button>
 		</div>
 
@@ -207,9 +207,9 @@ table th img {
 
   <script type="text/javascript">
   
-  function goPwdInput(aucNo) {
+  function goAAcount(aucNo) {
 	  console.log("경매번호: " + aucNo)
-	  location.href = "${pageContext.request.contextPath}/pwd/"+aucNo;
+	  location.href = "${pageContext.request.contextPath}/bidHistory/"+aucNo;
 	
 }
 	

@@ -26,10 +26,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 		
 		// test할때는 항상 로그인 상태로 만들어주기
-		
-		MemberVO tempVO = new MemberVO("nacastle","나성주","920193","서울시","송파구","SKT","01042119382","1","0101t");
-
-		
+//		MemberVO tempVO = new MemberVO("nacastle","나성주","920193","서울시","송파구","SKT","01042119382","1","1212q");
+//		MemberVO tempVO = new MemberVO("apple","사과","910212","서울시","송파구","KT","01029371726","1","1231q");
+		MemberVO tempVO = new MemberVO("kiwi","키위","910212","서울시","송파구","KT","01029371726","1","1231q");
 		session.setAttribute("memberVO", tempVO);
 		// 여기까지 해서 로그인 상태 만들어주는 법
 		

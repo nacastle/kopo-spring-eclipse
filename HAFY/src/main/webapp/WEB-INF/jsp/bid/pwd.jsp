@@ -25,8 +25,9 @@
     	<div class="mb-3" style="text-align: center;">
 <!--               <label for="address">상위주소</label> -->
 			<form action="${pageContext.request.contextPath}/bidSuccess/${aucNo}" method="post" name="pForm">
-              <input style="margin: 0 auto; width: 18rem; text-align: center;" type="password" maxlength="5" class="form-control" name="tranzPwd" placeholder="" onkeyup="autoSubmit()">
+              <input style="margin: 0 auto; width: 18rem; text-align: center;" type="password" maxlength="5" class="form-control" name="tranzPwd" placeholder="" onkeydown="eraseError()"" onkeyup="autoSubmit()">
               </form>
+              <span id="pwdError" style="color: white; display: none;">${msg }</span>  <!-- 비밀번호가 틀렸습니다. -->
               <div class="invalid-feedback">
                 Please enter your 입금 암호.
               </div>
@@ -40,20 +41,32 @@
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
     <script>
     
+//     function autoSubmit() {
+//     	let pwdLength = document.pForm.tranzPwd.value.length; 
+//     	let pwd = document.pForm.tranzPwd.value;
+//     	if(pwdLength == 5) {
+// //     		alert("읽긴읽나?")
+// //     		alert("${memberVO.tranzPwd}" )
+// 			if("${memberVO.tranzPwd}" == pwd) {
+//     			document.pForm.submit();
+// 			} else {
+// 				alert("비번이 틀립니다")
+// 			}
+    		
+//     	}
+		
+// 	}
+	function eraseError() {
+    		$("#pwdError").hide();
+	}
+
     function autoSubmit() {
     	let pwdLength = document.pForm.tranzPwd.value.length; 
     	let pwd = document.pForm.tranzPwd.value;
     	if(pwdLength == 5) {
-//     		alert("읽긴읽나?")
-//     		alert(${memberVO.tranzPwd} )
-			if("${memberVO.tranzPwd}" == pwd) {
+//     		$("#pwdError").show();
     			document.pForm.submit();
-			} else {
-				alert("비번이 틀립니다")
-			}
-    		
     	}
-		
 	}
     
       Holder.addTheme('thumb', {

@@ -64,6 +64,10 @@ public class MemberController {
 		pwdMap.put("tranzPwd",tranzPwd);
 		memberService.registerPwd(pwdMap);
 		
+		memberVO.setTranzPwd(tranzPwd);
+		session.removeAttribute("memberVO");
+		session.setAttribute("memberVO", memberVO);
+		
 		return "signUp/pwdSettingSuccess";
 	}
 	

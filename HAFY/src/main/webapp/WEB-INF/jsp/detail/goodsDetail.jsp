@@ -239,7 +239,7 @@ table th img {
     <nav class="na-nav2 navbar fixed-bottom navbar-expand-sm " style="display:unset; background: #27b2a5; padding: .6rem 1rem;">
     
     <div>
-    	<span style="font-size: 0.6rem;">현재가 </span><strong>${auc.key.startPrice} 원</strong> | <span style="color: red;">[needed]명 입찰중&nbsp;&nbsp;</span>
+    	<span style="font-size: 0.6rem;">현재가 </span><strong>${highestBid} 원</strong> | <span style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
 			<button class="btn btn-warning " onclick="goBidForm(${auc.key.no })"
 				style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: orange; border: orange; vertical-align: middle;">입찰하기</button>
 		</div>
