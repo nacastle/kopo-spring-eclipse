@@ -9,18 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import hafy.aucGoods.dao.AucGoodsDAO;
 import hafy.aucGoods.service.AucGoodsService;
 import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.bid.service.BidService;
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.ATranzVO;
-import hafy.mAccount.dao.MAccountDAO;
 import hafy.mAccount.service.MAccountService;
 import hafy.mAccount.vo.MAccountVO;
 import hafy.member.vo.MemberVO;
@@ -34,7 +33,15 @@ public class BidController {
 	private MAccountService mAccountService;
 	@Autowired
 	private BidService bidService;
-
+	
+	
+//	@Scheduled(cron = "0 37 16 * * *")
+//	public void schedulerTest() {
+//		System.out.println("스케쥴러가 잘 작동하나?");
+//		
+//	}
+	
+	
 	@GetMapping("/bidHistory/{aucNo}")
 	public String bidHistory(@PathVariable("aucNo") int aucNo, HttpServletRequest request) {
 
@@ -55,13 +62,11 @@ public class BidController {
 				highestBid = bidderList.get(i).getBidMoney();
 			}
 		}
-
-//		System.out.println("최고입찰가:"+highestBid);
-
-		request.setAttribute("highestBid", highestBid);
+		request.setAttribute("bidderList", bidderList);
 
 		return "/aAccount/bidHistory";
 	}
+	
 
 	@GetMapping("bidForm/{aucNo}")
 	public String bidForm(@PathVariable("aucNo") int aucNo, HttpServletRequest request, HttpSession session) {
@@ -131,7 +136,9 @@ public class BidController {
 
 	@PostMapping("/bidSuccess/{aucNo}")
 	public String bidSuccess(@PathVariable("aucNo") int aucNo, HttpServletRequest request, HttpSession session) {
-
+		
+		
+		// 경매번호 계속 전달해주기
 		request.setAttribute("aucNo", aucNo);
 
 		// 입찰자 정보 얻어오기

@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import hafy.aucGoods.vo.AucGoodsVO;
+import hafy.aucGoods.vo.CodeVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
+import hafy.bid.vo.AAccountVO;
+import hafy.member.vo.MemberVO;
 
 @Repository
 public class AucGoodsDAOImpl implements AucGoodsDAO{
@@ -17,7 +20,14 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 	private SqlSessionTemplate sqlSession;
 	
 	
-	
+
+	@Override
+	public List<CodeVO> selectGoodsCategory(String codeCategory) {
+		// TODO Auto-generated method stub
+		List<CodeVO> category = sqlSession.selectList("auction.dao.AucGoodsDAO.selectGoodsCategory",codeCategory);
+		
+		return category;
+	}
 
 	@Override
 	public LikeVO selectIsLike(LikeVO likeVO) {
@@ -103,6 +113,21 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 		// TODO Auto-generated method stub
 		List<AucGoodsVO> aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectAllAucContents");
 		return aucList;	
+	}
+	
+	@Override
+	public List<AAccountVO> selectBidList(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		List<AAccountVO> aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectBidList", memberVO);
+		return aucList;
+	}
+	
+	@Override
+	public List<AucGoodsVO> selectDisplayList(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> displayList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectDisplayList", memberVO);
+
+		return displayList;
 	}
 
 	/**

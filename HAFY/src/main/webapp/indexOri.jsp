@@ -1,42 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%--     <%@ taglib uri="http://www.springframework.org/tags/form" %> --%>
-    
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>메인페이지</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/board.css"/> 
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/layout.css"/> 
 </head>
 <body>
 
-<header>
-<%-- 	<%@ include file="/WEB-INF/jsp/include/topMenu.jsp" %> --%>
-	<jsp:include page="/WEB-INF/jsp/include/topMenu.jsp"></jsp:include>
+	<div class="header" style="height: 7rem; background: aqua;">
+		header</div>
 
-</header>
+	<div class="section"
+		style="width: 100%; height: 20rem; background: orange; position: relative; overflow: hidden;">
+		<div style=" position: absolute; width: 100%;">
+			<div style="position:absolute; width: 90%; height: 18rem; background: fuchsia; overflow: hidden;">c1</div>
+			<div style="position:absolute; width: 90%; height: 18rem; background: lime; overflow: hidden;">c2</div>
+			<div></div>
+		</div>
 
-<%-- <a href="${pageContext.request.contextPath }/board"> 게시판</a><br> --%>
-<%-- <a href="${pageContext.request.contextPath }/board/write"> 새글등록</a><br> --%>
+	</div>
 
-<%-- <c:choose> --%>
-<%-- 	<c:when test="${empty loginVO }"> --%>
-<%-- 		<a href="${pageContext.request.contextPath }/login">로그인</a><br> --%>
-<%-- 	</c:when> --%>
-<%-- 	<c:otherwise> --%>
-<%-- 		<a href="${pageContext.request.contextPath }/logout">로그아웃</a><br> --%>
-<%-- 	</c:otherwise> --%>
-<%-- </c:choose> --%>
 
-<footer>
-<%-- 	<%@ include file="/WEB-INF/jsp/include/footer.jsp" %> --%>
-		<jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
-	
-</footer>
+	<div class="footer" style="height: 7rem; background: blue;">
+		<button onclick="left()">옆으로</button>
+	</div>
 
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript">
+		function left() {
+			$(".section").css("left", "-100%")
+
+		}
+	</script>
 
 </body>
 </html>

@@ -200,20 +200,20 @@ table th img {
       			<c:otherwise>
       		<i class="btn-like fa fa-heart-o fa-lg" onclick="like(${auc.key.no},${auc.key.likeCnt })" style="display: none;" aria-hidden="true"></i>
       		<i class="btn-dislike fa fa-heart fa-lg" onclick="dislike(${auc.key.no},${auc.key.likeCnt })" aria-hidden="true"></i>
-      			
       			</c:otherwise>
       		</c:choose>
 		</div>
     </nav>
     <ul class="bxslider">
 		<c:forEach items="${auc.value }" var="photo">
-			<<li><a href="${pageContext.request.contextPath}/upload/${photo.saveName}"><img src="${pageContext.request.contextPath}/upload/${photo.saveName}"></a></li>
+			<li><a href="${pageContext.request.contextPath}/upload/${photo.saveName}"><img src="${pageContext.request.contextPath}/upload/${photo.saveName}"></a></li>
 		</c:forEach>
     </ul>
               <div class="na-content">
               
               	<div style="font-size: 0.8rem;">
-              		<span>판매자 | ${auc.key.memberNick}</span> <span style="float: right;">신용도 <i class="fa fa-star" aria-hidden="true"></i> 4.6/5.0</span>
+<%--               		<span>판매자 | ${auc.key.memberNick}</span> <span style="float: right;">신용도 <i class="fa fa-star" aria-hidden="true"></i> 4.6/5.0</span> --%>
+              		<span>판매자 | ${auc.key.memberNick}</span> <span style="float: right;">경매번호 | ${auc.key.no}</span>
               	</div>
               	<hr>
               	
@@ -239,7 +239,7 @@ table th img {
     <nav class="na-nav2 navbar fixed-bottom navbar-expand-sm " style="display:unset; background: #27b2a5; padding: .6rem 1rem;">
     
     <div>
-    	<span style="font-size: 0.6rem;">현재가 </span><strong>${highestBid} 원</strong> | <span style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
+    	<span style="font-size: 0.6rem;">현재가 </span><strong>${highestBid} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
 			<button class="btn btn-warning " onclick="goBidForm(${auc.key.no })"
 				style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: orange; border: orange; vertical-align: middle;">입찰하기</button>
 		</div>
@@ -259,6 +259,18 @@ table th img {
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
     
       <script type="text/javascript">
+      
+<%--       console.log(<%= request.getQueryString() %>) --%>
+<%--       alert(<%= request.getQueryString() %>) --%>
+<%--       alert(<%= request.() %>) --%>
+<%--       alert(<%= pageContext.get %>) --%>
+
+      
+      if (${empty bidderCnt }) {
+    	  $("#bidderCnt").html("0명 입찰중&nbsp;&nbsp;")
+		
+	}
+      
       
       function goBidForm(aucNo) {
     	  location.href = "${pageContext.request.contextPath}/bidForm/"+aucNo

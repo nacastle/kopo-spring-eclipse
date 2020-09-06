@@ -25,18 +25,23 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		HttpSession session = request.getSession();
 		
 		
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+		System.out.println("로그인돼있는거?" +memberVO);
 		// test할때는 항상 로그인 상태로 만들어주기
+//		if (memberVO == null) {
 //		MemberVO tempVO = new MemberVO("nacastle","나성주","920193","서울시","송파구","SKT","01042119382","1","1212q");
 //		MemberVO tempVO = new MemberVO("apple","사과","910212","서울시","송파구","KT","01029371726","1","1231q");
-		MemberVO tempVO = new MemberVO("kiwi","키위","910212","서울시","송파구","KT","01029371726","1","1231q");
-		session.setAttribute("memberVO", tempVO);
+//		MemberVO tempVO = new MemberVO("kiwi","키위","910212","서울시","송파구","KT","01029371726","1","1231q");
+//		session.setAttribute("memberVO", tempVO);
+//		}
 		// 여기까지 해서 로그인 상태 만들어주는 법
 		
 		
-		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
 		
 		
 		if (memberVO == null) {
+			
+			System.out.println("로그인인터셉터 거치긴 하지?");
 			
 			String uri = request.getRequestURI();
 			uri = uri.substring(request.getContextPath().length());

@@ -166,9 +166,9 @@ table th img {
 </style>	
 <title>하피 - 모두를 위한 경매</title>
 </head>
+<body>
   <body style="    padding-bottom: 0rem;">
   
- 
    <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem;border-bottom: 0.1rem solid rgb(224, 224, 224)">
    		<div style="float: left;">
     	  <a href="${pageContext.request.contextPath}/bidForm/${aucNo}" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
@@ -183,27 +183,27 @@ table th img {
 		</div>
       
     </nav>
-     <c:forEach items="${bidderList}" var="bidder" end="0">
+    
+  
     <div class="na-content" style="margin-top: 2rem;">
     	<div style="float: right;">경매번호 : ${aucNo }</div>
     	<div style="text-decoration: underline;"><div>최고입찰가</div></div>
-    	<div style="font-size: 1.5rem; font-weight: bold;">${bidder.bidMoney } 원 (${bidder.bidderNick })</div>
+    	<div style="font-size: 1.5rem; font-weight: bold;">${highestBid } 원</div>
 	</div>
-    	</c:forEach>
 	
 	<nav class="na-nav">
 			<div>
-				<a class="top-on" onclick="showHistory()" href="#"><span>입/출금</span></a> 
-				<a href="#" onclick="showRank()"><span>경매참여자</span></a> 
-				<a href="#" onclick="result()" ><span>경매결과</span></a> 
+				<a class="top-on" href="#"><span>입/출금</span></a> 
+				<a href="#"><span>경매참여자</span></a> 
+				<a href="#"><span>경매결과</span></a> 
 				<span></span>
 			</div>
 
 	</nav>
-		<table class="table table-hover" id="history" style="margin: 0 auto; width: 96%; margin-top: .5rem;margin-bottom: 3.5rem; ">
+		<table class="table table-hover" style="margin: 0 auto; width: 96%; margin-top: .5rem;margin-bottom: 3.5rem; ">
 			<tbody>
-				
-	  <c:forEach items="${aTranzList }" var="aTranzVO" >
+			
+				<c:forEach items="${aTranzList }" var="aTranzVO">
 					<c:set value="${aTranzVO.tranzDate }" var="tranzDate" scope="page"></c:set>
 				<tr>
 					<th scope="row" style="padding: 0.75rem 0rem;">${fn:substring(tranzDate,5,10) }</th>
@@ -223,30 +223,13 @@ table th img {
 						<div style="font-size:0.8rem; color:#8f8f8f">${aTranzVO.memberBalance } 원</div>
 					</td>
 				</tr>
-				</c:forEach>
 					
+				</c:forEach>
 				
 				
 			</tbody>
 		</table>
 
-
-		<table class="table table-hover" id="rank" style="display:none; margin-bottom: 0rem; font-weight: bold; margin: 0 auto; width: 96%; margin-top: .5rem;">
-			<tbody>
-			 <c:forEach items="${bidderList}" var="bidder" varStatus="i">
-				<tr>
-					<th scope="row">${i.count }</th>
-					<td style="width: 40%; text-align: center;">
-						<div>${bidder.bidderNick }</div>
-					</td>
-					<td>
-						<div style="color:rgb(39, 178, 165);">${bidder.bidMoney } 원</div>
-					</td>
-				</tr>
-	</c:forEach>
-			</tbody>
-		</table>
-		
 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm "
 		style="display: unset; background: white; padding: .6rem 1rem; text-align: center;">
 
@@ -265,19 +248,10 @@ table th img {
     <script type="text/javascript">
   
 	
-	function showHistory() {
-		$("#history").show();
-		$("#rank").hide()
-		
-	}
-	function showRank() {
-		$("#history").hide();
-		$("#rank").show()
-		
-	}
-	
-	
-    
+// 	  $("div i").click(function() {
+// 			$(this).toggle();
+// 			$(this).siblings().toggle();
+// 		})
 	  function goBid() {
 	location.href = "${pageContext.request.contextPath}/bidForm/"+${aucNo};
 		

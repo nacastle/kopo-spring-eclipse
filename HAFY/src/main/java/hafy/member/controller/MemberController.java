@@ -3,6 +3,7 @@ package hafy.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,82 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	
+	
+	
+	
+	@RequestMapping("/loginProcess")
+	public String loginProcess(MemberVO inputMemberVO, HttpSession session) {
+		
+		
+		System.out.println("입력받은 아이디: " + inputMemberVO.getNickname());
+		System.out.println("입력받은 패스워드: " + inputMemberVO.getTranzPwd());
+		
+		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
+		
+		if (memberVO == null) {
+			return "redirect:/login";
+		} else {
+			session.setAttribute("memberVO", memberVO);
+		return "redirect:/hot";
+		}
+	}
+	
+	@RequestMapping("/login")
+	public String login() {
+		return "/login/login";
+	}
+	
+	@RequestMapping("/myPage")
+	public String myPage() {
+		return "/myPage/myPage";
+	}
+	
+	@RequestMapping("/myInfo")
+	public String myInfo() {
+		return "/myPage/myInfo";
+	}
+	
+	@RequestMapping("/myModify")
+	public String myModify() {
+		return "/myPage/myModify";
+	}
+	
+	@PostMapping("/myModifyComplete")
+	public String myModifyComplete(HttpSession session, HttpServletRequest request) {
+		
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+		String phone = request.getParameter("phone"); 
+		String address1 = request.getParameter("address1");
+		String address2 = request.getParameter("address2");
+		
+		MemberVO modMemberVO = new MemberVO();
+		modMemberVO.setNickname(memberVO.getNickname());
+		modMemberVO.setPhone(phone);
+		modMemberVO.setAddress1(address1);
+		modMemberVO.setAddress2(address2);
+		
+		memberService.updateMember(modMemberVO);
+		
+		
+		modMemberVO = memberService.selectMember(memberVO);
+		
+//		System.out.println(modMemberVO);
+		
+//		session.removeAttribute("memberVO");
+		session.setAttribute("memberVO", modMemberVO);
+		
+		
+		
+		return "redirect:/myInfo";
+	}
+	
+	@RequestMapping("/signUp")
+	public String subCover() { 
+//		System.out.println("거치나?");
+		return "signUp/signUp";
+	}
 	
 	@RequestMapping("/signUpForm")
 	public String signUpForm() {

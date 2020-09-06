@@ -14,5 +14,6 @@ public interface BidDAO {
 	List<ATranzVO> selectATranzByAucNo(int aucNo);
 	AAccountVO isBidding(AAccountVO aAccountVO);
 	List<AAccountVO> selectAAccount(int aucNo);
+	void updateWinningBid(AAccountVO aAccountVO);
 
 }

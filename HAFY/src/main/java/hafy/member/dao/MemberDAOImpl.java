@@ -14,6 +14,33 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+	
+	
+	
+
+	@Override
+	public MemberVO checkLogin(MemberVO inputMemberVO) {
+		// TODO Auto-generated method stub
+		MemberVO memberVO = sqlSession.selectOne("member.dao.MemberDAO.checkLogin",inputMemberVO);
+		return memberVO;
+	}
+
+	@Override
+	public void updateMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		sqlSession.update("member.dao.MemberDAO.memberUpdate",memberVO);
+		
+	}
+
+	@Override
+	public MemberVO selectMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		MemberVO vo = sqlSession.selectOne("member.dao.MemberDAO.selectMember",memberVO);
+		return vo;
+	}
+
+
 
 	@Override
 	public void insert(MemberVO memberVO) {

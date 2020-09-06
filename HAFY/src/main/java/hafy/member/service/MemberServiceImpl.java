@@ -16,20 +16,42 @@ public class MemberServiceImpl implements MemberService{
 	@Autowired
 	private MemberDAO memberDAO;
 	
-	/**
-	 * 댓글추가
-	 * 1. DB에 t_board에 해당 레코드의 댓글 카운트 컬럼 1증가
-	 * 2. DB에 t_reply에 새로운 댓글 추가
 	
-	*/
+	
+	@Override
+	public MemberVO checkLogin(MemberVO inputMemberVO) {
+		// TODO Auto-generated method stub
+		MemberVO memberVO = memberDAO.checkLogin(inputMemberVO);
+		return memberVO;
+	}
+
+
 	@Override
 	public void insertMember(MemberVO memberVO) {
 		// TODO Auto-generated method stub
 		memberDAO.insert(memberVO);
 	}
+	
+	
+	@Override
+	public MemberVO selectMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		MemberVO vo = memberDAO.selectMember(memberVO);
+		return vo;
+	}
 
-	
-	
+
+	@Override
+	public void updateMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		memberDAO.updateMember(memberVO);
+		
+	}
+
+
+
+
+
 	@Override
 	public void registerPwd(Map<String, String> pwdMap) {
 		// TODO Auto-generated method stub

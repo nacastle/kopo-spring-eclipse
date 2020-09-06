@@ -7,7 +7,7 @@
     <script src="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/dist/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/assets/js/vendor/holder.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     
     
     

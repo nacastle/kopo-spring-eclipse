@@ -103,13 +103,13 @@
           
 
             <div class="mb-3">
-              <label for="address">상위주소</label>
+              <label for="address">배송 상위주소</label>
               <input type="text" class="form-control" name="address1" placeholder="ex. 서울시 서초구 내곡동" onkeydown="hideCheck()">
              
             </div>
 
             <div class="mb-3">
-              <label for="address2">세부주소<!--  <span class="text-muted">(Optional)</span> --></label>
+              <label for="address2">배송 세부주소<!--  <span class="text-muted">(Optional)</span> --></label>
               <input type="text" class="form-control" name="address2" placeholder="아파트명" onkeydown="hideCheck()">
                <div class="check" id="addressCheck" style="color: red; display: none;">
                 	주소를 입력해주세요.

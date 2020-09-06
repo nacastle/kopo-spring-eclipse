@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import hafy.aucGoods.vo.AucGoodsVO;
+import hafy.aucGoods.vo.CodeVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
+import hafy.member.vo.MemberVO;
 
 public interface AucGoodsService {
 	
@@ -19,7 +21,9 @@ public interface AucGoodsService {
 	void decrementLikeCnt(int aucNo);
 	void insertLike(LikeVO likeVO);
 	void deleteLike(LikeVO likeVO);
-	
+	List<CodeVO> selectGoodsCategory(String codeCategory);
 	LikeVO selectIsLike(LikeVO likeVO);
+	Map<String, AucGoodsVO> selectBidMap(MemberVO memberVO);
+	Map<String, AucGoodsVO> selectDisplayMap(MemberVO memberVO);
 
 }

@@ -5,6 +5,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member.dao.MemberDAO">
 
+<resultMap type="memberVO" id="memberMap">
+	<result column="res_no" property="resNo" />
+	<result column="phone_company" property="phoneCompany" />
+	<result column="tranz_pwd" property="tranzPwd" />
+
+</resultMap>
+
 <insert id="insert" parameterType="memberVO">
 	insert into hf_member(nickname, name, res_no, address1, address2, phone_company, phone, sex, tranz_pwd)
 		values(#{nickname}, #{name}, #{resNo}, #{address1}, #{address2}, #{phoneCompany}, #{phone}, #{sex}, #{tranzPwd})
@@ -15,13 +22,23 @@
 		where nickname = #{nickname}
 </update>
 
-<!-- <select id="login" parameterType="memberVO" resultType="memberVO"> -->
-<!-- 	select id, password -->
-<!-- 	from t_member -->
-<!-- 	where id=#{id} and password=#{password} -->
+<update id="memberUpdate" parameterType="memberVO">
+	update hf_member set phone = #{phone}, address1 = #{address1}, address2 = #{address2}
+		where nickname = #{nickname}
+</update>
 
+<select id="selectMember" parameterType="memberVO" resultMap="memberMap">
+	select *
+	from hf_member
+		where nickname = #{nickname}
+</select>
 
-<!-- </select> -->
+<select id="checkLogin" parameterType="memberVO" resultMap="memberMap">
+	select *
+	from hf_member
+		where nickname = #{nickname} and tranz_pwd = #{tranzPwd}
+</select>
+
 
 	
 

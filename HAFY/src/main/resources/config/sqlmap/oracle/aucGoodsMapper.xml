@@ -13,6 +13,7 @@
 		<result column="member_nick" property="memberNick" />
 		<result column="view_cnt" property="viewCnt" />
 		<result column="like_cnt" property="likeCnt" />
+		<result column="winning_bid" property="winningBid" />
 	
 </resultMap>
 	
@@ -28,6 +29,25 @@
 		<result column="auc_no" property="aucNo" />
 </resultMap>
 
+<resultMap type="codeVO" id="codeMap">
+		<result column="code_no" property="codeNo" />
+		<result column="code_name" property="codeName" />
+		<result column="code_category" property="codeCategory" />
+		<result column="uri_name" property="uriName" />
+</resultMap>
+
+<resultMap type="aAccountVO" id="aAccountMap">
+	<result column="bidder_nick" property="bidderNick" />
+	<result column="auc_no" property="aucNo" />
+	<result column="bid_money" property="bidMoney" />
+</resultMap>
+
+	<select id="selectGoodsCategory" parameterType="String" resultMap="codeMap">
+		select * 
+		from hf_detail_code 
+		where code_category = #{codeCategory} and usage = 'y' 
+		order by code_no
+	</select>
 
 	<select id="selectIsLike" parameterType="likeVO" resultMap="likeMap">
 		select member_nick, auc_no
@@ -86,16 +106,30 @@
 		select seq_hf_auc_goods_no.nextval from dual
 	</select>
 	
-	<select id="selectAucGoodsByNo" resultType="aucGoodsVO" resultMap="aucGoodsMap">      
+	<select id="selectAucGoodsByNo" parameterType="int" resultMap="aucGoodsMap">      
 		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
-				view_cnt, like_cnt 
+				view_cnt, like_cnt, winning_bid
 		 from hf_auc_goods
 			where no = #{aucNo}                                        
+	</select>
+	    
+	<select id="selectBidList" parameterType="memberVO" resultMap="aAccountMap">      
+		select *
+		 from hf_a_account
+			where bidder_nick = #{nickname}
+			order by auc_no desc                                    
+	</select>
+	    
+	<select id="selectDisplayList" parameterType="memberVO" resultMap="aucGoodsMap">      
+		select *
+		 from hf_auc_goods
+			where member_nick = #{nickname}
+			order by reg_date desc                                   
 	</select>    
 	
 	<select id="selectAllAucContents" resultType="aucGoodsVO" resultMap="aucGoodsMap">      
 		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
-				view_cnt, like_cnt 
+				view_cnt, like_cnt , winning_bid
 		 from hf_auc_goods
 	</select>                                                     
 	            
@@ -112,18 +146,8 @@
 		select save_name from hf_goods_photo where auc_no = #{aucNo} order by no
 	</select>                                                     
 	                                                              
-<!-- 	<update id="registerPwd" parameterType="map"> -->         
-<!-- 		update hf_member set tranz_pwd = #{tranzPwd} -->      
-<!-- 		where nickname = #{nickname} -->                      
-<!-- 	</update> -->                                                	
-
-	<!-- <select id="login" parameterType="memberVO" resultType="memberVO"> -->
-	<!-- select id, password -->
-	<!-- from t_member -->
-	<!-- where id=#{id} and password=#{password} -->
 
 
-	<!-- </select> -->
 </mapper>
 
 

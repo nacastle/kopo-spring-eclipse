@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import hafy.bid.dao.BidDAO;
 import hafy.bid.vo.AAccountVO;
@@ -30,18 +31,23 @@ public class BidServiceImpl implements BidService {
 		// TODO Auto-generated method stub
 		return bidDAO.selectAAccount(aucNo);
 	}
-
+	
+	@Transactional
 	@Override
 	public void bidding(AAccountVO aAccountVO) {
 		// TODO Auto-generated method stub
 		
 		AAccountVO isAccountVO =  bidDAO.isBidding(aAccountVO);
 		
+		// 첫 입찰이면 insert, 두번 이상 입찰이면 update
 		if (isAccountVO == null) {
 			bidDAO.insertAAccountBid(aAccountVO);
 		} else {
 			bidDAO.addBidMoney(aAccountVO);
 		}
+		
+		bidDAO.updateWinningBid(aAccountVO);
+		
 		
 		
 		

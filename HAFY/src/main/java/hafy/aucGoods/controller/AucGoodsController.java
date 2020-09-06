@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import hafy.aucGoods.service.AucGoodsService;
 import hafy.aucGoods.vo.AucGoodsVO;
+import hafy.aucGoods.vo.CodeVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
 import hafy.bid.service.BidService;
@@ -43,8 +44,35 @@ public class AucGoodsController {
 	@Autowired
 	private BidService bidService;
 
+	
+	@GetMapping("/myAuction")
+	public String myAuction(Model model, HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+		
+		// 사용자가 입찰한 목록 가져오기 (첫째 사진 파일 이름과 함께)
+		Map<String, AucGoodsVO> bidMap = aucGoodsService.selectBidMap(memberVO);
+		
+		// 사용자가 출품한 목록 가져오기 (첫째 사진 파일 이름과 함께)
+		Map<String, AucGoodsVO> displayMap = aucGoodsService.selectDisplayMap(memberVO);
+		
+		model.addAttribute("bidMap", bidMap);
+		model.addAttribute("displayMap", displayMap);
+		
+		return "/myAuction/myAuction";
+	}
+	
+	@GetMapping("/goodsCategory")
+	public String goodsCategory(Model model) {
+		List<CodeVO> goodsCategory = aucGoodsService.selectGoodsCategory("gc");
+
+		model.addAttribute("goodsCategory", goodsCategory);
+
+		return "/category/goodsCategory";
+	}
+
 	@GetMapping("goodsDetail/{aucNo}")
-	public String goodsDetail(@PathVariable("aucNo")int aucNo, HttpServletRequest request, HttpSession session) {
+	public String goodsDetail(@PathVariable("aucNo") int aucNo, HttpServletRequest request, HttpSession session) {
 
 		Map<AucGoodsVO, List<GoodsPhotoVO>> aucMap = aucGoodsService.selectAucByNo(aucNo);
 		request.setAttribute("aucMap", aucMap);
@@ -77,8 +105,7 @@ public class AucGoodsController {
 		} else {
 			// 입찰 인원수 구하기
 			request.setAttribute("bidderCnt", bidderList.size());
-			
-			
+
 			highestBid = bidderList.get(0).getBidMoney();
 			for (int i = 1; i < bidderList.size(); i++) {
 				if (bidderList.get(i).getBidMoney() >= highestBid) {
@@ -88,13 +115,8 @@ public class AucGoodsController {
 			}
 			System.out.println("쌓아둔게 최고입찰가: " + highestBid);
 		}
-		
-		
-		
-		
-		
-		request.setAttribute("highestBid", highestBid);
 
+		request.setAttribute("highestBid", highestBid);
 		request.setAttribute("isLike", isLike);
 
 		return "/detail/goodsDetail";
@@ -103,27 +125,17 @@ public class AucGoodsController {
 	@RequestMapping("/hot")
 	public String mainHot(HttpServletRequest request) {
 
-//		List<AucGoodsVO> aucList = aucGoodsService.selectAllAuc();
-//		List<GoodsPhotoVO> photoList = aucGoodsService.selectAllA();
-
 		Map<String, AucGoodsVO> aucMap = aucGoodsService.selectAllAuc();
-
-//		for (String key : aucMap.keySet()) {
-//			AucGoodsVO vo = aucMap.get(key);
-//			System.out.println("key: "+key + ", vo: " + vo);
-//		}
-
-//		ModelAndView mav = new ModelAndView("/home/hot");
 		request.setAttribute("aucMap", aucMap);
-//		request.setAttribute("list", list);
-//		mav.addObject("aucList", aucList);
 
 		return "/home/hot";
 	}
 
 	@RequestMapping("/displayForm")
-	public String displayForm() {
+	public String displayForm(Model model) {
 
+		List<CodeVO> goodsCategory = aucGoodsService.selectGoodsCategory("gc");
+		model.addAttribute("goodsCategory", goodsCategory);
 		return "/display/displayForm";
 	}
 
@@ -162,19 +174,10 @@ public class AucGoodsController {
 		aucGoodsVO.setStartDate(rStartDate);
 		aucGoodsVO.setEndDate(rEndDate);
 
-//		System.out.println("경매번호: "+aucNo);
-
 		// 실행되는 웹어플리케이션의 실제 경로 가져오기
 		String uploadDir = servletContext.getRealPath("/upload/");
-//		String uploadDir = servletContext.getRealPath("/upload/");
 
 		System.out.println(uploadDir);
-
-//				ModelAndView mav = new ModelAndView("file/uploadResult");
-//				String id = mRequest.getParameter("id");
-//				System.out.println("id : " + id);
-
-//		List<GoodsPhotoVO> photoList = new ArrayList<GoodsPhotoVO>();
 
 		model.addAttribute("aucGoodsVO", aucGoodsVO);
 		aucGoodsService.insertAucGoods(aucGoodsVO);
@@ -218,10 +221,6 @@ public class AucGoodsController {
 				aucGoodsService.insertGoodsPhoto(goodsPhotoVO);
 			}
 		}
-
-//		for (GoodsPhotoVO item : photoList) {
-//			System.out.println(item);
-//		}
 
 		return "/display/displayLoading";
 	}

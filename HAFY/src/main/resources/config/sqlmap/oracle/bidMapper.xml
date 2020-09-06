@@ -21,6 +21,13 @@
 	<result column="bid_money" property="bidMoney" />
 </resultMap>
 
+<update id="updateWinningBid">
+	update hf_auc_goods 
+	set winning_bid = #{bidMoney}
+	where no = #{aucNo}
+
+</update>
+
 <insert id="insertAAccountBid" parameterType="aAccountVO">
 	insert into hf_a_account(auc_no, bidder_nick, bid_money)
 		values(#{aucNo}, #{bidderNick}, #{bidMoney})
@@ -57,6 +64,7 @@
 	select *
 	from hf_a_account
 	where auc_no = #{aucNo}
+	order by bid_money desc
 </select>
 
 <select id="selectATranzByAucNo" parameterType="int"  resultMap="aTranzMap">

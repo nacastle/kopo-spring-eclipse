@@ -19,6 +19,13 @@ public class BidDAOImpl implements BidDAO {
 	
 
 	@Override
+	public void updateWinningBid(AAccountVO aAccountVO) {
+		// TODO Auto-generated method stub
+		sqlSession.update("bid.dao.BidDAO.updateWinningBid",aAccountVO);
+		
+	}
+
+	@Override
 	public AAccountVO isBidding(AAccountVO aAccountVO) {
 		// TODO Auto-generated method stub
 		AAccountVO aAccount = sqlSession.selectOne("bid.dao.BidDAO.isBidding",aAccountVO);

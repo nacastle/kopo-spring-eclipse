@@ -14,16 +14,22 @@ public class AucGoodsVO {
 	private String endDate;
 	private int viewCnt;
 	private int likeCnt;
+	private int winningBid;
 
 	
 	
 	public AucGoodsVO() {
 		super();
 		// TODO Auto-generated constructor stub
-	
-	
 	}
 	
+    	
+	public int getWinningBid() {
+		return winningBid;
+	}
+	public void setWinningBid(int winningBid) {
+		this.winningBid = winningBid;
+	}
 	public int getViewCnt() {
 		return viewCnt;
 	}
@@ -101,18 +107,16 @@ public class AucGoodsVO {
 		this.endDate = endDate;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "AucGoodsVO [no=" + no + ", name=" + name + ", memberNick=" + memberNick + ", category=" + category
 				+ ", detail=" + detail + ", regDate=" + regDate + ", method=" + method + ", startPrice=" + startPrice
 				+ ", startDate=" + startDate + ", endDate=" + endDate + ", viewCnt=" + viewCnt + ", likeCnt=" + likeCnt
-				+ "]";
+				+ ", winningBid=" + winningBid + "]";
 	}
-	
-	
-	
-	
-	
+
 	
 
 }

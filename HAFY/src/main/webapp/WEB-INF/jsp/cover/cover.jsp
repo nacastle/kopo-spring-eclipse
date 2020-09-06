@@ -10,7 +10,7 @@
     <script>
     
     setTimeout(() => {
-		location.href = "${pageContext.request.contextPath }/subCover"    
+		location.href = "${pageContext.request.contextPath }/login"    
 	}, 3000);
     
     </script>
