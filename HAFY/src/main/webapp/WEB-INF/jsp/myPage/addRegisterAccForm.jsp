@@ -23,7 +23,7 @@
       </div>
     </nav>
     
-    <form class="needs-validation" action="${pageContext.request.contextPath }/registerAccSuccess" name="aForm" method="post">
+    <form class="needs-validation" action="${pageContext.request.contextPath }/addRegisterAccSuccess" name="aForm" method="post">
      <div class="col-md-8 order-md-1">
           <h5 class="mb-3"> </h5>
             <div class="row">

@@ -14,6 +14,7 @@ public interface MemberDAO {
 	void insert(MemberVO memberVO);
 	
 	void updateMember(MemberVO memberVO);
+	void deleteMember(MemberVO memberVO);
 	
 	/**
 	 * 거래 비밀번호 설정

@@ -8,9 +8,12 @@ public interface MemberService {
 	
 	void insertMember(MemberVO memberVO);
 	void updateMember(MemberVO memberVO);
+	void deleteMember(MemberVO memberVO);
 	void registerPwd(Map<String, String> pwdMap);
 	MemberVO selectMember(MemberVO memberVO);
 	MemberVO checkLogin(MemberVO inputMemberVO);
+	
+	
 	
 	
 //	List<ReplyVO> selectReplyList (int boardNo);

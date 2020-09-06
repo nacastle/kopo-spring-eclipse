@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-    
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 	<jsp:include page="/WEB-INF/jsp/include/lib/topLibs.jsp"></jsp:include>
 <title>하피 - 모두를 위한 경매</title>
     <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/navbar-fixed/navbar-top-fixed.css" rel="stylesheet">
@@ -99,6 +97,7 @@ body {
 }
 
  
+ 
  .na-content {
  margin: 1rem 1rem;
 /*  text-align: center; */
@@ -106,55 +105,12 @@ body {
  
  }
  
- table {
- 	font-size: 0.9rem;
- 	width: 100%;
-/*  	border: 1 solid rgb(158, 158, 158); */
-/* 	border-collapse: unset; */
-/* 	border-top: 0.1rem solid rgb(224, 224, 224); */
-/* 	margin-bottom: 1rem; */
- 	border-collapse: unset; 
-	
- 
- }
  
  .ttitle {
 /*      margin-left: 4%; */
      font-weight: bold;
  }
  
- 
- table th {
-	width: 30%;
-	height: 2rem;
-/* 	padding-left: 3%; */
-	text-align: center;
-	vertical-align: middle;
- 	padding: 0.1rem;
-/*  	border: 0; */
- 	background: rgb(127, 127, 127); 
- 	color: white; 
-}
- table td {
-/* 	width: 73%; */
-	height: 2rem;
-/*   	padding-left: 3%;   */
-	padding-right: 1rem;
-	text-align: right;
-	vertical-align: middle;
-/*  	padding: 0.1rem; */
-/*  	padding-left: 0.5rem; */
-/*  	border-bottom: 0.1rem solid rgb(224, 224, 224); */
-/*  	border: 0; */
-/* 	background: rgb(224, 224, 224); */
-}
-
-/* 
-table th img {
-	max-width: 100%;
-	max-height: 100%;
-} */
-
   hr { width: 90vw  }   
  
  label { margin: 0; }
@@ -180,6 +136,27 @@ input[type="datetime-local"]:valid::before {
 	content: "" !important;
 }
 
+table {
+width: 100%;
+}
+
+tr {
+	border: 0.1rem solid rgb(190, 190, 190);
+	border-left: 0;
+    border-right: 0;
+}
+
+th {
+	padding-left: 1rem;
+	height: 5rem;
+	
+}
+
+td {
+ text-align: right;
+ padding-right: 1rem;
+}
+
 
 </style>
 </head>
@@ -192,75 +169,33 @@ input[type="datetime-local"]:valid::before {
       
       	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
       			<a style="float: right; font-weight: bold; font-size: 1.25rem; color:black;margin-top: -0.3rem;"
-      			href="${pageContext.request.contextPath}/myModify">수정</a>
+      			href="${pageContext.request.contextPath}/myAccountMng">관리</a>
 		</div>
     </nav>
-
-
-
-	<div class="na-content" style="    margin-bottom: 1.6rem;">
-
-		<div style="float: left; font-weight: bold;">
-
-			<i class="fa fa-user-circle fa-4x" style="float: left;"
-				aria-hidden="true"></i>
-			<div style="float: left; text-align: center; margin-left: 0.4rem; margin-top: 0.5rem;">
-				${memberVO.name }<br> (${memberVO.nickname})
-			</div>
-		</div>
-
-		<div style="float: right; text-align: center;   margin-top: 0.4rem;">
-			경매지수<br> <i class="fa fa-star" aria-hidden="true"></i> 4.5 / 5.0
-		</div>
-	</div>
-
-
-		<table class="table-hover">
-			<tr>
-				<th>이름</th>
-				<td>${memberVO.name }</td>
-			</tr>
-			<tr>
-				<th>생년월일</th>
-				<c:set value="${memberVO.resNo }" var="resNo"></c:set>
-				<c:set value="${fn:substring(resNo,0,1) }" var="year"></c:set>
-				<c:choose>
-				<c:when test="${year == 0 } ">
-				<td>20${fn:substring(resNo,0,2) }.${fn:substring(resNo,2,4) }.${fn:substring(resNo,4,6) } </td>
-				</c:when>
-				<c:otherwise>
-				<td>19${fn:substring(resNo,0,2) }.${fn:substring(resNo,2,4) }.${fn:substring(resNo,4,6) } </td>
-				</c:otherwise>
-				</c:choose>
-			</tr>
-			<tr>
-				<th>성별</th>
-				<c:choose>
-					<c:when test="${memberVO.sex == 1 or  memberVO.sex == 3}">
-						<td>남</td>
-					</c:when>
-					<c:otherwise>
-						<td>여</td>
-					</c:otherwise>
-				</c:choose>
-			</tr>
-			<tr>
-			<c:set value="${memberVO.phone }" var="phone"></c:set>
-				<th>핸드폰 번호</th>
-				<td>
-					${fn:substring(phone,0,3)}-${fn:substring(phone,3,7)}-${fn:substring(phone,7,11)} 
-				</td>
-			</tr>
-			<tr>
-				<th>배송지</th>
-				<td><div>${memberVO.address1 }</div><div>${memberVO.address2 }</div></td>
-			</tr>
-		
-		</table>
-
-
     
-	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;">
+
+<div class="na-content">
+
+	<div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem; ">${memberVO.name } 님의 계좌</div>
+
+	<table class="table-hover">
+		<c:forEach items="${mAccountList }" var="mAccount">
+		<tr>
+			<th>
+				<div>${mAccount.bank }은행</div>
+				<div>${mAccount.accountNo }</div>
+			</th>
+			
+			<td>
+				<div>${mAccount.balance } 원</div>
+			</td>
+		</tr>
+		</c:forEach>
+	</table>
+
+</div>
+
+<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;">
 
 		<a class="p-2 " href="${pageContext.request.contextPath}/hot"><div><i class="fa fa-home fa-lg"></i></div> 홈</a> 
 		<a class="p-2" href="${pageContext.request.contextPath}/goodsCategory" ><div><i class="fa fa-bars fa-lg"></i></div> 카테고리</a>
@@ -290,6 +225,5 @@ input[type="datetime-local"]:valid::before {
 		});
   
   </script>    
-
 </body>
 </html>

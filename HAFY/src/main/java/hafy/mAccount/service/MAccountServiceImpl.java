@@ -18,12 +18,19 @@ public class MAccountServiceImpl implements MAccountService{
 	
 	
 	@Override
+	public void deleteMAccount(String accountNo) {
+		// TODO Auto-generated method stub
+		mAccountDAO.deleteMAccount(accountNo);
+		
+	}
+
+
+	@Override
 	public void bidMoney(Map<String, Object> bidInfo) {
 		// TODO Auto-generated method stub
 		mAccountDAO.bidMoney(bidInfo);
 		
 	}
-
 
 
 	@Override

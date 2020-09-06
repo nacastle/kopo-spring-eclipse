@@ -1,15 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-    
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 	<jsp:include page="/WEB-INF/jsp/include/lib/topLibs.jsp"></jsp:include>
 <title>하피 - 모두를 위한 경매</title>
     <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/navbar-fixed/navbar-top-fixed.css" rel="stylesheet">
+
+</head>
     <style type="text/css">
 a {
 	text-decoration: none !important;
@@ -72,9 +70,6 @@ body {
 	left: 50%;
 	opacity: 1;
 }
-/* nav div a:nth-child(3).on ~ span {	left: 200px; opacity: 1;} */
-/* nav div a:nth-child(4).on ~ span {	left: 300px; opacity: 1;} */
-/* nav div a:nth-child(5).on ~ span {	left: 400px; opacity: 1;} */
 
 .na-nav2 {
 	height: 3rem;
@@ -109,10 +104,6 @@ body {
  table {
  	font-size: 0.9rem;
  	width: 100%;
-/*  	border: 1 solid rgb(158, 158, 158); */
-/* 	border-collapse: unset; */
-/* 	border-top: 0.1rem solid rgb(224, 224, 224); */
-/* 	margin-bottom: 1rem; */
  	border-collapse: unset; 
 	
  
@@ -142,28 +133,13 @@ body {
 	padding-right: 1rem;
 	text-align: right;
 	vertical-align: middle;
-/*  	padding: 0.1rem; */
-/*  	padding-left: 0.5rem; */
-/*  	border-bottom: 0.1rem solid rgb(224, 224, 224); */
-/*  	border: 0; */
-/* 	background: rgb(224, 224, 224); */
 }
 
-/* 
-table th img {
-	max-width: 100%;
-	max-height: 100%;
-} */
 
   hr { width: 90vw  }   
  
  label { margin: 0; }
  
-/*  input[type="date"]:not(.has-value):before{ */
-/*   color: lightgray; */
-/*   content: attr(placeholder); */
-/* } */
-
 input[type="datetime-local"]::before {
 	color: #999999;
 	content: attr(placeholder);
@@ -180,6 +156,10 @@ input[type="datetime-local"]:valid::before {
 	content: "" !important;
 }
 
+input {
+/* text-align: right; */
+}
+
 
 </style>
 </head>
@@ -191,74 +171,30 @@ input[type="datetime-local"]:valid::before {
   	 	</div>
       
       	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      			<a style="float: right; font-weight: bold; font-size: 1.25rem; color:black;margin-top: -0.3rem;"
-      			href="${pageContext.request.contextPath}/myModify">수정</a>
+      		<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
 		</div>
     </nav>
-
-
-
-	<div class="na-content" style="    margin-bottom: 1.6rem;">
-
-		<div style="float: left; font-weight: bold;">
-
-			<i class="fa fa-user-circle fa-4x" style="float: left;"
-				aria-hidden="true"></i>
-			<div style="float: left; text-align: center; margin-left: 0.4rem; margin-top: 0.5rem;">
-				${memberVO.name }<br> (${memberVO.nickname})
-			</div>
-		</div>
-
-		<div style="float: right; text-align: center;   margin-top: 0.4rem;">
-			경매지수<br> <i class="fa fa-star" aria-hidden="true"></i> 4.5 / 5.0
-		</div>
-	</div>
-
-
-		<table class="table-hover">
-			<tr>
-				<th>이름</th>
-				<td>${memberVO.name }</td>
-			</tr>
-			<tr>
-				<th>생년월일</th>
-				<c:set value="${memberVO.resNo }" var="resNo"></c:set>
-				<c:set value="${fn:substring(resNo,0,1) }" var="year"></c:set>
-				<c:choose>
-				<c:when test="${year == 0 } ">
-				<td>20${fn:substring(resNo,0,2) }.${fn:substring(resNo,2,4) }.${fn:substring(resNo,4,6) } </td>
-				</c:when>
-				<c:otherwise>
-				<td>19${fn:substring(resNo,0,2) }.${fn:substring(resNo,2,4) }.${fn:substring(resNo,4,6) } </td>
-				</c:otherwise>
-				</c:choose>
-			</tr>
-			<tr>
-				<th>성별</th>
-				<c:choose>
-					<c:when test="${memberVO.sex == 1 or  memberVO.sex == 3}">
-						<td>남</td>
-					</c:when>
-					<c:otherwise>
-						<td>여</td>
-					</c:otherwise>
-				</c:choose>
-			</tr>
-			<tr>
-			<c:set value="${memberVO.phone }" var="phone"></c:set>
-				<th>핸드폰 번호</th>
-				<td>
-					${fn:substring(phone,0,3)}-${fn:substring(phone,3,7)}-${fn:substring(phone,7,11)} 
-				</td>
-			</tr>
-			<tr>
-				<th>배송지</th>
-				<td><div>${memberVO.address1 }</div><div>${memberVO.address2 }</div></td>
-			</tr>
-		
-		</table>
-
-
+    
+    <div class="na-content">
+    <div>
+    	<div style="margin-bottom: 0.5rem;">비밀번호를 입력해주세요.</div>
+    	<input type="password" class="form-control" style="margin-bottom: 0.5rem;" id="tranzPwd" onkeypress="inputAgain()">
+    	<div>
+    		<button class="btn btn-primary" style="margin-bottom: 2rem; float: right; background: #177e6a; border: #177e6a;" 
+    		onclick="submitPwd()">제출</button>
+    	</div>
+<!--     	<input type="submit" class="form-control" value="제출" onclick="submitPwd()"> -->
+    </div>
+    
+    <div id="errorMsg" style="color:red; display: none;">비밀번호가 틀렸습니다.</div>
+    
+    <div id="confirmMsg" style="display:none; margin-top:5rem; text-align: center;">
+    	<div style="margin-bottom: 0.5rem; text-align: left;">정말 계정을 삭제하시겠습니까?</div>
+    	<button class="btn btn-outline-success" onclick="cancelSignOut()">더 사용해볼래요</button>&nbsp;&nbsp;
+    	<button class="btn btn-outline-danger" onclick="confirmSignOut()">네, 삭제할게요</button>
+    </div>
+    </div>
+    
     
 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;">
 
@@ -270,16 +206,54 @@ input[type="datetime-local"]:valid::before {
 
     </nav>
 
-
-
-
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
-      <script type="text/javascript">
-      
-      function goMyInfo() {
-    	  location.href = "${pageContext.request.contextPath}/myInfo"
-		
+     <script type="text/javascript">
+     
+     function inputAgain() {
+			$("#errorMsg").hide()
 	}
+     
+      function submitPwd() {
+    		var inputPwd = $("#tranzPwd").val()
+    		
+//     	  console.log(inputPwd)
+			$.ajax({
+				url: "${pageContext.request.contextPath}/checkPwd",
+				type: 'post',
+				data: {
+					'inputPwd' : inputPwd
+				},
+				success: function(data) {
+					console.log(data)
+					if (data == '"correct"') {
+						$("#tranzPwd").prop("disabled", true);
+						$("#confirmMsg").show()
+					} else {
+						$("#errorMsg").show()
+					}
+				}
+				
+			})
+	}
+      
+      function cancelSignOut() {
+    	  location.href = "${pageContext.request.contextPath}/myPage"
+	}
+      
+      function confirmSignOut() {
+    	  $.ajax({
+				url: "${pageContext.request.contextPath}/confirmSignOut",
+				success: function() {
+					console.log("성공")
+					location.href = "${pageContext.request.contextPath}/login"
+				},
+				error: function() {
+					console.log("실패")
+				} 
+			})
+	}
+      
+      
 	  $('.na-nav a').on('click',function(){
 		 $(this).addClass('top-on');
 		 $(this).siblings().removeClass('top-on');
@@ -290,6 +264,5 @@ input[type="datetime-local"]:valid::before {
 		});
   
   </script>    
-
 </body>
 </html>

@@ -18,6 +18,13 @@ public class MAccountDAOImpl implements MAccountDAO{
 	
 	
 	@Override
+	public void deleteMAccount(String accountNo) {
+		// TODO Auto-generated method stub
+		sqlSession.delete("mAccount.dao.MAccountDAO.deleteMAccount", accountNo);
+		
+	}
+
+	@Override
 	public void bidMoney(Map<String, Object> bidInfo) {
 		// TODO Auto-generated method stub
 		sqlSession.update("mAccount.dao.MAccountDAO.withdrawMAccount", bidInfo);

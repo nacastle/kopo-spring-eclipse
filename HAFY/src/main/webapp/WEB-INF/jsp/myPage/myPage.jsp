@@ -8,7 +8,7 @@
 	<jsp:include page="/WEB-INF/jsp/include/lib/topLibs.jsp"></jsp:include>
 <title>하피 - 모두를 위한 경매</title>
     <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/navbar-fixed/navbar-top-fixed.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" /> -->
 <style type="text/css">
 a {
 	text-decoration: none !important;
@@ -192,11 +192,6 @@ input[type="datetime-local"]:valid::before {
 	content: "" !important;
 }
 
-.modal {
-	padding : 0;
-}
-
-
 .yn {
  	width: 50%; 
 /* 	border: 0.1rem solid rgb(224, 224, 224); */
@@ -206,6 +201,8 @@ input[type="datetime-local"]:valid::before {
 	height: 2.4rem;
 /* 	float: left; */
 }
+
+
 
 </style>
 
@@ -244,27 +241,6 @@ input[type="datetime-local"]:valid::before {
 			경매지수<br> <i class="fa fa-star" aria-hidden="true"></i> 4.5 / 5.0
 		</div>
 	</div>
-	
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin:15px; padding:15px;">
-  모달창 연습
-</button>
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal 제목</h4>
-      </div>
-      <div class="modal-body">
-        Modal 내용
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-      </div>
-    </div>
-  </div></div>
-  
 
 	<div style="margin-top: 1rem;">
 
@@ -294,81 +270,54 @@ input[type="datetime-local"]:valid::before {
 		<div class="ttitle">회원</div>
 		<table class="table-hover">
 			<tr onclick="goMyInfo()">
-				<td>회원정보 보기</td>
+				<td>회원정보</td>
 			</tr>
-			<tr onclick="goMyModify()">
-				<td>회원정보 수정</td>
+			<tr onclick="goChangePwd()">
+				<td>비밀번호 변경</td>
 			</tr>
-			<tr>
+<!-- 			<tr onclick="goMyModify()"> -->
+<!-- 				<td>회원정보 수정</td> -->
+<!-- 			</tr> -->
+			<tr onclick="goSignOut()">
 				<td>회원탈퇴</td>
 			</tr>
 			<tr>
-				<td data-toggle="modal" data-target="#myModal">로그아웃</td>
+				<td id="openLogoutModal" data-toggle="modal" data-target="#myModal">로그아웃</td>
 			</tr>
 		</table>
+
 		
-		<!-- 로그아웃 모달창 -->
-		                <!-- 모달 창 -->  
+<!-- 로그아웃 모달창 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 10rem;">
+   <div class="modal-dialog"><!--  큰창:<div class="modal-dialog modal-lg"> 작은창 :<div class="modal-dialog modal-sm">  -->
+      <div class="modal-content">
+         <div class="modal-body" style="text-align: center; margin: 1rem;">
+            정말 로그아웃 하시겠습니까?
+         </div>
+        
+         <div class="modal-footer" style="border-top:0; padding:0; ">
+          		<table style="margin-bottom: 0;">
+			<tr>
+				<td class="yn" id="yes" onclick="yes()" data-dismiss="modal" style="border-right: 0.1rem solid rgb(224, 224, 224);">예</td>
+				<td class="yn" id="no" data-dismiss="modal" onclick="no()">아니오</td>
+			</tr>
+		</table>
+         </div>
+      </div>
+   </div>
+</div>
 		                
-		                <div class="modal fade" id="myModal">
-<!--   <div class="modal-dialog"> -->
-<!--     <div class="modal-content"> -->
-<!--       <div class="modal-header"></div> -->
-<!--       <div class="modal-body" onclick="no()" id="no"> -->
-<!--         Hello! Webisfree.com -->
-<!--       </div> -->
-<!--       <a href="#close-modal" rel="modal:close" class="close-modal ">Close</a> -->
-<!--     </div> -->
-<!--   </div> -->
-<!-- </div> -->
-
-
-
-
-
-
-<!--      <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" -->
-<!--      		style="height: 25%;"> -->
-<!--       <div class="modal-dialog" role="document"> -->
-<!--          <div class="modal-content" style="text-align: center;"> -->
-<!--             <div class="modal-header"> -->
-<!--                <h6 class="modal-title" id="exampleModalLabel"><strong>추가 상담 예약</strong></h6> -->
-<!--                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
-<!--                <button class="close" type="button" data-dismiss="modal" aria-label="Close"> </button> -->
-<!--             </div> -->
-<!--             <div class="modal-body" id="no" onclick="no()">예약하실 날짜를 선택해주세요</div> -->
-<!--             <input type="datetime-local" name="date" style="align-self: center ;width: 20rem" value="reserveDate" > -->
-<!--             <hr>     -->
-<!--             <div style="text-align: center; margin-bottom: 1.8rem;"> -->
-<!--                 <input type="submit" id="enrollmentBtn" class="btn btn-outline-light text-dark" value="접수" style="width: 20%;  align:center;"> -->
-<!--                 <input type="button" onclick="closeModal()" class="btn btn-outline-light text-dark" value="취소" style="width: 20%;  align:center;"> -->
-<!--             </div> -->
-<!--          </div> -->
-<!--         </div> -->
-<!--         </div> -->
-       
-       
-<!-- 	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" -->
-<!-- 		aria-labelledby="myModalLabel" aria-hidden="true" -->
-<!-- 		style="height: 25%; text-align: center; font-size: 1rem;"> -->
-<!-- 		<div style="margin: 1.4rem 0;">정말 로그아웃 하시겠습니까?</div> -->
-<!-- 		<table > -->
-<!-- 			<tr> -->
-<!-- 				<td class="yn" id="yes" onclick="yes()" style="border-right: 0.1rem solid rgb(224, 224, 224);">예</td> -->
-<!-- 				<td class="yn" id="no" onclick="no()">아니오</td> -->
-<!-- 			</tr> -->
-<!-- 		</table> -->
-<!-- 	</div> -->
 
 		<div class="ttitle">계좌</div>
 		<table class="table-hover">
-			<tr>
-				<td>내 계좌 보기</td>
+			<tr onclick="goMyAccount()">
+				<td>내 계좌</td>
 			</tr>
-			<tr>
+			<tr onclick="goRegisterMAccount()">
 				<td>계좌 등록</td>
 			</tr>
-			<tr>
+			<tr onclick="goMngAccount()">
 				<td>내 계좌 삭제</td>
 			</tr>
 		</table>
@@ -387,38 +336,53 @@ input[type="datetime-local"]:valid::before {
     </nav>
 
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script> -->
       <script type="text/javascript">
       
+      function goRegisterMAccount() {
+    	  location.href = "${pageContext.request.contextPath}/addRegisterAccForm"
+		
+	}
+      function goMngAccount() {
+    	  location.href = "${pageContext.request.contextPath}/myAccountMng"
+		
+	}
+      function goMyAccount() {
+    	  location.href = "${pageContext.request.contextPath}/myAccount"
+		
+	}
+      function goSignOut() {
+    	  location.href = "${pageContext.request.contextPath}/signOut"
+		
+	}
+      function goChangePwd() {
+    	  location.href = "${pageContext.request.contextPath}/changePwd"
+		
+	}
       
-// //   $(".close-modal").hide()
-      
-//    $('#openLogoutModal').click(function(e){
-//    e.preventDefault(); 
-// //   $('#logoutModal').modal("show");
-//   $('#myModal').modal("show");
-//   $(".fade").css("opacity",1)
-// });
+   $('#openLogoutModal').click(function(){
+	  	$("#yes").css("background","white")
+	  	$("#no").css("background","white")
+});
    
-//    function yes() {
-// 	  	$("#yes").css("background","rgb(224, 224, 224)")
-	   
-// 		$('.modal').modal("hide");
-// }
+   function yes() {
+	  	$("#yes").css("background","rgb(224, 224, 224)")
+		$.ajax({
+			url: "${pageContext.request.contextPath}/logout",
+			type: 'post',
+			success: function() {
+				location.href= "${pageContext.request.contextPath}/login"
+				
+			},
+			error: function() {
+			}
+		})
+}
    
-//    function no() {
-// 	  	$("#no").css("background","rgb(224, 224, 224)")
-// // 	  	 $("#modal").fadeOut(300);
-// // 		$('.modal').modal("hide");
-// 		$('#myModal').modal("hide");
-// }
-// //    function closeModal() {
-// // 	   $(".modal").modal("hide")
-// // 	}
+   function no() {
+	  	$("#no").css("background","rgb(224, 224, 224)")
+}
       
-// //       function openLogoutModal() {
-// //     	  $("#logoutModal").modal("show")
-// // 	}
       
       function goMyInfo() {
     	  location.href = "${pageContext.request.contextPath}/myInfo"

@@ -17,8 +17,16 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="signUp"/>
+		<item key="selection" value="content"/>
 		<list key="findhistory">
+			<item value="content"/>
+			<item value="change"/>
+			<item value="confirmMsg"/>
+			<item value="입력받은"/>
+			<item value="x"/>
+			<item value="close-modal"/>
+			<item value="openLogoutModal"/>
+			<item value="&lt;"/>
 			<item value="signUp"/>
 			<item value="sign"/>
 			<item value="sub"/>
@@ -26,14 +34,6 @@
 			<item value="주소지"/>
 			<item value="수정"/>
 			<item value="완료"/>
-			<item value="input"/>
-			<item value="Address1"/>
-			<item value="ㅇ"/>
-			<item value="오"/>
-			<item value="&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;"/>
-			<item value="ttitle"/>
-			<item value="ttile"/>
-			<item value="table td"/>
 		</list>
 		<list key="replacehistory">
 			<item value="tranzDate"/>

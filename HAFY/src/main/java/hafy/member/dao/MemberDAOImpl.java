@@ -20,6 +20,13 @@ public class MemberDAOImpl implements MemberDAO {
 	
 
 	@Override
+	public void deleteMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		sqlSession.delete("member.dao.MemberDAO.deleteMember",memberVO);
+		
+	}
+
+	@Override
 	public MemberVO checkLogin(MemberVO inputMemberVO) {
 		// TODO Auto-generated method stub
 		MemberVO memberVO = sqlSession.selectOne("member.dao.MemberDAO.checkLogin",inputMemberVO);
