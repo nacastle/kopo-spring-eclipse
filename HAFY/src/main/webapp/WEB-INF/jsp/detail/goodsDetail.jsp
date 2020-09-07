@@ -178,6 +178,10 @@ table th img {
 /*  text-align: center; */
 /*  } */
 
+.bx-viewport {
+height: 16rem!important;
+}
+
 </style>
 
 </head>

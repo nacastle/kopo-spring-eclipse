@@ -7,6 +7,8 @@
 	<jsp:include page="/WEB-INF/jsp/include/lib/topLibs.jsp"></jsp:include>
 <title>하피 - 모두를 위한 경매</title>
     <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/navbar-fixed/navbar-top-fixed.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/sticky-footer/sticky-footer.css" rel="stylesheet">
+    
 <style type="text/css">
 a {
 	text-decoration: none !important;
@@ -170,7 +172,7 @@ table th img {
 			style="margin-top: 0.5rem; margin-right: -1rem;">
 			<%-- 				<a class="p-2 bottom-on" href="${pageContext.request.contextPath}/hot"><div><i class="fa fa-home fa-lg"></i></div> 홈</a>  --%>
 			<a href="${pageContext.request.contextPath}/hot"
-				style="float: right; color: black;"><i class="fa fa-home fa-lg"
+				style="float: right; color: black;"><i class="fa fa-home fa-lg" style="font-size: 2rem;"
 				aria-hidden="true"></i></a>
 			<!--       			&nbsp;&nbsp;&nbsp; -->
 			<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
@@ -185,23 +187,22 @@ table th img {
               <img style="width: 8rem; margin-top: 3rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
               <div style="margin-bottom:0rem; font-size: 1.6rem;">	
               ${bidMoney } 원으로<br>
-              	입찰합니다.<br><br>
-              <div style="font-size: 1rem;">
+              	입찰합니다.<br>
+              <div style="font-size: 1rem; margin-top: 1rem;">
               ${bidBank }<br> 
               ${bidAccountNo }<br>
               </div>
               
                </div>
-               
-		<div style="width: 100%; text-align: center;">
-			<button type="button" class="btn btn-success" onclick="goPwdInput(${aucNo})"
-				style="background: rgb(22, 160, 133); font-weight: bold; width: 35%; margin-top: 1.2rem;">입찰하기</button>
-		</div>
-
-
-
 
 	</div>
+	
+	<footer class="footer" style="text-align: center; bottom: 2rem; background: none">
+<!-- 		<div style="width: 100%; text-align: center;"> -->
+			<button type="button" class="btn btn-success" onclick="goPwdInput(${aucNo})"
+				style="background: rgb(22, 160, 133); font-weight: bold; width: 35%;">입찰하기</button>
+<!-- 		</div> -->
+	</footer>
 
 
 

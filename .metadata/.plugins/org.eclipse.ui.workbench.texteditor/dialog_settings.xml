@@ -17,23 +17,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="content"/>
+		<item key="selection" value="code"/>
 		<list key="findhistory">
-			<item value="content"/>
-			<item value="change"/>
-			<item value="confirmMsg"/>
-			<item value="입력받은"/>
-			<item value="x"/>
-			<item value="close-modal"/>
-			<item value="openLogoutModal"/>
-			<item value="&lt;"/>
-			<item value="signUp"/>
-			<item value="sign"/>
-			<item value="sub"/>
-			<item value="주소"/>
-			<item value="주소지"/>
-			<item value="수정"/>
-			<item value="완료"/>
+			<item value="code"/>
+			<item value="goodsCate"/>
+			<item value="auc"/>
+			<item value="cate"/>
+			<item value="{"/>
+			<item value="goCategory"/>
+			<item value="인기추처"/>
+			<item value="인기"/>
+			<item value="hot"/>
+			<item value="home"/>
+			<item value="footer"/>
+			<item value="bx-view"/>
+			<item value="selectATranzByAucNo"/>
+			<item value="List"/>
+			<item value="conten"/>
 		</list>
 		<list key="replacehistory">
 			<item value="tranzDate"/>

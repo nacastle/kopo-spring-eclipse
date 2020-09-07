@@ -248,12 +248,12 @@ table th img {
 		</table>
 		
 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm "
-		style="display: unset; background: white; padding: .6rem 1rem; text-align: center;">
+		style="display: unset; background: white; padding:0; padding-top:0.2rem; text-align: center;">
 
 <!-- 		<button type="button" class="btn btn-warning btn-sm" -->
 <!-- 			style="font-weight: bold; width: 45%;">출금</button> -->
 <!-- 		&nbsp;&nbsp;&nbsp;&nbsp; -->
-		<button type="button" class="btn btn-success btn-sm" onclick="goBid()"
+		<button type="button" class="btn btn-success" onclick="goBid()"
 			style="background: rgb(22, 160, 133); font-weight: bold; width: 45%;">입찰</button>
 	</nav>
 

@@ -135,8 +135,8 @@ background: rgb(190, 190, 190);
 
    <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem;">
    		<div style="float: left;">
-    	  <a href="#" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
-    	  <a  href="#" style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">내 경매</a>
+<!--     	  <a href="#" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a> -->
+    	  <span   style="font-size: 1.25rem; position:relative; top:0.2rem; font-weight: bold; color:black;">내 경매</span>
   	 	</div>
   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>
@@ -172,7 +172,15 @@ background: rgb(190, 190, 190);
 				<td>
 					<div style="font-weight: bold; font-size: 1rem;">${bid.value.name }</div>
 					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: ${bid.value.endDate }</div>
-					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${bid.value.winningBid } 원</div>
+<%-- 					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${bid.value.winningBid } 원</div> --%>
+					<c:choose>
+						<c:when test="${bid.value.winningBid == 0}">
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${bid.value.startPrice } 원</div>
+						</c:when>
+						<c:otherwise>
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${bid.value.winningBid } 원</div>
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 			</c:forEach>
@@ -194,7 +202,15 @@ background: rgb(190, 190, 190);
 				<td>
 					<div style="font-weight: bold; font-size: 1rem;">${display.value.name }</div>
 					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: ${display.value.endDate }</div>
-					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${display.value.winningBid } 원</div>
+<%-- 					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${display.value.winningBid } 원</div> --%>
+					<c:choose>
+						<c:when test="${display.value.winningBid == 0}">
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${display.value.startPrice } 원</div>
+						</c:when>
+						<c:otherwise>
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${display.value.winningBid } 원</div>
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 			</c:forEach>
@@ -212,7 +228,7 @@ background: rgb(190, 190, 190);
 		<a class="p-2" href="${pageContext.request.contextPath}/goodsCategory" ><div><i class="fa fa-bars fa-lg"></i></div> 카테고리</a>
 		<a class="p-2 bottom-on" href="${pageContext.request.contextPath}/myAuction" ><div><i class="fa fa-hourglass-half fa-lg" aria-hidden="true"></i></div>내 경매</a>
 		<a class="p-2" href="${pageContext.request.contextPath}/displayForm" ><div><i class="fa fa-arrow-circle-up fa-lg"></i></div>출품하기</a> 
-		<a class="p-2" href="${pageContext.request.contextPath}/myPage" ><div><i class="fa fa-user fa-lg"></i></div>MY</a> 
+		<a class="p-2 " href="${pageContext.request.contextPath}/myPage" ><div><i class="fa fa-user fa-lg"></i></div>MY</a> 
 
     </nav>
 
@@ -245,7 +261,7 @@ background: rgb(190, 190, 190);
 	}
     
     function goDetail(aucNo) {
-  	  location.href= "${pageContext.request.contextPath}/myAuction/goodsDetail/"+ aucNo;
+  	  location.href= "${pageContext.request.contextPath}/goodsDetail/"+ aucNo;
   }
     
 	  $('.na-nav a').on('click',function(){

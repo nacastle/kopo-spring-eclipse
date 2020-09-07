@@ -1,5 +1,6 @@
 package hafy.aucGoods.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,10 @@ public interface AucGoodsDAO {
 	void deleteLike(LikeVO likeVO);
 	LikeVO selectIsLike(LikeVO likeVO);
 	List<CodeVO> selectGoodsCategory(String codeCategory);
+	List<LikeVO> selectLikeList(MemberVO memberVO);
+	List<AucGoodsVO> selectSpecificCategory(String category);
+	CodeVO selectCodeVO(String category);
+	List<AucGoodsVO> selectAucSearchWord(String searchWord);
 	
 
 }

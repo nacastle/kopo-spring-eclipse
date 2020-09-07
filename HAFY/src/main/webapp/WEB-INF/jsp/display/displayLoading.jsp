@@ -184,7 +184,7 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
     </nav>
 
 <div id="page-loading">
-	<div>출품중</div>
+<!-- 	<div>출품중</div> -->
     <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom" style="color: orange;"></i>    
 </div>
 

@@ -1,5 +1,6 @@
 package hafy.bid.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -42,7 +43,8 @@ public class BidDAOImpl implements BidDAO {
 	@Override
 	public List<ATranzVO> selectATranzByAucNo(int aucNo) {
 		// TODO Auto-generated method stub
-		List<ATranzVO> aTranzList = sqlSession.selectList("bid.dao.BidDAO.selectATranzByAucNo",aucNo);
+		List<ATranzVO> aTranzList = new ArrayList<ATranzVO>(); 
+		aTranzList = sqlSession.selectList("bid.dao.BidDAO.selectATranzByAucNo",aucNo);
 		
 		return aTranzList;
 	}

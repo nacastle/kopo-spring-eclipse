@@ -252,7 +252,7 @@ input[type="datetime-local"]:valid::before {
 			<tr>
 				<td>판매내역</td>
 			</tr>
-			<tr>
+			<tr onclick="goLikeList()">
 				<td>관심경매</td>
 			</tr>
 		</table>
@@ -339,6 +339,10 @@ input[type="datetime-local"]:valid::before {
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script> -->
       <script type="text/javascript">
       
+      function goLikeList() {
+    	  location.href = "${pageContext.request.contextPath}/likeAuction"
+		
+	}
       function goRegisterMAccount() {
     	  location.href = "${pageContext.request.contextPath}/addRegisterAccForm"
 		

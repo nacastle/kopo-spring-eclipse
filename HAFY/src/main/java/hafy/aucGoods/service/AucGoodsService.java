@@ -1,5 +1,6 @@
 package hafy.aucGoods.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public interface AucGoodsService {
 	void insertGoodsPhoto(GoodsPhotoVO goodsPhotoVO);
 	AucGoodsVO selectAucGoodsByNo(int aucNo);
 	Map<String, AucGoodsVO> selectAllAuc();
+	Map<String, AucGoodsVO> selectSpecificCategory(String category);
 	Map<AucGoodsVO, List<GoodsPhotoVO>> selectAucByNo(int aucNo);
 	void incrementLikeCnt(int aucNo);
 	void decrementLikeCnt(int aucNo);
@@ -25,5 +27,7 @@ public interface AucGoodsService {
 	LikeVO selectIsLike(LikeVO likeVO);
 	Map<String, AucGoodsVO> selectBidMap(MemberVO memberVO);
 	Map<String, AucGoodsVO> selectDisplayMap(MemberVO memberVO);
-
+	Map<String, AucGoodsVO> selectLikeMap(MemberVO memberVO);
+	CodeVO selectCodeVO(String category);
+	Map<String, AucGoodsVO> selectAucSearchWord(String searchWord);
 }

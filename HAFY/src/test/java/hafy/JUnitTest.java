@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import hafy.aucGoods.dao.AucGoodsDAO;
+import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.bid.service.BidService;
 import hafy.bid.vo.AAccountVO;
@@ -27,9 +29,10 @@ public class JUnitTest {
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private BidService bidService;
-
 	@Autowired
 	private DataSource ds;
+	@Autowired
+	private AucGoodsDAO aucGoodsDAO;
 
 	@Ignore
 	@Test
@@ -37,6 +40,8 @@ public class JUnitTest {
 		System.out.println(ds);
 
 	}
+	
+	@Ignore
 	@Test
 	public void 회원이_입찰기록있는지_확인() throws Exception {
 		
@@ -45,6 +50,31 @@ public class JUnitTest {
 		System.out.println(isBid);
 		
 	}
+	
+	@Test
+	public void 검색테스트() {
+		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
+		aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectAucSearchWord","사진");
+		
+		for(AucGoodsVO a : aucList) {
+			System.out.println(a);
+		}
+	}
+	
+	@Ignore
+	@Test
+	public void 전체경매내용리스트불러오기() {
+//		List<AucGoodsVO> aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectAllAucContents");
+		
+		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>(); 
+		aucList = aucGoodsDAO.selectAllAucContents();
+		
+		for(AucGoodsVO a : aucList) {
+			System.out.println(a);
+		}
+		
+	}
+
 
 	@Ignore
 	@Test

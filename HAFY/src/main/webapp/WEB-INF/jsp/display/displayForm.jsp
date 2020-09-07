@@ -205,7 +205,7 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
 			<select class="selectpicker" name="category" title="카테고리">
 					<option>---------------------</option>
 				<c:forEach items="${goodsCategory }" var="category" begin="2">
-					<option>${category.codeName }</option>
+					<option value="${category.uriName }">${category.codeName }</option>
 				</c:forEach>
 			</select>
 			<hr>

@@ -17,7 +17,7 @@
 
 </head>
  <body class="text-center" style="background: #27b2a5;">
-    <form class="form-signin" action="${pageContext.request.contextPath}/loginProcess">
+    <form class="form-signin" action="${pageContext.request.contextPath}/login" method="post">
 <!--       <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
 <!--       <h1 class="h3 mb-3 font-weight-normal" style="color: white;">Welcome<br>H A F Y</h1> -->
 	<div style="padding-bottom: 1rem; color: white;">

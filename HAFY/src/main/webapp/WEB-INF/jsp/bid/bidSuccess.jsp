@@ -7,6 +7,8 @@
 	<jsp:include page="/WEB-INF/jsp/include/lib/topLibs.jsp"></jsp:include>
 <title>하피 - 모두를 위한 경매</title>
     <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/navbar-fixed/navbar-top-fixed.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/sticky-footer/sticky-footer.css" rel="stylesheet">
+    
 <style type="text/css">
 a {
 	text-decoration: none !important;
@@ -168,7 +170,9 @@ table th img {
   	 	</div>
   	 		<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
 <%-- 				<a class="p-2 bottom-on" href="${pageContext.request.contextPath}/hot"><div><i class="fa fa-home fa-lg"></i></div> 홈</a>  --%>
-      			<a href="${pageContext.request.contextPath}/hot" style="float: right; color:black;" ><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
+      			<a href="${pageContext.request.contextPath}/hot" style="float: right; color:black;" >
+      				<i class="fa fa-home fa-lg" aria-hidden="true" style="font-size: 2rem;"></i>
+      			</a>
 <!--       			&nbsp;&nbsp;&nbsp; -->
 <!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
 		</div>
@@ -190,16 +194,13 @@ table th img {
               되셨습니다.
               </div>
                </div>
-               
-		<div style="width: 100%; text-align: center;">
-			<button type="button" class="btn btn-success" onclick="goAAcount(${aucNo})"
-				style="background: rgb(22, 160, 133); font-weight: bold; margin-top: 1.2rem;">경매모임계좌 보러가기</button>
-		</div>
-
-
-
-
 	</div>
+	
+	<footer class="footer" style="text-align: center; bottom: 3rem; background: none">
+			<button type="button" class="btn btn-success" onclick="goAAcount(${aucNo})"
+				style="background: rgb(22, 160, 133); font-weight: bold;">경매모임계좌 보러가기</button>
+	</footer>
+	
 
 
 

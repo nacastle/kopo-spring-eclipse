@@ -140,43 +140,42 @@ background: rgb(190, 190, 190);
     	  	<i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
     	  </a>
   	 	</div>
-    	  <input type="text" id="searchWord" class="form-control" style="width: 70%; font-size:.9rem; background: rgb(248, 248, 248);"
-    	   placeholder="경매 제목, 번호, 내용 입력">
-    	   <div id="searchBtn" style="float: right;">찾기</div>
+    	  <input type="text" id="searchWord" class="form-control" style="width: 70%; font-size:.9rem; font-style:italic; background: rgb(248, 248, 248);"
+    	   placeholder="제목 혹은 내용을 입력하세요.">
+    	   <div id="searchBtn" style="float: right;">검색</div>
       
     </nav>
-    
-    <div id="test">
-    
-    </div>
-    
-<!--     <table class="table table-hover"> -->
-<!-- 		<tbody> -->
-		
-<%-- 		<c:forEach items="${aucMap}" var="auc"> --%>
-<%-- 			<tr onclick="goDetail(${auc.value.no})"> --%>
-<!-- 				<th scope="row"> -->
-<!-- 					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span> -->
-<%-- 					<img src="${pageContext.request.contextPath }/upload/${auc.key}"> --%>
 
-<!-- 				</th> -->
-<!-- 				<td> -->
-<%-- 					<div style="font-weight: bold; font-size: 1rem;">${auc.value.name }</div> --%>
-<%-- 					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: ${auc.value.endDate }</div> --%>
-<%-- 					<c:choose> --%>
-<%-- 						<c:when test="${auc.value.winningBid == 0}"> --%>
-<%-- 							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${auc.value.startPrice } 원</div> --%>
-<%-- 						</c:when> --%>
-<%-- 						<c:otherwise> --%>
-<%-- 							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${auc.value.winningBid } 원</div> --%>
-<%-- 						</c:otherwise> --%>
-<%-- 					</c:choose> --%>
-<!-- 				</td> -->
-<!-- 			</tr> -->
-<%-- 			</c:forEach> --%>
+	<div id="msg">
+		<div style="text-align: center;">
+			<img id="hafy" style="width: 8rem; margin-top: 5.4rem; margin-bottom: .5rem;"
+				src="${pageContext.request.contextPath}/resources/img/hafy.png">
+			<div id="inputMsg" style="color: rgb(200, 200, 200);">
+				<i>검색 키워드를 입력하세요. (ex. 키보드)</i>
+			</div>
+			<div id="noData" style="color: rgb(200, 200, 200); display: none;">
+				<i>검색 결과가 없습니다.</i>
+			</div>
+		</div>
+	</div>
+	
+<!-- 	<div id="noData" style="display: none;"> -->
+<!-- 		<div style="text-align: center;"> -->
+<!-- 			<img style="width: 8rem; margin-top: 5.4rem; margin-bottom: .5rem; " -->
+<%-- 				src="${pageContext.request.contextPath}/resources/img/hafy.png"> --%>
+<!-- 			<div style="color: rgb(200, 200, 200);"> -->
+<!-- 				<i>검색 결과가 없습니다.</i> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+	
+	
+
+	<table class="table table-hover" >
+		<tbody id="inputTbody">
 			
-<!-- 		</tbody> -->
-<!-- 	</table> -->
+		</tbody>
+	</table>
 
 <!-- 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;"> -->
 
@@ -188,12 +187,16 @@ background: rgb(190, 190, 190);
 
 <!--     </nav> -->
 
-
-
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
     <script type="text/javascript">
     
     $("#searchBtn").click(function() {
+    	
+    	$("#inputTbody").empty();
+    	$("#hafy").hide();
+    	$("#inputMsg").hide();
+    	
+    	
     	let searchWord = $("#searchWord").val()
     	console.log(searchWord);
 	    $.ajax({
@@ -201,9 +204,37 @@ background: rgb(190, 190, 190);
     		type : "get",
     		success : function(data) {
 				console.log("성공");
-				console.log(data);
-				$("#test").text(data)
+// 				console.log(data)
+				if (searchWord == '' || data == '{}' ) {
+					$("#hafy").show()
+					$("#noData").show()
+				} else {
 				
+					let map = JSON.parse(data);
+// 					console.log(map)
+
+	 				for (key in map ) {
+	 					console.log("firstPhoto:" + key + " / " + "value:" + map[key]['name']  )
+						
+	 					let str = "";
+	 					str += '<tr onclick="goDetail(' + map[key]["no"] + ')">';
+	 					str += 	'<th scope="row">';
+	 					str +=		'<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span>';
+						str += 		'<img src="${pageContext.request.contextPath }/upload/' + key + '">';
+						str +=	'</th>';
+						str += '<td>';
+						str += 		'<div style="font-weight: bold; font-size: 1rem;">'+ map[key]['name'] + '</div>';
+						str += 		'<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: '+ map[key]['endDate'] + '</div>';
+						if(map[key]['winningBid'] == 0) {
+							str += '<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ' + map[key]['startPrice'] + ' 원</div>';
+						} else {
+							str += '<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ' + map[key]['winningBid'] + ' 원</div>';
+						}
+						str +=	'</td>';
+						
+	 					$("#inputTbody").append(str);
+					}
+				}
 			},
 			
 			error : function() {

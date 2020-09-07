@@ -3,3 +3,19 @@
 body {
 	font-family: 하나;
 }
+
+.justify-content-end .fa-home {
+	font-size: 2rem;
+} 
+
+.bxslider li img {
+	margin: 0 auto!important;
+}
+
+.fixed-top {
+	z-index: 9999;
+}
+
+.bx-controls-direction a {
+	z-index: 9998!important;
+}

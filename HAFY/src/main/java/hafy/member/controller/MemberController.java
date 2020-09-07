@@ -13,10 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import hafy.member.service.MemberService;
 import hafy.member.vo.MemberVO;
 
+
+
+
+@SessionAttributes({ "memberVO" })	// addObject했을때 loginVO객체를 session공유영역에 등록 (여러개 들어올수있음...배열형태{}) 하지만 이방식은
+									// invalidate로 세션 삭제 안됨
 @Controller
 public class MemberController {
 
@@ -95,17 +102,33 @@ public class MemberController {
 		return "/myPage/signOut";
 	}
 
-	@RequestMapping("/loginProcess")
-	public String loginProcess(MemberVO inputMemberVO, HttpSession session) {
+	@PostMapping("/login")
+	public ModelAndView loginProcess(MemberVO inputMemberVO, HttpSession session) {
 
 		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
+		ModelAndView mav = new ModelAndView();
+		System.out.println("컨트롤러에서 멤버 받아오는지?"+memberVO);
 
 		if (memberVO == null) {
-			return "redirect:/login";
+			mav.setViewName("redirect:/login");
 		} else {
-			session.setAttribute("memberVO", memberVO);
-			return "redirect:/hot";
-		}
+			// 로그인 성공
+//			HttpSession session = request.getSession();
+				String dest = (String)session.getAttribute("dest");
+				System.out.println("멤버 컨트롤러에서 dest: " +dest);
+				if(dest == null) {
+					mav.setViewName("redirect:/hot");
+				} else {
+					mav.setViewName("redirect:" + dest);
+					session.removeAttribute(dest);
+					
+				}
+				mav.addObject("memberVO", memberVO);
+			}
+//			System.out.println("세션에 등록하나?");
+//			session.setAttribute("memberVO", memberVO);
+//			return "redirect:/hot";
+		return mav;
 	}
 
 	@RequestMapping("/login")
@@ -146,8 +169,6 @@ public class MemberController {
 
 		modMemberVO = memberService.selectMember(memberVO);
 
-//		System.out.println(modMemberVO);
-
 //		session.removeAttribute("memberVO");
 		session.setAttribute("memberVO", modMemberVO);
 
@@ -165,21 +186,11 @@ public class MemberController {
 		return "signUp/signUpForm";
 	}
 
-//	@PostMapping("/reply")
-//	public void addReply(ReplyVO replyVO) {
-//		System.out.println("/reply controller 호출...");
-//		System.out.println(replyVO);
-//		replyService.insertReply(replyVO);  // 댓글 삽입과 동시에 t_board의 reply_cnt 1증가 (serviceImpl보면 앎)
-
-//	}
-
 	@PostMapping("/signUpSuccess")
 	public String signUpSuccess(MemberVO memberVO, HttpSession session) {
 
 		String tranzPwd = "0000t";
 		memberVO.setTranzPwd(tranzPwd);
-
-//		System.out.println(memberVO);
 
 		memberService.insertMember(memberVO);
 		session.setAttribute("memberVO", memberVO);
@@ -197,7 +208,6 @@ public class MemberController {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 		String nickname = memberVO.getNickname();
-//		System.out.println("닉넴:"+nickname +", 비번: " + tranzPwd);
 
 		Map<String, String> pwdMap = new HashMap<String, String>();
 		pwdMap.put("nickname", nickname);

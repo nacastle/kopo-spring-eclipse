@@ -128,18 +128,10 @@ table th img {
     </nav>
 	
 		<table class="table table-hover">
-<!-- 			<thead> -->
-<!-- 				<tr> -->
-<!-- 					<th scope="col">#</th> -->
-<!-- 					<th scope="col">First</th> -->
-<!-- 					<th scope="col">Last</th> -->
-<!-- 					<th scope="col">Handle</th> -->
-<!-- 				</tr> -->
-<!-- 			</thead> -->
 			<tbody>
 			<c:forEach items="${goodsCategory }" var="category">
-					<tr onClick="goCategory(${category.uriName})">
-						<th scope="row" > ${category.codeName }</th>
+					<tr onClick="goCategory('${category.uriName}')">
+						<th scope="row" >${category.codeName }</th>
 					</tr>
 			</c:forEach>
 			</tbody>
@@ -165,7 +157,7 @@ table th img {
      <script type="text/javascript">
      
      function goCategory(category) {
-    	 location.href = "${pageContext.request.contextPath}/category/"+category;
+    	 location.href = "${pageContext.request.contextPath}/goodsCategory/"+category;
 	}
      
 	  $('.na-nav a').on('click',function(){

@@ -18,7 +18,7 @@
 <body>
 
     <nav class="site-header sticky-top py-1" style="background: #27b2a5">
-      <div class="container d-flex flex-column flex-md-row justify-content-between">
+      <div class="container d-flex flex-column flex-md-row justify-content-between" style="padding-left: 0;margin-left: 1rem;">
       	<h5 class="masthead-brand" style="font-weight:bold; margin-top:2%; color: white;">계좌 등록</h5>
       </div>
     </nav>

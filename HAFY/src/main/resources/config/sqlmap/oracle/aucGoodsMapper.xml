@@ -42,6 +42,12 @@
 	<result column="bid_money" property="bidMoney" />
 </resultMap>
 
+	<select id="selectCodeVO" parameterType="String" resultMap="codeMap">
+		select * 
+		from hf_detail_code 
+		where uri_name = #{category}
+	</select>
+	
 	<select id="selectGoodsCategory" parameterType="String" resultMap="codeMap">
 		select * 
 		from hf_detail_code 
@@ -53,6 +59,15 @@
 		select member_nick, auc_no
 			from hf_like
 		where member_nick = #{memberNick} and auc_no = #{aucNo}
+	
+	</select>
+
+	<!-- 특정회원의 관심목록 조회 -->
+	<select id="selectLikeList" parameterType="memberVO" resultMap="likeMap">
+		select *
+			from hf_like
+		where member_nick = #{nickname}
+		 order by auc_no desc
 	
 	</select>
 
@@ -106,11 +121,24 @@
 		select seq_hf_auc_goods_no.nextval from dual
 	</select>
 	
+	<select id="selectSpecificCategory" parameterType="String" resultMap="aucGoodsMap">      
+		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
+				view_cnt, like_cnt, winning_bid
+		 from hf_auc_goods
+			where category = #{category}                                        
+	</select>
+	
 	<select id="selectAucGoodsByNo" parameterType="int" resultMap="aucGoodsMap">      
 		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
 				view_cnt, like_cnt, winning_bid
 		 from hf_auc_goods
 			where no = #{aucNo}                                        
+	</select>
+	    
+	<select id="selectAucSearchWord" parameterType="String" resultMap="aucGoodsMap">      
+		select *
+		 from hf_auc_goods
+			where name like '%'||#{searchWord}||'%' or detail like '%'||#{searchWord}||'%'
 	</select>
 	    
 	<select id="selectBidList" parameterType="memberVO" resultMap="aAccountMap">      
@@ -131,6 +159,7 @@
 		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
 				view_cnt, like_cnt , winning_bid
 		 from hf_auc_goods
+		 order by reg_date desc
 	</select>                                                     
 	            
 	            

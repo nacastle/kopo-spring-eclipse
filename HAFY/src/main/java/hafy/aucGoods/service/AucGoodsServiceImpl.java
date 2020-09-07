@@ -1,6 +1,8 @@
 package hafy.aucGoods.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -124,8 +126,9 @@ public class AucGoodsServiceImpl implements AucGoodsService{
 	public Map<String, AucGoodsVO> selectAllAuc() {
 		// TODO Auto-generated method stub
 		
-		Map<String, AucGoodsVO> aucMap = new HashMap<>();
-		List<AucGoodsVO> aucList = aucGoodsDAO.selectAllAucContents();
+		Map<String, AucGoodsVO> aucMap = new LinkedHashMap<String, AucGoodsVO>();
+		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>(); 
+		aucList = aucGoodsDAO.selectAllAucContents();
 		
 		for(AucGoodsVO auc : aucList) {
 			
@@ -144,8 +147,9 @@ public class AucGoodsServiceImpl implements AucGoodsService{
 	public Map<String, AucGoodsVO> selectBidMap(MemberVO memberVO) {
 		// TODO Auto-generated method stub
 		
-		Map<String, AucGoodsVO> bidMap = new HashMap<>();
-		List<AAccountVO> bidList = aucGoodsDAO.selectBidList(memberVO);
+		Map<String, AucGoodsVO> bidMap = new LinkedHashMap<String, AucGoodsVO>();
+		List<AAccountVO> bidList = new ArrayList<AAccountVO>();
+		bidList = aucGoodsDAO.selectBidList(memberVO);
 		
 		for(AAccountVO auc : bidList) {
 			
@@ -159,11 +163,21 @@ public class AucGoodsServiceImpl implements AucGoodsService{
 		return bidMap;
 	}
 
+	
+	@Override
+	public CodeVO selectCodeVO(String category) {
+		// TODO Auto-generated method stub
+		CodeVO codeVO = aucGoodsDAO.selectCodeVO(category);
+		return codeVO;
+	}
+
+	@Transactional
 	@Override
 	public Map<String, AucGoodsVO> selectDisplayMap(MemberVO memberVO) {
 		// TODO Auto-generated method stub
-		Map<String, AucGoodsVO> displayMap = new HashMap<>();
-		List<AucGoodsVO> displayList = aucGoodsDAO.selectDisplayList(memberVO);
+		Map<String, AucGoodsVO> displayMap = new LinkedHashMap<String, AucGoodsVO>();
+		List<AucGoodsVO> displayList = new ArrayList<AucGoodsVO>();
+		displayList = aucGoodsDAO.selectDisplayList(memberVO);
 		
 		for(AucGoodsVO auc : displayList) {
 			
@@ -174,8 +188,73 @@ public class AucGoodsServiceImpl implements AucGoodsService{
 			displayMap.put(firstPhoto, auc);
 		}
 		return displayMap;
+		
+	}
+	
+	@Transactional
+	@Override
+	public Map<String, AucGoodsVO> selectSpecificCategory(String category) {
+		// TODO Auto-generated method stub
+		Map<String, AucGoodsVO> specCategoryMap = new LinkedHashMap<String, AucGoodsVO>();
+		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
+		aucList = aucGoodsDAO.selectSpecificCategory(category);
+		
+		for(AucGoodsVO auc : aucList) {
+			
+			int aucNo = auc.getNo();
+			List<String> photoList =  aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+			String firstPhoto = photoList.get(0); 
+			
+			specCategoryMap.put(firstPhoto, auc);
+		}
+		return specCategoryMap;
 
 	}
+	
+	
+	@Transactional
+	@Override
+	public Map<String, AucGoodsVO> selectAucSearchWord(String searchWord) {
+		// TODO Auto-generated method stub
+		Map<String, AucGoodsVO> aucSearchMap = new LinkedHashMap<String, AucGoodsVO>();
+		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
+		aucList = aucGoodsDAO.selectAucSearchWord(searchWord);
+		
+		for(AucGoodsVO auc : aucList) {
+			
+			int aucNo = auc.getNo();
+			List<String> photoList =  aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+			String firstPhoto = photoList.get(0); 
+			
+			aucSearchMap.put(firstPhoto, auc);
+		}
+		return aucSearchMap;
+
+	}
+
+	@Transactional
+	@Override
+	public Map<String, AucGoodsVO> selectLikeMap(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		
+		Map<String, AucGoodsVO> likeMap = new LinkedHashMap<String, AucGoodsVO>();
+		List<LikeVO> likeList = new ArrayList<LikeVO>(); 
+		likeList = aucGoodsDAO.selectLikeList(memberVO);
+		
+		for(LikeVO l : likeList) {
+			int aucNo = l.getAucNo();
+			AucGoodsVO aucGoodsVO = aucGoodsDAO.selectAucGoodsByNo(aucNo);
+			List<String> photoList =  aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+			String firstPhoto = photoList.get(0);
+			
+			likeMap.put(firstPhoto, aucGoodsVO);
+
+		}
+		
+		return likeMap;
+	}
+	
+	
 	
 	
 	
