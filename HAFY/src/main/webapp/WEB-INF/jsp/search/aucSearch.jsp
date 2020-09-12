@@ -140,10 +140,19 @@ background: rgb(190, 190, 190);
     	  	<i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
     	  </a>
   	 	</div>
-    	  <input type="text" id="searchWord" class="form-control" style="width: 70%; font-size:.9rem; font-style:italic; background: rgb(248, 248, 248);"
+  	 		<div class="input-group" style="width: 90%;">
+                <input type="text" id="searchWord" class="form-control" style="width: 70%; height:2.2rem; font-size:.9rem; font-style:italic; background: rgb(248, 248, 248);"
     	   placeholder="제목 혹은 내용을 입력하세요.">
-    	   <div id="searchBtn" style="float: right;">검색</div>
-      
+                <div class="input-group-prepend" id="searchBtn" style="float: right; ">
+                  <span class="input-group-text" style="height:2.2rem; font-size: 0.9rem;">검색</span>
+<!--                    <span >검색</span> -->
+                </div>
+              </div>
+<!--     	  <input type="text" id="searchWord" class="form-control" style="width: 70%; font-size:.9rem; font-style:italic; background: rgb(248, 248, 248);" -->
+<!--     	   placeholder="제목 혹은 내용을 입력하세요."> -->
+<!--     	   <div id="searchBtn" style="float: right;">검색</div> -->
+<!--        +62314+ -->
+       
     </nav>
 
 	<div id="msg">
@@ -158,18 +167,6 @@ background: rgb(190, 190, 190);
 			</div>
 		</div>
 	</div>
-	
-<!-- 	<div id="noData" style="display: none;"> -->
-<!-- 		<div style="text-align: center;"> -->
-<!-- 			<img style="width: 8rem; margin-top: 5.4rem; margin-bottom: .5rem; " -->
-<%-- 				src="${pageContext.request.contextPath}/resources/img/hafy.png"> --%>
-<!-- 			<div style="color: rgb(200, 200, 200);"> -->
-<!-- 				<i>검색 결과가 없습니다.</i> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-	
-	
 
 	<table class="table table-hover" >
 		<tbody id="inputTbody">
@@ -210,6 +207,8 @@ background: rgb(190, 190, 190);
 					$("#noData").show()
 				} else {
 				
+					$("#hafy").hide()
+					$("#noData").hide()
 					let map = JSON.parse(data);
 // 					console.log(map)
 

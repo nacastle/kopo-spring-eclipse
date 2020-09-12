@@ -11,5 +11,6 @@ public interface MAccountDAO {
 	void deleteMAccount(String accountNo);
 	List<MAccountVO> selectMAccountList(String memberNick);
 	void bidMoney(Map<String, Object> bidInfo);
+	void depositWinBidMoney(Map<String, Object> depositInfo);
 
 }

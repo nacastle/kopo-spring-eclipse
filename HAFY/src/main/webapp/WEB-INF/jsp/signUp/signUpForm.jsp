@@ -53,23 +53,6 @@
                 </div>
             </div>
               
-<!--               <div class="col-md-6 mb-3"> -->
-<!--                 <label>패스워드</label> -->
-<!--                 <input type="password" class="form-control" name="password" onkeydown="hideCheck()"> -->
-<!--                 <div class="check" id="passwordCheck" style="color: red; display: none;"> -->
-<!--                   	패스워드를 입력해주세요 -->
-<!--                 </div> -->
-<!--               </div> -->
-              
-<!--               <div class="col-md-6 mb-3"> -->
-<!--                 <label>패스워드 확인</label> -->
-<!--                 <input type="password" class="form-control" name="password2" onkeydown="hideCheck()" > -->
-<!--                 <div class="check" id="passwordCheck2" style="color: red; display: none;"> -->
-<!--                   	패스워드가 불일치합니다. -->
-<!--                 </div> -->
-<!--               </div> -->
-              
-              
               <div class="col-md-6 mb-3">
                 <label>이름</label>
                 <input type="text" class="form-control" name="name" onkeydown="hideCheck()">

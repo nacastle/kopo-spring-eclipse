@@ -166,12 +166,12 @@ table th img {
 </style>	
 <title>하피 - 모두를 위한 경매</title>
 </head>
-  <body style="    padding-bottom: 0rem;">
+  <body style="padding-bottom: 0rem;">
   
  
    <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem;border-bottom: 0.1rem solid rgb(224, 224, 224)">
    		<div style="float: left;">
-    	  <a href="${pageContext.request.contextPath}/bidForm/${aucNo}" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+    	  <a href="${pageContext.request.contextPath}/goodsDetail/${aucNo}" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
     	  <a  href="#" style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">경매모임통장</a>
   	 	</div>
   	 	<div class="col-4 d-flex justify-content-end align-items-right"
@@ -183,13 +183,35 @@ table th img {
 		</div>
       
     </nav>
-     <c:forEach items="${bidderList}" var="bidder" end="0">
-    <div class="na-content" style="margin-top: 2rem;">
+    
+     <div class="na-content" style="margin-top: 2rem;">
     	<div style="float: right;">경매번호 : ${aucNo }</div>
-    	<div style="text-decoration: underline;"><div>최고입찰가</div></div>
-    	<div style="font-size: 1.5rem; font-weight: bold;">${bidder.bidMoney } 원 (${bidder.bidderNick })</div>
+    	
+    <c:choose>
+    <%--    입찰내역된 적이 없으면 --%>
+	     	<c:when test="${aucGoodsVO.winningBid == 0 }">
+	     			<div style="text-decoration: underline;"><div>경매시작가</div></div>
+	    			<div style="font-size: 1.5rem; font-weight: bold;">${aucGoodsVO.startPrice } 원 </div>
+	     	</c:when>
+	    <c:otherwise>
+     
+		     <c:forEach items="${bidResult}" var="result" end="0">
+			     	<%-- 마감전이면 최고입찰가 / 후면 낙찰가 --%>
+			    	<c:choose>
+			    		<c:when test="${nowTime < aucGoodsVO.endDate }">
+			    			<div style="text-decoration: underline;"><div>최고입찰가</div></div>
+			    			<div style="font-size: 1.5rem; font-weight: bold;">${result.memberBalance } 원 (${result.tranzMemberNick })</div>
+			    		</c:when>
+			    		<c:otherwise>
+			    			<div style="text-decoration: underline;"><div>낙찰가</div></div>
+			    			<div style="font-size: 1.5rem; font-weight: bold; background: rgb(26, 188, 156); display: inline-block;">${result.memberBalance } 원 (${result.tranzMemberNick }) &nbsp; </div>
+			    		</c:otherwise>
+			    	</c:choose>
+		    	</c:forEach>
+	    </c:otherwise>	
+     </c:choose>
+
 	</div>
-    	</c:forEach>
 	
 	<nav class="na-nav">
 			<div>
@@ -200,7 +222,31 @@ table th img {
 			</div>
 
 	</nav>
-		<table class="table table-hover" id="history" style="margin: 0 auto; width: 96%; margin-top: .5rem;margin-bottom: 3.5rem; ">
+	
+	
+	 <c:choose>
+    <%--    입찰내역된 적이 없으면 --%>
+	     	<c:when test="${aucGoodsVO.winningBid == 0 }">
+	     		<div class="history" style="text-align: center;margin-top: 1rem;">
+	     		 	<img style="width: 6rem; margin-top: 6%; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
+	     			<div>아직 입찰 내역이 없습니다.</div>
+	     			<div>해당 경매에 한번 입찰을 해보세요!</div>
+	     		</div>
+	     		<div class="rank" style="display: none;text-align: center;margin-top: 1rem;">
+	     			<img style="width: 6rem; margin-top: 6%; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
+	     			<div>아직 입찰 내역이 없습니다.</div>
+	     			<div>해당 경매에 한번 입찰을 해보세요!</div>
+	     		</div>
+	     		<div class="result" style="display: none;text-align: center;margin-top: 1rem;">
+	     			<img style="width: 6rem; margin-top: 6%; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
+	     			<div>아직 진행 중인 경매입니다.</div>
+	     		</div>
+	     	</c:when>
+	     	<c:otherwise>
+	
+	
+<%-- 	입/출금내역 탭 --%>
+		<table class="table table-hover history" style="margin: 0 auto; width: 96%; margin-top: .5rem;margin-bottom: 3.5rem; ">
 			<tbody>
 				
 	  <c:forEach items="${aTranzList }" var="aTranzVO" >
@@ -209,15 +255,18 @@ table th img {
 					<th scope="row" style="padding: 0.75rem 0rem;">${fn:substring(tranzDate,5,10) }</th>
 					<td style="width: 40%;">
 						<div style="font-weight: bold;">${aTranzVO.tranzMemberNick }</div>
-						<div style="font-size:0.8rem; color:#8f8f8f">${fn:substring(tranzDate,11,16) } | ${aTranzVO.tranzType }</div>
+						<div style="font-size:0.8rem; color:#8f8f8f">${fn:substring(tranzDate,11,19) } | ${aTranzVO.tranzType }</div>
 					</td>
 					<td>
 					<c:choose>
 						<c:when test="${aTranzVO.tranzType == '입금' }">
-						<div style="color: green;">+ ${aTranzVO.tranzMoney } 원</div>
+						<div style="color: green;">+${aTranzVO.tranzMoney } 원</div>
 						</c:when>
 						<c:otherwise>
-						<div style="color: rgb(243, 156, 18);">- ${aTranzVO.tranzMoney } 원</div>
+						<c:set var="tranzMoney"  value="${aTranzVO.tranzMoney}" scope="page"></c:set>
+<%-- 						<c:set var="tranzMoneyLength" value="${fn:length(tranzMoney)}" scope="page"></c:set> --%>
+<%-- 						<div style="color: rgb(243, 156, 18);">${fn:substring(tranzMoney,0,1)} ${fn:substring(tranzMoney,1,tranzMoneyLength)} 원</div> --%>
+						<div style="color: rgb(243, 156, 18);">${ tranzMoney} 원</div>
 						</c:otherwise>
 					</c:choose>
 						<div style="font-size:0.8rem; color:#8f8f8f">${aTranzVO.memberBalance } 원</div>
@@ -230,8 +279,8 @@ table th img {
 			</tbody>
 		</table>
 
-
-		<table class="table table-hover" id="rank" style="display:none; margin-bottom: 0rem; font-weight: bold; margin: 0 auto; width: 96%; margin-top: .5rem;">
+		<%-- 경매참여자 탭 --%>
+		<table class="table table-hover rank" style="display:none; margin-bottom: 0rem; font-weight: bold; margin: 0 auto; width: 96%; margin-top: .5rem;">
 			<tbody>
 			 <c:forEach items="${bidderList}" var="bidder" varStatus="i">
 				<tr>
@@ -247,14 +296,68 @@ table th img {
 			</tbody>
 		</table>
 		
+		
+		<%-- 경매 결과 탭... 마감 전/후 --%> 
+	<div class="result" style="display:none;">
+		<c:choose>
+			<c:when test="${nowTime < aucGoodsVO.endDate }">
+<%-- 				     				<img style="width: 6rem; margin-top: 1rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png"> --%>
+<!-- 				<div style="text-align: center;margin-top: 7rem;">아직 진행 중인 경매입니다.</div> -->
+				<div style="text-align: center;margin-top: 1rem;">
+	     			<img style="width: 6rem; margin-top: 6%; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
+	     			<div>아직 진행 중인 경매입니다.</div>
+	     		</div>
+			
+			</c:when>
+			<c:otherwise>
+				<table class="table table-hover"  style="margin-bottom: 0rem; font-weight: bold; 
+					margin: 0 auto; width: 96%; margin-top: .5rem;">
+					<tbody>
+					 <c:forEach items="${bidResult}" var="result" varStatus="j">
+						<tr>
+							<th scope="row">${j.count }</th>
+							<c:choose>
+								<c:when test="${j.count == 1 }">
+									<td style="width: 40%;text-align: left; padding: 0; padding-top: 0.75rem;">
+										<span style="background: rgb(243, 156, 18); color: white; padding: 0.1rem;float: left;
+											margin-right: 0.2rem;font-size: 0.9rem;" >낙찰</span>
+										<div style="text-align: center;">${result.tranzMemberNick } &nbsp;</div>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td style="width: 40%; text-align: center;">
+										<div>${result.tranzMemberNick }</div>
+									</td>
+								</c:otherwise>
+							</c:choose>
+							<td>
+								<div style="color:rgb(39, 178, 165);">${result.memberBalance } 원</div>
+							</td>
+						</tr>
+			</c:forEach>
+					</tbody>
+				</table>
+			</c:otherwise>		
+		</c:choose>
+	</div>
+	</c:otherwise>
+	</c:choose>
+		
 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm "
 		style="display: unset; background: white; padding:0; padding-top:0.2rem; text-align: center;">
 
-<!-- 		<button type="button" class="btn btn-warning btn-sm" -->
-<!-- 			style="font-weight: bold; width: 45%;">출금</button> -->
-<!-- 		&nbsp;&nbsp;&nbsp;&nbsp; -->
-		<button type="button" class="btn btn-success" onclick="goBid()"
-			style="background: rgb(22, 160, 133); font-weight: bold; width: 45%;">입찰</button>
+
+<%-- 			마감시간 전이면  / 후면--%>
+		<c:choose>
+			<c:when test="${nowTime < aucGoodsVO.endDate }">
+				<button type="button" class="btn btn-success" onclick="goBid()"
+					style="background: rgb(22, 160, 133); font-weight: bold; width: 45%;">입찰하기</button>
+			</c:when>
+			<c:otherwise>
+			
+			</c:otherwise>
+				
+		</c:choose>
 	</nav>
 
 
@@ -265,14 +368,24 @@ table th img {
     <script type="text/javascript">
   
 	
+
+    
+	function result() {
+		$(".history").hide();
+		$(".rank").hide()
+		$(".result").show();
+		
+	}
 	function showHistory() {
-		$("#history").show();
-		$("#rank").hide()
+		$(".history").show();
+		$(".rank").hide()
+		$(".result").hide();
 		
 	}
 	function showRank() {
-		$("#history").hide();
-		$("#rank").show()
+		$(".history").hide();
+		$(".rank").show();
+		$(".result").hide();
 		
 	}
 	

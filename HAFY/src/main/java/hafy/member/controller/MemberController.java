@@ -22,7 +22,7 @@ import hafy.member.vo.MemberVO;
 
 
 
-@SessionAttributes({ "memberVO" })	// addObject했을때 loginVO객체를 session공유영역에 등록 (여러개 들어올수있음...배열형태{}) 하지만 이방식은
+//@SessionAttributes({ "memberVO" })	// addObject했을때 loginVO객체를 session공유영역에 등록 (여러개 들어올수있음...배열형태{}) 하지만 이방식은
 									// invalidate로 세션 삭제 안됨
 @Controller
 public class MemberController {
@@ -102,36 +102,71 @@ public class MemberController {
 		return "/myPage/signOut";
 	}
 
+//	@PostMapping("/login")
+//	public ModelAndView loginProcess(MemberVO inputMemberVO, HttpSession session) {
+//		
+//		
+//		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
+//		ModelAndView mav = new ModelAndView();
+//		System.out.println("컨트롤러에서 멤버 받아오는지?"+memberVO);
+//		
+//		if (memberVO == null) {
+//			mav.setViewName("redirect:/login");
+//		} else {
+////			System.out.println("로긴프로세스에서 로긴한애 " + memberVO);
+//			session.setAttribute("memberVO", memberVO);
+////			MemberVO m = (MemberVO)session.getAttribute("memberVO");
+////			System.out.println("방금로긴한애" + m);
+//			mav.setViewName("redirect:/hot");
+//		}
+//		
+//		
+//		// 로그인 인터셉터 쓸경우 주석 풀어줘야
+////		else {
+////			// 로그인 성공
+//////			HttpSession session = request.getSession();
+////				String dest = (String)session.getAttribute("dest");
+////				System.out.println("멤버 컨트롤러에서 dest: " +dest);
+////				if(dest == null) {
+////					mav.setViewName("redirect:/hot");
+////				} else {
+////					
+////					
+////					mav.setViewName("redirect:" + dest);
+////					session.removeAttribute(dest);
+////					
+////				}
+////				mav.addObject("memberVO", memberVO);
+////			}
+//		// 여기까지 로그인 인터셉터
+//		
+//		
+//		
+////			System.out.println("세션에 등록하나?");
+////			session.setAttribute("memberVO", memberVO);
+////			return "redirect:/hot";
+//		return mav;
+//	}
 	@PostMapping("/login")
-	public ModelAndView loginProcess(MemberVO inputMemberVO, HttpSession session) {
+	public String loginProcess(MemberVO inputMemberVO, HttpSession session) {
 
+		
 		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
-		ModelAndView mav = new ModelAndView();
+//		ModelAndView mav = new ModelAndView();
 		System.out.println("컨트롤러에서 멤버 받아오는지?"+memberVO);
 
 		if (memberVO == null) {
-			mav.setViewName("redirect:/login");
+			return "redirect:/login";
 		} else {
-			// 로그인 성공
-//			HttpSession session = request.getSession();
-				String dest = (String)session.getAttribute("dest");
-				System.out.println("멤버 컨트롤러에서 dest: " +dest);
-				if(dest == null) {
-					mav.setViewName("redirect:/hot");
-				} else {
-					mav.setViewName("redirect:" + dest);
-					session.removeAttribute(dest);
-					
-				}
-				mav.addObject("memberVO", memberVO);
-			}
-//			System.out.println("세션에 등록하나?");
-//			session.setAttribute("memberVO", memberVO);
-//			return "redirect:/hot";
-		return mav;
+//			System.out.println("로긴프로세스에서 로긴한애 " + memberVO);
+			session.setAttribute("memberVO", memberVO);
+//			MemberVO m = (MemberVO)session.getAttribute("memberVO");
+//			System.out.println("방금로긴한애" + m);
+			return "redirect:/hot";
+		}
 	}
 
-	@RequestMapping("/login")
+	@GetMapping("/login")
 	public String login() {
 		return "/login/login";
 	}

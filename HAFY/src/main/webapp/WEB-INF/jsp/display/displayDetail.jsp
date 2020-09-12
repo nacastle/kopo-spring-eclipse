@@ -191,8 +191,8 @@ height: 16rem!important;
 
   <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem;border-bottom: 0.1rem solid rgb(224, 224, 224)">
    		<div style="float: left;">
-<%--     	  <a href="${pageContext.request.contextPath}/hot" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a> --%>
-    	  <a href="javascript:history.go(-1)" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+    	  <a href="${pageContext.request.contextPath}/hot" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+<!--     	  <a href="javascript:history.back()" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a> -->
   	 	</div>
       
       	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
@@ -200,11 +200,11 @@ height: 16rem!important;
       		<c:choose>
       			<c:when test="${isLike == false }">
       		<i class="btn-like fa fa-heart-o fa-lg" onclick="like(${auc.key.no},${auc.key.likeCnt })" aria-hidden="true"></i>
-      		<i class="btn-dislike fa fa-heart fa-lg" onclick="dislike(${auc.key.no},${auc.key.likeCnt })" style="display: none; color: red;" aria-hidden="true" ></i>
+      		<i class="btn-dislike fa fa-heart fa-lg" onclick="dislike(${auc.key.no},${auc.key.likeCnt })" style="display: none;" aria-hidden="true"></i>
       			</c:when>
       			<c:otherwise>
       		<i class="btn-like fa fa-heart-o fa-lg" onclick="like(${auc.key.no},${auc.key.likeCnt })" style="display: none;" aria-hidden="true"></i>
-      		<i class="btn-dislike fa fa-heart fa-lg" onclick="dislike(${auc.key.no},${auc.key.likeCnt })" style="color: red;" aria-hidden="true"></i>
+      		<i class="btn-dislike fa fa-heart fa-lg" onclick="dislike(${auc.key.no},${auc.key.likeCnt })" aria-hidden="true"></i>
       			</c:otherwise>
       		</c:choose>
 		</div>
@@ -239,21 +239,7 @@ height: 16rem!important;
               		관심 <span id="likeCnt">${auc.key.likeCnt }</span>  | 조회 ${auc.key.viewCnt}
               	</div>
               	<div style="float: right;margin-right: -1rem;">
-              	<c:choose>
-              		<c:when test="${auc.key.endDate > nowTime }">
-              			<c:choose>
-							<c:when test="${auc.key.winningBid == 0}">
-			              		<span style="font-size: 0.6rem;">현재가 </span><strong>${auc.key.startPrice} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
-							</c:when>
-							<c:otherwise>
-			              		<span style="font-size: 0.6rem;">현재가 </span><strong>${auc.key.winningBid} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
-							</c:otherwise>              			
-              			</c:choose>
-              		</c:when>
-              		<c:otherwise>
-	              		<span style="font-size: 0.6rem;">낙찰가 </span><strong>${auc.key.winningBid} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰&nbsp;&nbsp;</span>
-              		</c:otherwise>
-              	</c:choose>
+              		<span style="font-size: 0.6rem;">현재가 </span><strong>${highestBid} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
               	</div>
               	
              </div>
@@ -267,47 +253,15 @@ height: 16rem!important;
 <%-- 			<button type="button" class="btn btn-success" onclick="goAAcount(${auc.key.no })" --%>
 <!-- 				style="background: rgb(22, 160, 133); margin-top: -0.2rem; font-weight: bold;">경매현황</button> -->
 			
-			<c:choose>
-				<c:when test="${nowTime < auc.key.startDate }">
-					<button class="btn btn-warning"
-						style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: rgb(158, 158, 158); 
-						border: rgb(158, 158, 158); vertical-align: middle; height: 2.2rem; width: 7.8rem;">대기중</button>
-				</c:when>
+			<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
+				style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; 
+				height: 2.2rem; width: 7.8rem;">경매현황</button>
 				
-				<c:when test="${nowTime >= auc.key.startDate and nowTime < auc.key.endDate }">
-			
-					<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
-						style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; 
-						height: 2.2rem; width: 7.8rem;">경매현황</button>
-						
-					<button class="btn btn-warning " onclick="goBidForm(${auc.key.no })"
-						style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: orange; 
-						border: orange; vertical-align: middle; height: 2.2rem; width: 7.8rem;">입찰하기</button>
-				</c:when>
-				
-				<c:when test="${nowTime >= auc.key.endDate }">
-			
-					<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
-						style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; background: rgb(52, 152, 219); border:rgb(52, 152, 219); 
-						height: 2.2rem; width: 7.8rem;">경매결과</button>
-						
-					<button class="btn btn-warning " 
-						style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: black; 
-						border: black; vertical-align: middle; height: 2.2rem; width: 7.8rem;">마감</button>
-				</c:when>
-				<c:otherwise>
-				시작날짜: ${ auc.key.startDate } / 끝날짜:${ auc.key.endDate } / 현시간: ${nowTime }
-				
-				</c:otherwise>
-				
-			</c:choose>
+			<button class="btn btn-warning " onclick="goBidForm(${auc.key.no })"
+				style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: orange; 
+				border: orange; vertical-align: middle; height: 2.2rem; width: 7.8rem;">입찰하기</button>
 		</div>
-
-		<!-- 		<a class="p-2 bottom-on" href="#"> <div><i class="fa fa-home fa-lg"></i></div> 홈</a>  -->
-<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-bars fa-lg"></i></div> 카테고리</a>  -->
-<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-arrow-circle-up fa-lg"></i></div>출품하기</a>  -->
-<!-- 		<a class="p-2" href="#" ><div><i class="fa fa-user fa-lg"></i></div>MY</a>  -->
-    </nav>
+	</nav>
     
     </c:forEach>
 
@@ -324,12 +278,12 @@ height: 16rem!important;
 <%--       alert(<%= request.() %>) --%>
 <%--       alert(<%= pageContext.get %>) --%>
 
-
 		function goAAcount(aucNo) {
-	  		console.log("경매번호: " + aucNo)
-	  		location.href = "${pageContext.request.contextPath}/bidHistory/"+aucNo;
-	
+			console.log("경매번호: " + aucNo)
+			location.href = "${pageContext.request.contextPath}/bidHistory/"+aucNo;
+
 		}
+
       
       if (${empty bidderCnt }) {
     	  $("#bidderCnt").html("0명 입찰중&nbsp;&nbsp;")

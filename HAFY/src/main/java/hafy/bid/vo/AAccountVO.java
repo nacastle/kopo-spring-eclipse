@@ -13,6 +13,20 @@ public class AAccountVO {
 	}
 	
 	
+	public AAccountVO(int aucNo, int bidMoney) {
+		super();
+		this.aucNo = aucNo;
+		this.bidMoney = bidMoney;
+	}
+
+
+	public AAccountVO(int aucNo, String bidderNick) {
+		super();
+		this.aucNo = aucNo;
+		this.bidderNick = bidderNick;
+	}
+
+
 	public AAccountVO(int aucNo, String bidderNick, int bidMoney) {
 		super();
 		this.aucNo = aucNo;
@@ -26,11 +40,6 @@ public class AAccountVO {
 	}
 	public void setBidMoney(int bidMoney) {
 		this.bidMoney = bidMoney;
-	}
-	public AAccountVO(int aucNo, String bidderNick) {
-		super();
-		this.aucNo = aucNo;
-		this.bidderNick = bidderNick;
 	}
 	public int getAucNo() {
 		return aucNo;

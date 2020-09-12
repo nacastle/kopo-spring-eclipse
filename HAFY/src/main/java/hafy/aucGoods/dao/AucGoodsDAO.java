@@ -18,6 +18,7 @@ public interface AucGoodsDAO {
 	void insertGoodsPhoto(GoodsPhotoVO goodsPhotoVO);
 	AucGoodsVO selectAucGoodsByNo(int aucNo);
 	List<AucGoodsVO> selectAllAucContents();
+	List<AucGoodsVO> selectHotAucContents();
 	List<AAccountVO> selectBidList(MemberVO memberVO);
 	List<AucGoodsVO> selectDisplayList(MemberVO memberVO);
 //	List<GoodsPhotoVO> selectPhotoListByAucNo(int aucNo);
@@ -34,6 +35,8 @@ public interface AucGoodsDAO {
 	List<AucGoodsVO> selectSpecificCategory(String category);
 	CodeVO selectCodeVO(String category);
 	List<AucGoodsVO> selectAucSearchWord(String searchWord);
+	
+	void updatePurchaseConfirm(int aucNo);
 	
 
 }

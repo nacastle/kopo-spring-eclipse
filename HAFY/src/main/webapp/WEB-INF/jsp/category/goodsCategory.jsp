@@ -118,7 +118,7 @@ table th img {
 <body>
 
     <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .1rem 1rem; border-bottom: 0.1rem solid rgb(224, 224, 224)">
-      <a class="navbar-brand" href="#" style="font-weight: bold; color:black;">카테고리</a>
+      <span class="navbar-brand" style="font-weight: bold; color:black;">카테고리</span>
       
       		<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>

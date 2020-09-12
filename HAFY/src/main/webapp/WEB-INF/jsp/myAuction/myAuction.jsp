@@ -164,11 +164,23 @@ background: rgb(190, 190, 190);
 		<c:forEach items="${bidMap}" var="bid">
 			<tr onclick="goDetail(${bid.value.no})">
 				<th scope="row">
-					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span>
+<!-- 					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span> -->
 <%-- 					<img src="<%=request.getContextPath()%>/upload/${auc.key}"> --%>
+					<c:choose>
+						<c:when test="${bid.value.startDate > nowTime }">
+							<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
+						</c:when>
+						<c:when test="${bid.value.startDate < nowTime and  bid.value.endDate > nowTime  }">
+							<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
+						</c:when>
+						<c:when test="${bid.value.endDate < nowTime }">
+							<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
+						</c:when>
+					</c:choose>
 					<img src="${pageContext.request.contextPath }/upload/${bid.key}">
 
 				</th>
+				
 				<td>
 					<div style="font-weight: bold; font-size: 1rem;">${bid.value.name }</div>
 					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: ${bid.value.endDate }</div>
@@ -194,8 +206,19 @@ background: rgb(190, 190, 190);
 		<c:forEach items="${displayMap}" var="display">
 			<tr onclick="goDetail(${display.value.no})">
 				<th scope="row">
-					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span>
+<!-- 					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span> -->
 <%-- 					<img src="<%=request.getContextPath()%>/upload/${auc.key}"> --%>
+					<c:choose>
+						<c:when test="${display.value.startDate > nowTime }">
+							<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
+						</c:when>
+						<c:when test="${display.value.startDate < nowTime and  display.value.endDate > nowTime  }">
+							<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
+						</c:when>
+						<c:when test="${display.value.endDate < nowTime }">
+							<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
+						</c:when>
+					</c:choose>
 					<img src="${pageContext.request.contextPath }/upload/${display.key}">
 
 				</th>

@@ -17,6 +17,7 @@ public interface AucGoodsService {
 	void insertGoodsPhoto(GoodsPhotoVO goodsPhotoVO);
 	AucGoodsVO selectAucGoodsByNo(int aucNo);
 	Map<String, AucGoodsVO> selectAllAuc();
+	Map<String, AucGoodsVO> selectHotAuc();
 	Map<String, AucGoodsVO> selectSpecificCategory(String category);
 	Map<AucGoodsVO, List<GoodsPhotoVO>> selectAucByNo(int aucNo);
 	void incrementLikeCnt(int aucNo);
@@ -30,4 +31,13 @@ public interface AucGoodsService {
 	Map<String, AucGoodsVO> selectLikeMap(MemberVO memberVO);
 	CodeVO selectCodeVO(String category);
 	Map<String, AucGoodsVO> selectAucSearchWord(String searchWord);
+	
+	// 사용자가 낙찰에 성공한 경매리스트 구하기
+	Map<String, AucGoodsVO> selectWinBidMap(String memberNick);
+	
+	// 매입확정 업데이트
+	void updatePurchaseConfirm(int aucNo);
+	
+	// 매입확정 이후 작업 (판매자에게 송금,경매모입통장에서 출금)
+	void transferBidMoneySeller(Map<String, Object> transferMap);
 }

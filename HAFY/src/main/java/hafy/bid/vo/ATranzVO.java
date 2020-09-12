@@ -17,27 +17,17 @@ public class ATranzVO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public ATranzVO(int aucNo, String tranzDate, String tranzAccountNo, int tranzMoney, String tranzMemberNick,
+
+	public ATranzVO(int aucNo, String tranzAccountNo, int tranzMoney, String tranzMemberNick,
 			String tranzType) {
 		super();
 		this.aucNo = aucNo;
-		this.tranzDate = tranzDate;
 		this.tranzAccountNo = tranzAccountNo;
 		this.tranzMoney = tranzMoney;
 		this.tranzMemberNick = tranzMemberNick;
 		this.tranzType = tranzType;
 	}
-	public ATranzVO(int aucNo, String tranzDate, String tranzAccountNo, int tranzMoney, int memberBalance,
-			String tranzMemberNick, String tranzType) {
-		super();
-		this.aucNo = aucNo;
-		this.tranzDate = tranzDate;
-		this.tranzAccountNo = tranzAccountNo;
-		this.tranzMoney = tranzMoney;
-		this.memberBalance = memberBalance;
-		this.tranzMemberNick = tranzMemberNick;
-		this.tranzType = tranzType;
-	}
+
 	public int getAucNo() {
 		return aucNo;
 	}

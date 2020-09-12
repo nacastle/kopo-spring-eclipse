@@ -26,7 +26,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 		
 		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
-		System.out.println("로그인돼있는거?" +memberVO);
+//		System.out.println("로그인돼있는거?" +memberVO);
 		// test할때는 항상 로그인 상태로 만들어주기
 		if (memberVO == null) {
 		MemberVO tempVO = new MemberVO("nacastle","나성주","920193","서울시","송파구","SKT","01042119382","1","1212q");
@@ -35,9 +35,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		session.setAttribute("memberVO", tempVO);
 		}
 		// 여기까지 해서 로그인 상태 만들어주는 법
-		
-		
-		
 		
 		if (memberVO == null) {
 			

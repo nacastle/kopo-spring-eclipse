@@ -4,6 +4,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans   
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context   
@@ -11,11 +12,19 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc.xsd
     http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd "
-    >
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+   	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task.xsd">
+
+
+	
 
 	<context:component-scan
-		base-package="hafy" /> 
+		base-package="hafy" />
+	
+	<task:scheduler id="jobScheduler" pool-size="10" />
+	<task:annotation-driven scheduler="jobScheduler" />
+	
 	<mvc:annotation-driven>    <!-- mvc annotation 쓰겠다는 뜻 -->
 		<mvc:message-converters>
 			<bean
@@ -96,13 +105,13 @@
 	
 	
 	<!-- 인터셉터 처리 -->
-	<bean class="hafy.interceptor.LoginInterceptor" id="loginInterceptor"></bean>
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**/"/>  <!-- /뒤에 depth가 몇이든 간에 -->
+<!-- 	<bean class="hafy.interceptor.LoginInterceptor" id="loginInterceptor"></bean> -->
+<!-- 	<mvc:interceptors> -->
+<!-- 		<mvc:interceptor> -->
+<!-- 			<mvc:mapping path="/**/"/>  /뒤에 depth가 몇이든 간에 -->
 			
-			<mvc:exclude-mapping path="/login"/>
-			<mvc:exclude-mapping path="/cover"/>
+<!-- 			<mvc:exclude-mapping path="/login"/> -->
+<!-- 			<mvc:exclude-mapping path="/cover"/> -->
 <!-- 			<mvc:exclude-mapping path="/logout"/> login uri를 제외하고 인터셉터로 거치게끔 -->
 <!-- 			<mvc:exclude-mapping path="/board"/> login uri를 제외하고 인터셉터로 거치게끔 -->
 <!-- 			<mvc:exclude-mapping path="/resources/**"/> login uri를 제외하고 인터셉터로 거치게끔 -->
@@ -111,9 +120,9 @@
 <!-- 			<mvc:mapping path="/board/write"/>  uri가 뭐든 loginInterceptor가 작동하게끔 할거다라는 뜻 / uri가 write면 작동함 -->
 <!-- 			<mvc:mapping path="/board/detail/*"/>  uri가 뭐든 loginInterceptor가 작동하게끔 할거다라는 뜻 / uri가 write면 작동함 -->
 
-			<ref bean="loginInterceptor"/>
-		</mvc:interceptor>
-	</mvc:interceptors>
+<!-- 			<ref bean="loginInterceptor"/> -->
+<!-- 		</mvc:interceptor> -->
+<!-- 	</mvc:interceptors> -->
 	
 	
 	<!-- 트랜잭션 처리 -->

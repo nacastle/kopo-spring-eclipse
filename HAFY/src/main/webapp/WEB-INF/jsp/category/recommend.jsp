@@ -136,7 +136,7 @@ background: rgb(190, 190, 190);
    <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; 
    padding: .5rem 1rem; border-bottom: 0.1rem solid rgb(224, 224, 224);">
    		<div style="float: left;">
-    	  <a href="${pageContext.request.contextPath}/goodsCategory" style="color: black; margin-right: -3rem;">
+    	  <a href="javascript:history.back()" style="color: black; margin-right: -3rem;">
     	  	<i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
     	  </a>
     	  <span style="font-size: 1.25rem; position:relative; top:0.2rem; left: 3.5rem; font-weight: bold; color:black;">추천경매</span>

@@ -166,7 +166,17 @@ background: rgb(190, 190, 190);
 		<c:forEach items="${aucMap}" var="auc">
 			<tr onclick="goDetail(${auc.value.no})">
 				<th scope="row">
-					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span>
+				<c:choose>
+					<c:when test="${auc.value.startDate > nowTime }">
+						<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
+					</c:when>
+					<c:when test="${auc.value.startDate <= nowTime and  auc.value.endDate > nowTime  }">
+						<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
+					</c:when>
+					<c:when test="${auc.value.endDate <= nowTime }">
+						<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
+					</c:when>
+				</c:choose>
 <%-- 					<img src="<%=request.getContextPath()%>/upload/${auc.key}"> --%>
 					<img src="${pageContext.request.contextPath }/upload/${auc.key}">
 

@@ -216,7 +216,7 @@ input[type="datetime-local"]:valid::before {
 	<nav class="navbar fixed-top" style=" background:white; color:black; padding: .1rem 1rem; height: 3rem; border-bottom: 0.1rem solid rgb(224, 224, 224) ">
    		<div style="float: left;">
 <!--     	  <a href="#" style="color: black; margin-right: -3rem;">출품완료</a> -->
-    	  <a  href="#" style="font-size: 1.25rem; position:relative; top:0.2rem; left: 0rem; font-weight: bold; color:black;">MY</a>
+    	  <span  style="font-size: 1.25rem; position:relative; top:0.2rem; left: 0rem; font-weight: bold; color:black;">MY</span>
   	 	</div>
   	 	
   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
@@ -259,8 +259,8 @@ input[type="datetime-local"]:valid::before {
 
 		<div class="ttitle">상품</div>
 		<table class="table-hover">
-			<tr>
-				<td>낙찰확정</td>
+			<tr onclick="goConfirmPurchase()">
+				<td>매입확정</td>
 			</tr>
 			<tr>
 				<td>환불하기</td>
@@ -339,6 +339,10 @@ input[type="datetime-local"]:valid::before {
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script> -->
       <script type="text/javascript">
       
+      function goConfirmPurchase() {
+    	  location.href = "${pageContext.request.contextPath}/confirmPurchaseForm"
+		
+	}
       function goLikeList() {
     	  location.href = "${pageContext.request.contextPath}/likeAuction"
 		

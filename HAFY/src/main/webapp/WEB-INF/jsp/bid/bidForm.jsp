@@ -161,8 +161,9 @@ table th img {
   
    <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem;border-bottom: 0.1rem solid rgb(224, 224, 224)">
    		<div style="float: left;">
-    	  <a href="${pageContext.request.contextPath}/goodsDetail/${aucGoodsVO.no}" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
-    	  <a  href="#" style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">입찰하기</a>
+<%--     	  <a href="${pageContext.request.contextPath}/goodsDetail/${aucGoodsVO.no}" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a> --%>
+    	  <a href="javascript:history.go(-1)" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+    	  <span style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">입찰하기</span>
   	 	</div>
 
 		<div class="col-4 d-flex justify-content-end align-items-right"
@@ -181,8 +182,12 @@ table th img {
               <div class="na-content">
               	입찰 상품
               	<form action="${pageContext.request.contextPath}/bidConfirm/${aucGoodsVO.no}" 
-              	name ="bForm" method="post" onsubmit="return checkBidMoney(${highestBid})">
+              	name ="bForm" method="post" onsubmit="return checkBidMoney(${aucGoodsVO.winningBid},${aucGoodsVO.startPrice})">
               	<table>
+              		<tr>
+              			<th>경매번호</th>
+						<td>${aucGoodsVO.no }</td>
+					</tr>
               		<tr>
               			<th>상품명</th>
 						<td> ${aucGoodsVO.name }</td>
@@ -201,10 +206,7 @@ table th img {
               			<th> 입찰방식	</th>
 						<td>${aucGoodsVO.method }</td>
 					</tr>	              		
-              		<tr>
-              			<th>경매번호</th>
-						<td>${aucGoodsVO.no }</td>
-					</tr>	              		
+              			              		
               	</table>
               	<br>
               	
@@ -212,7 +214,7 @@ table th img {
 		<table>
 			<tr>
 				<th>현 최고입찰가</th>
-				<td style="font-weight: bold;">${highestBid} 원</td>
+				<td style="font-weight: bold;">${aucGoodsVO.winningBid} 원</td>
 			</tr>
 			
 			<tr>
@@ -225,7 +227,14 @@ table th img {
 				<strong>${pastBidMoney}</strong> 원 입니다.
 					</c:when>
 					<c:otherwise>
-				현재 <strong>${highestBid}</strong> 원부터 <br>	입찰하실 수 있습니다.
+						<c:choose>
+							<c:when test="${aucGoodsVO.winningBid == 0}">
+								현재 시작가인 <strong>${aucGoodsVO.startPrice}</strong> 원부터 <br>	입찰하실 수 있습니다.
+							</c:when>
+							<c:otherwise>
+								현재 <strong>${aucGoodsVO.winningBid}</strong> 원부터 <br>	입찰하실 수 있습니다.
+							</c:otherwise>
+						</c:choose>
 					</c:otherwise>
 				</c:choose>
 					
@@ -240,6 +249,7 @@ table th img {
 			</tr>
 		</table>
 		
+		<div id="startBidError" style="color: orange; display: none; text-align: right;">시작가 이상의 금액을<br> 입찰하셔야합니다.</div>
 		<div id="bidError" style="color: orange; display: none; text-align: right;">최고입찰가를 초과하는 금액을<br> 입찰하셔야합니다.</div>
 		
 		<div style="margin-top:1.5rem; text-align: center;">
@@ -263,20 +273,27 @@ table th img {
     
     <script type="text/javascript">
   
-	function checkBidMoney(highestBid) {
+	function checkBidMoney(winningBid, startPrice) {
 		
 		let bidMoney = document.bForm.bidMoney.value
 		
-		if (parseInt(bidMoney) + ${pastBidMoney} <= highestBid) {
-			$("#bidError").show();
-			return false;
-		}
-		return true;
+		if (winningBid == 0) {
+			if (parseInt(bidMoney) < startPrice) {
+				$("#startBidError").show();
+				return false;
+			}	
+		} else {
+			if (parseInt(bidMoney) + ${pastBidMoney} <= winningBid) {
+				$("#bidError").show();
+				return false;
+			}
 	}
+	return true;
+}
 	
 	function modifyBid() {
+		$("#startBidError").hide();
 		$("#bidError").hide();
-		
 	}
 
 	  

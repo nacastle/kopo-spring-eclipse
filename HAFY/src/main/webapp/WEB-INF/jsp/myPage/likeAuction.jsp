@@ -136,7 +136,8 @@ background: rgb(190, 190, 190);
    <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; 
    padding: .5rem 1rem; border-bottom: 0.1rem solid rgb(224, 224, 224);">
    		<div style="float: left;">
-    	  <a href="${pageContext.request.contextPath}/myPage" style="color: black; margin-right: -3rem;">
+<%--     	  <a href="${pageContext.request.contextPath}/myPage" style="color: black; margin-right: -3rem;"> --%>
+    	  <a href="javascript:history.back()" style="color: black; margin-right: -3rem;">
     	  	<i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
     	  </a>
     	  <span style="font-size: 1.25rem; position:relative; top:0.2rem; left: 3.5rem; font-weight: bold; color:black;">관심경매</span>
@@ -155,8 +156,19 @@ background: rgb(190, 190, 190);
 		<c:forEach items="${likeMap}" var="like">
 			<tr onclick="goDetail(${like.value.no})">
 				<th scope="row">
-					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span>
+<!-- 					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span> -->
 <%-- 					<img src="<%=request.getContextPath()%>/upload/${auc.key}"> --%>
+				<c:choose>
+					<c:when test="${like.value.startDate > nowTime }">
+						<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
+					</c:when>
+					<c:when test="${like.value.startDate <= nowTime and  like.value.endDate > nowTime  }">
+						<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
+					</c:when>
+					<c:when test="${like.value.endDate <= nowTime }">
+						<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
+					</c:when>
+				</c:choose>
 					<img src="${pageContext.request.contextPath }/upload/${like.key}">
 
 				</th>

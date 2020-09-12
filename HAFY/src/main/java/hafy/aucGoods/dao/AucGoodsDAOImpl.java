@@ -23,6 +23,23 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 	
 	
 	@Override
+	public void updatePurchaseConfirm(int aucNo) {
+		// TODO Auto-generated method stub
+		sqlSession.update("auction.dao.AucGoodsDAO.updatePurchaseConfirm",aucNo);
+	}
+
+
+
+	@Override
+	public List<AucGoodsVO> selectHotAucContents() {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> hotAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectHotAucContents");
+		return hotAucList;
+	}
+
+
+
+	@Override
 	public CodeVO selectCodeVO(String category) {
 		// TODO Auto-generated method stub
 		CodeVO codeVO = sqlSession.selectOne("auction.dao.AucGoodsDAO.selectCodeVO",category);

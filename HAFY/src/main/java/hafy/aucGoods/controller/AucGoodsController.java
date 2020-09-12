@@ -5,6 +5,7 @@ import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +36,10 @@ import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
 import hafy.bid.service.BidService;
 import hafy.bid.vo.AAccountVO;
+import hafy.bid.vo.ATranzVO;
+import hafy.mAccount.service.MAccountService;
+import hafy.mAccount.vo.MAccountVO;
+import hafy.member.service.MemberService;
 import hafy.member.vo.MemberVO;
 
 @Controller
@@ -45,57 +51,116 @@ public class AucGoodsController {
 	private ServletContext servletContext;
 	@Autowired
 	private BidService bidService;
+	@Autowired
+	private MAccountService mAccountService;
+//	@Autowired
+//	private MemberService memberService;
 
+	
+	
+	
+	
+	@ResponseBody
+	@PostMapping("/confirmPurchase")
+	public void confirmPurchase(HttpServletRequest request, HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+		
+		int aucNo = Integer.parseInt(request.getParameter("aucNo"));
+		String sellerNick = request.getParameter("sellerNick"); 
+		List<MAccountVO> sellerAccountList = mAccountService.selectMAccountList(sellerNick);
+		String sellerAccount = sellerAccountList.get(0).getAccountNo(); // 판매자의 계좌
+		int winBidMoney = Integer.parseInt(request.getParameter("winBidMoney"));
+		String winner = memberVO.getNickname(); // 낙찰자
+		
+		Map<String, Object> transferMap = new HashMap<String, Object>();
+		transferMap.put("aucNo",aucNo);
+		transferMap.put("sellerNick",sellerNick);
+		transferMap.put("sellerAccount",sellerAccount);
+		transferMap.put("winBidMoney",winBidMoney);
+		transferMap.put("winner",winner);
+		
+		System.out.println(aucNo);
+		aucGoodsService.updatePurchaseConfirm(aucNo);
+		aucGoodsService.transferBidMoneySeller(transferMap);
+	}
 	
 	@ResponseBody
 	@GetMapping("/aucSearch/{searchWord}")
-	public Map<String, AucGoodsVO>  doAucSearch(@PathVariable("searchWord")String searchWord) {
-		
+	public Map<String, AucGoodsVO> doAucSearch(@PathVariable("searchWord") String searchWord) {
+
 		System.out.println(searchWord);
-		
+
 		Map<String, AucGoodsVO> aucSearchMap = new LinkedHashMap<String, AucGoodsVO>();
 		aucSearchMap = aucGoodsService.selectAucSearchWord(searchWord);
-		
+
 		return aucSearchMap;
 	}
-	
+
 	@GetMapping("/aucSearch")
 	public String aucSearchForm() {
 		return "/search/aucSearch";
 	}
+
+	@GetMapping("/confirmPurchaseForm")
+	public String confirmPurchase(Model model, HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+		String memberNick = memberVO.getNickname();
+		
+		Map<String, AucGoodsVO> winAucMap = new LinkedHashMap<String, AucGoodsVO>();
+		winAucMap = aucGoodsService.selectWinBidMap(memberNick);
+		
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		
+		model.addAttribute("nowTime", nowTime);
+		model.addAttribute("winAucMap", winAucMap);
+		
+		return "/myPage/confirmPurchaseForm";
+	}
 	
 	@GetMapping("/likeAuction")
 	public String likeAuction(Model model, HttpSession session) {
-		
-		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
-		
+
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+
 		Map<String, AucGoodsVO> likeMap = new LinkedHashMap<String, AucGoodsVO>();
 		likeMap = aucGoodsService.selectLikeMap(memberVO);
-		
+
 		model.addAttribute("likeMap", likeMap);
-		
+
 		return "/myPage/likeAuction";
 	}
-	
+
 	@GetMapping("/myAuction")
-	public String myAuction(Model model, HttpSession session) {
-		
-		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
-		
+	public String myAuction(Model model, HttpSession session, HttpServletRequest request) {
+
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+
 		// 사용자가 입찰한 목록 가져오기 (첫째 사진 파일 이름과 함께)
-		Map<String, AucGoodsVO> bidMap = new LinkedHashMap<String, AucGoodsVO>(); 
+		Map<String, AucGoodsVO> bidMap = new LinkedHashMap<String, AucGoodsVO>();
 		bidMap = aucGoodsService.selectBidMap(memberVO);
-		
+
 		// 사용자가 출품한 목록 가져오기 (첫째 사진 파일 이름과 함께)
-		Map<String, AucGoodsVO> displayMap = new LinkedHashMap<String, AucGoodsVO>(); 
+		Map<String, AucGoodsVO> displayMap = new LinkedHashMap<String, AucGoodsVO>();
 		displayMap = aucGoodsService.selectDisplayMap(memberVO);
-		
+
 		model.addAttribute("bidMap", bidMap);
 		model.addAttribute("displayMap", displayMap);
 		
+
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		request.setAttribute("nowTime", nowTime);
+
 		return "/myAuction/myAuction";
 	}
-	
+
 	@GetMapping("/goodsCategory")
 	public String goodsCategory(Model model) {
 		List<CodeVO> goodsCategory = aucGoodsService.selectGoodsCategory("gc");
@@ -103,6 +168,80 @@ public class AucGoodsController {
 		model.addAttribute("goodsCategory", goodsCategory);
 
 		return "/category/goodsCategory";
+	}
+
+	@GetMapping("displayDetail/{aucNo}")
+	public String displayDetail(@PathVariable("aucNo") int aucNo, HttpServletRequest request, HttpSession session) {
+
+		Map<AucGoodsVO, List<GoodsPhotoVO>> aucMap = aucGoodsService.selectAucByNo(aucNo);
+		request.setAttribute("aucMap", aucMap);
+
+		// 로그인한 멤버 닉네임 가져오기
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+		String memberNick = memberVO.getNickname();
+
+		// 좋아요 한 상품인지 확인
+		LikeVO likeVO = new LikeVO(memberNick, aucNo);
+		LikeVO isLikeVO = aucGoodsService.selectIsLike(likeVO);
+		boolean isLike = false;
+		if (isLikeVO != null) {
+			isLike = true;
+		}
+
+		
+		// 최고 입찰가 구하기
+		// 입찰 기록이 없는 경우 시작가를 최고입찰액으로 설정
+		// 시작가 구하기
+		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
+		int startPrice = aucGoodsVO.getStartPrice();
+
+		// 경매 랭크결과 정보 가져오기(이거로 최고입찰자 정보 추출가능)
+		List<ATranzVO> bidResult = new ArrayList<ATranzVO>();
+		bidResult = bidService.selectBidResult(aucNo);
+		
+		int highestBid = startPrice;
+		if (bidResult != null) {
+			highestBid = bidResult.get(0).getMemberBalance();
+			
+		}
+
+		// 최고 입찰가 구하기 (사장된 버젼)
+		// 입찰 기록이 없는 경우 시작가를 최고입찰액으로 설정
+//		//// 입찰목록 불러오기
+//		List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
+//		bidderList = bidService.selectAAccount(aucNo);
+//		// 시작가 구하기
+//		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
+//		int startPrice = aucGoodsVO.getStartPrice();
+//
+//		int highestBid = 0;
+//		if (bidderList.isEmpty()) {
+//			highestBid = startPrice;
+////			System.out.println("시작가가 최고입찰가: " + highestBid);
+//		} else {
+//			// 입찰 인원수 구하기
+//			request.setAttribute("bidderCnt", bidderList.size());
+//
+//			highestBid = bidderList.get(0).getBidMoney();
+//			for (int i = 1; i < bidderList.size(); i++) {
+//				if (bidderList.get(i).getBidMoney() >= highestBid) {
+//
+//					highestBid = bidderList.get(i).getBidMoney();
+//				}
+//			}
+////			System.out.println("쌓아둔게 최고입찰가: " + highestBid);
+//		}
+
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		request.setAttribute("nowTime", nowTime);
+
+		request.setAttribute("highestBid", highestBid);
+		request.setAttribute("isLike", isLike);
+
+		return "/display/displayDetail";
 	}
 
 	@GetMapping("goodsDetail/{aucNo}")
@@ -126,78 +265,106 @@ public class AucGoodsController {
 		// 최고 입찰가 구하기
 		// 입찰 기록이 없는 경우 시작가를 최고입찰액으로 설정
 		//// 입찰목록 불러오기
-		List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
-		bidderList = bidService.selectAAccount(aucNo);
+//		List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
+//		bidderList = bidService.selectAAccount(aucNo);
 		// 시작가 구하기
-		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
-		int startPrice = aucGoodsVO.getStartPrice();
+//		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
+//		int startPrice = aucGoodsVO.getStartPrice();
 
-		int highestBid = 0;
-		if (bidderList.isEmpty()) {
-			highestBid = startPrice;
-//			System.out.println("시작가가 최고입찰가: " + highestBid);
-		} else {
-			// 입찰 인원수 구하기
-			request.setAttribute("bidderCnt", bidderList.size());
+//		int highestBid = 0;
+//		if (bidderList.isEmpty()) {
+//			highestBid = startPrice;
+////			System.out.println("시작가가 최고입찰가: " + highestBid);
+//		} else {
+//			// 입찰 인원수 구하기
+//			request.setAttribute("bidderCnt", bidderList.size());
+//
+//			highestBid = bidderList.get(0).getBidMoney();
+//			for (int i = 1; i < bidderList.size(); i++) {
+//				if (bidderList.get(i).getBidMoney() >= highestBid) {
+//
+//					highestBid = bidderList.get(i).getBidMoney();
+//				}
+//			}
+////			System.out.println("쌓아둔게 최고입찰가: " + highestBid);
+//		}
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		request.setAttribute("nowTime", nowTime);
 
-			highestBid = bidderList.get(0).getBidMoney();
-			for (int i = 1; i < bidderList.size(); i++) {
-				if (bidderList.get(i).getBidMoney() >= highestBid) {
-
-					highestBid = bidderList.get(i).getBidMoney();
-				}
-			}
-//			System.out.println("쌓아둔게 최고입찰가: " + highestBid);
-		}
-
-		request.setAttribute("highestBid", highestBid);
+//		request.setAttribute("highestBid", highestBid);
 		request.setAttribute("isLike", isLike);
 
 		return "/detail/goodsDetail";
 	}
 
 	@RequestMapping("/goodsCategory/{category}")
-	public String specificCategory(@PathVariable("category")String category, HttpServletRequest request) {
-		
-		Map<String, AucGoodsVO> specCategoryMap = new LinkedHashMap<String, AucGoodsVO>(); 
+	public String specificCategory(@PathVariable("category") String category, HttpServletRequest request) {
+
+		Map<String, AucGoodsVO> specCategoryMap = new LinkedHashMap<String, AucGoodsVO>();
 		specCategoryMap = aucGoodsService.selectSpecificCategory(category);
-		
+
 		// uriname(category)으로 카테고리이름 가져오기
 		CodeVO codeVO = aucGoodsService.selectCodeVO(category);
 		String categoryName = codeVO.getCodeName();
 		
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		
+		request.setAttribute("nowTime", nowTime);
 		request.setAttribute("specCategoryMap", specCategoryMap);
 		request.setAttribute("categoryName", categoryName);
-		
+
 		return "/category/specificCategory";
 	}
-	
+
 	@RequestMapping("/goodsCategory/recommend")
 	public String categoryRecommend(HttpServletRequest request) {
-		
-		Map<String, AucGoodsVO> aucMap = new LinkedHashMap<String, AucGoodsVO>(); 
+
+		Map<String, AucGoodsVO> aucMap = new LinkedHashMap<String, AucGoodsVO>();
 		aucMap = aucGoodsService.selectAllAuc();
 		request.setAttribute("aucMap", aucMap);
-		
+
 		return "/category/recommend";
 	}
-	
+
 	@RequestMapping("/goodsCategory/hot")
 	public String categoryHot(HttpServletRequest request) {
+
+		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
+		hotAucMap = aucGoodsService.selectHotAuc();
 		
-		Map<String, AucGoodsVO> aucMap = new LinkedHashMap<String, AucGoodsVO>(); 
-		aucMap = aucGoodsService.selectAllAuc();
-		request.setAttribute("aucMap", aucMap);
-		
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+
+		request.setAttribute("nowTime", nowTime);
+		request.setAttribute("aucMap", hotAucMap);
+
 		return "/category/hot";
 	}
-	
+
 	@RequestMapping("/hot")
 	public String mainHot(HttpServletRequest request) {
 
-		Map<String, AucGoodsVO> aucMap = new LinkedHashMap<String, AucGoodsVO>(); 
-		aucMap = aucGoodsService.selectAllAuc();
-		request.setAttribute("aucMap", aucMap);
+		
+//		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+//		System.out.println("hot에서 멤버"+memberVO);
+
+		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
+		hotAucMap = aucGoodsService.selectHotAuc();
+		request.setAttribute("aucMap", hotAucMap);
+
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		request.setAttribute("nowTime", nowTime);
 
 		return "/home/hot";
 	}

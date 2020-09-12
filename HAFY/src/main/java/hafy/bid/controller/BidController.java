@@ -1,5 +1,7 @@
 package hafy.bid.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,34 +36,51 @@ public class BidController {
 	@Autowired
 	private BidService bidService;
 
-//	@Scheduled(cron = "0 37 16 * * *")
-//	public void schedulerTest() {
-//		System.out.println("스케쥴러가 잘 작동하나?");
+	@Scheduled(cron = "0 * * * * *")
+	public void schedulerTest() {
+		System.out.println("매분 10초에 스케쥴러가 잘 작동하나?");
+		
+	}
+	
+//	@Scheduled(cron = "0/5 * * * * *")
+//	public void schedulerTest2() {
+//		System.out.println("5초마다 스케쥴러가 잘 작동하나?");
 //		
 //	}
 
 	@GetMapping("/bidHistory/{aucNo}")
 	public String bidHistory(@PathVariable("aucNo") int aucNo, HttpServletRequest request) {
 
-		// 특정 경매의 입출금 내역 구하기
-		List<ATranzVO> aTranzList = new ArrayList<ATranzVO>();
-		aTranzList = bidService.selectATranzByAucNo(aucNo);
-		request.setAttribute("aTranzList", aTranzList);
+		// 특정경매의 마감시간 가져오려고 vo 구하기
+		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
 
-		// 특정 경매의 모임통장 정보 가져오기 (경매자, 입찰액)
-		List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
-		bidderList = bidService.selectAAccount(aucNo);
+		if (aucGoodsVO.getWinningBid() != 0) {
 
-		// 최고 입찰가 구하기
-		int highestBid = bidderList.get(0).getBidMoney();
-		for (int i = 1; i < bidderList.size(); i++) {
-//			System.out.println("다음 입찰액은? " + bidderList.get(i).getBidMoney());
-			if (bidderList.get(i).getBidMoney() >= highestBid) {
+			// 특정 경매의 입출금 탭 정보 구하기
+			List<ATranzVO> aTranzList = new ArrayList<ATranzVO>();
+			aTranzList = bidService.selectATranzByAucNo(aucNo);
 
-				highestBid = bidderList.get(i).getBidMoney();
-			}
+			// 특정 경매의 모임통장 정보 가져오기 (경매자, 입찰액) / 경매참여자 탭에서 필요한 정도
+			List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
+			bidderList = bidService.selectAAccount(aucNo);
+
+			// 경매 랭크결과 정보 가져오기(이거로 경매결과탭, 최고입찰자 정보 추출가능)
+			List<ATranzVO> bidResult = new ArrayList<ATranzVO>();
+			bidResult = bidService.selectBidResult(aucNo);
+
+			request.setAttribute("aTranzList", aTranzList);
+			request.setAttribute("bidderList", bidderList);
+			request.setAttribute("bidResult", bidResult);
+
 		}
-		request.setAttribute("bidderList", bidderList);
+
+		// 현재시간 가져오기
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+
+		request.setAttribute("nowTime", nowTime);
+		request.setAttribute("aucGoodsVO", aucGoodsVO);
 
 		return "/aAccount/bidHistory";
 	}
@@ -80,13 +99,13 @@ public class BidController {
 
 		// 현 로그인한 회원이 여태 입찰한 금액 불러오기
 		int pastBidMoney = 0;
-		
+
 		List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
 		bidderList = bidService.selectAAccount(aucNo);
 
 		if (bidderList != null) {
 			for (AAccountVO a : bidderList) {
-				if(a.getBidderNick().equals(memberNick)) {
+				if (a.getBidderNick().equals(memberNick)) {
 					pastBidMoney = a.getBidMoney();
 					break;
 				}
@@ -96,14 +115,14 @@ public class BidController {
 		// 최고 입찰가 구하기
 		// 입찰 기록이 없는 경우 시작가를 최고입찰액으로 설정
 		//// 입찰목록 불러오기
-		System.out.println(bidderList);
+//		System.out.println(bidderList);
 		//// 시작가
 		int startPrice = aucGoodsVO.getStartPrice();
 
 		int highestBid = 0;
 		if (bidderList.isEmpty()) {
 			highestBid = startPrice;
-			System.out.println("시작가가 최고입찰가: " + highestBid);
+//			System.out.println("시작가가 최고입찰가: " + highestBid);
 		} else {
 			highestBid = bidderList.get(0).getBidMoney();
 			for (int i = 1; i < bidderList.size(); i++) {
@@ -112,10 +131,10 @@ public class BidController {
 					highestBid = bidderList.get(i).getBidMoney();
 				}
 			}
-			System.out.println("쌓아둔게 최고입찰가: " + highestBid);
+//			System.out.println("쌓아둔게 최고입찰가: " + highestBid);
 		}
-		
-		System.out.println("과거 입찰액: " +pastBidMoney);
+
+//		System.out.println("과거 입찰액: " + pastBidMoney);
 		request.setAttribute("pastBidMoney", pastBidMoney);
 		request.setAttribute("mAccountList", mAccountList);
 		request.setAttribute("highestBid", highestBid);

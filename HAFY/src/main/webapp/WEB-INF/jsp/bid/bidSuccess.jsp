@@ -183,14 +183,14 @@ table th img {
   
               <div class="na-content" style="text-align: center;">
               
-              <img style="width: 6rem; margin-top: 3rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
+              <img style="width: 6rem; margin-top: 1.4rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
               <div style="margin-bottom:1rem; font-size: 1.6rem;">
               <div style="margin-bottom: 0.7rem;">
               ${bidMoney } 원으로<br>
               입찰에 성공하셨습니다.
               </div>
               <div>
-              현재 최고입찰자가<br>
+              현재 최고 입찰자가<br>
               되셨습니다.
               </div>
                </div>

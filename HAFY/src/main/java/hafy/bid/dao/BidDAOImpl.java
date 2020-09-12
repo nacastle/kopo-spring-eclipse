@@ -2,6 +2,7 @@ package hafy.bid.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,23 @@ public class BidDAOImpl implements BidDAO {
 	
 	
 	
+
+
+	@Override
+	public List<Integer> selectMemberClosedAuc(String memberNick) {
+		// TODO Auto-generated method stub
+		List<Integer> aucNoList = new ArrayList<Integer>(); 
+		aucNoList =	sqlSession.selectList("bid.dao.BidDAO.selectMemberClosedAuc",memberNick);
+		return aucNoList;
+	}
+
+	@Override
+	public List<ATranzVO> selectBidResult(int aucNo) {
+		// TODO Auto-generated method stub
+		List<ATranzVO> bidResult = new ArrayList<ATranzVO>();
+		bidResult = sqlSession.selectList("bid.dao.BidDAO.selectBidResult", aucNo);
+		return bidResult;
+	}
 
 	@Override
 	public void updateWinningBid(AAccountVO aAccountVO) {
@@ -61,6 +79,14 @@ public class BidDAOImpl implements BidDAO {
 		sqlSession.update("bid.dao.BidDAO.addBidMoney",aAccountVO);
 				
 	}
+	
+	@Override
+	public void withdrawBidMoney(AAccountVO aAccountVO) {
+		// TODO Auto-generated method stub
+		sqlSession.update("bid.dao.BidDAO.withdrawBidMoney",aAccountVO);
+				
+	}
+
 
 	@Override
 	public void insertBidTranz(ATranzVO aTranzVO) {

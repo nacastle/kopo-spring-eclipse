@@ -21,6 +21,28 @@
 	<result column="bid_money" property="bidMoney" />
 </resultMap>
 
+<!-- 사용자가 입찰한 경매 중 마감된 경매 번호 구하기 -->
+<select id="selectMemberClosedAuc" parameterType="String" resultType="int">
+	select auc_no
+	from 
+	    HF_AUC_GOODS g,
+	    (select auc_no from HF_A_ACCOUNT
+	    where bidder_nick = #{memberNick}) s
+	where s.auc_no = g.no and g.end_date <![CDATA[<]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+	order by auc_no desc
+</select>
+
+<select id="selectBidResult" parameterType="int" resultMap="aTranzMap">
+	
+	select tranz_member_nick, sum(tranz_money) as member_balance
+	from hf_a_tranz	
+<!-- 	where auc_no = #{aucNo} and to_char(tranz_date,'YYYY-MM-DD HH24:MI') <![CDATA[<]]> TO_CHAR((select end_date from hf_auc_goods where no = #{aucNo}),'YYYY-MM-DD HH24:MI') -->
+	where auc_no = #{aucNo} and to_char(tranz_date,'YYYY-MM-DD HH24:MI') <![CDATA[<]]> (select end_date from hf_auc_goods where no = #{aucNo})
+	group by tranz_member_nick
+	order by sum(tranz_money) desc
+
+</select>
+
 <update id="updateWinningBid">
 	update hf_auc_goods 
 	set winning_bid = #{bidMoney}
@@ -39,6 +61,23 @@
 	where auc_no = #{aucNo} and bidder_nick = #{bidderNick}
 </update>
 
+<update id="withdrawBidMoney" parameterType="aAccountVO">
+	update hf_a_account 
+	set bid_money = bid_money - #{bidMoney}
+	where auc_no = #{aucNo} and bidder_nick = #{bidderNick}
+</update>
+
+
+<!-- 매입확정 후 경매모임통장에서 빠자나간 돈 입출금 기록 남기기 -->
+<!-- <insert id="insertBidTranz" parameterType="aTranzVO"> -->
+<!-- 	insert into hf_a_tranz(tranz_account_no, tranz_money, tranz_member_nick, tranz_type, auc_no, member_balance) -->
+<!-- 		values( -->
+<!-- 		#{tranzAccountNo}, #{tranzMoney}, #{tranzMemberNick}, #{tranzType}, #{aucNo}, -->
+<!-- 			(select bid_money from hf_a_account where bidder_nick = #{tranzMemberNick} and auc_no = #{aucNo} ) + #{tranzMoney}  -->
+<!-- 		 ) -->
+<!-- </insert> -->
+
+<!-- 입찰기록이 있을때 입출금 기록 남기기 -->
 <insert id="insertBidTranz" parameterType="aTranzVO">
 	insert into hf_a_tranz(tranz_account_no, tranz_money, tranz_member_nick, tranz_type, auc_no, member_balance)
 		values(
@@ -47,6 +86,7 @@
 		 )
 </insert>
 
+<!-- 입찰기록이 없을때 입출금 기록 남기기 -->
 <insert id="insertBidTranzNoBalance" parameterType="aTranzVO">
 	insert into hf_a_tranz(tranz_account_no, tranz_money, tranz_member_nick, tranz_type, auc_no, member_balance)
 		values(
@@ -68,8 +108,10 @@
 </select>
 
 <select id="selectATranzByAucNo" parameterType="int"  resultMap="aTranzMap">
-	select *
-		from hf_a_tranz
+	select 
+		to_char(tranz_date,'YYYY-MM-DD HH24:MI:SS') as tranz_date, tranz_account_no, tranz_money, 
+		tranz_member_nick, tranz_type, auc_no, member_balance 
+	from hf_a_tranz
 	where auc_no = #{aucNo}
 	order by tranz_date desc
 </select>

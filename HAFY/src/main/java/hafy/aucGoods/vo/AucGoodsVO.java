@@ -15,6 +15,7 @@ public class AucGoodsVO {
 	private int viewCnt;
 	private int likeCnt;
 	private int winningBid;
+	private String purchaseConfirm;
 
 	
 	
@@ -24,6 +25,35 @@ public class AucGoodsVO {
 	}
 	
     	
+	public AucGoodsVO(int no, String name, String memberNick, String category, String detail, String regDate,
+			String method, int startPrice, String startDate, String endDate, int viewCnt, int likeCnt, int winningBid,
+			String purchaseConfirm) {
+		super();
+		this.no = no;
+		this.name = name;
+		this.memberNick = memberNick;
+		this.category = category;
+		this.detail = detail;
+		this.regDate = regDate;
+		this.method = method;
+		this.startPrice = startPrice;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.viewCnt = viewCnt;
+		this.likeCnt = likeCnt;
+		this.winningBid = winningBid;
+		this.purchaseConfirm = purchaseConfirm;
+	}
+
+
+	public String getPurchaseConfirm() {
+		return purchaseConfirm;
+	}
+
+	public void setPurchaseConfirm(String purchaseConfirm) {
+		this.purchaseConfirm = purchaseConfirm;
+	}
+
 	public int getWinningBid() {
 		return winningBid;
 	}
@@ -108,13 +138,12 @@ public class AucGoodsVO {
 	}
 
 
-
 	@Override
 	public String toString() {
 		return "AucGoodsVO [no=" + no + ", name=" + name + ", memberNick=" + memberNick + ", category=" + category
 				+ ", detail=" + detail + ", regDate=" + regDate + ", method=" + method + ", startPrice=" + startPrice
 				+ ", startDate=" + startDate + ", endDate=" + endDate + ", viewCnt=" + viewCnt + ", likeCnt=" + likeCnt
-				+ ", winningBid=" + winningBid + "]";
+				+ ", winningBid=" + winningBid + ", purchaseConfirm=" + purchaseConfirm + "]";
 	}
 
 	

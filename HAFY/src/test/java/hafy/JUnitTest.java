@@ -2,6 +2,7 @@ package hafy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -14,11 +15,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import hafy.aucGoods.dao.AucGoodsDAO;
+import hafy.aucGoods.service.AucGoodsService;
 import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
+import hafy.bid.dao.BidDAO;
 import hafy.bid.service.BidService;
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.ATranzVO;
+import hafy.member.vo.MemberVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = {"classpath:config/spring/spring-mvc.xml"})
@@ -33,7 +37,68 @@ public class JUnitTest {
 	private DataSource ds;
 	@Autowired
 	private AucGoodsDAO aucGoodsDAO;
+	@Autowired
+	private BidDAO bidDAO;
+	@Autowired
+	private AucGoodsService aucGoodsService;
 
+	
+	
+	
+	@Ignore
+	@Test
+	public void 사용자입찰경매중_마감된경매구하기() {
+		// TODO Auto-generated method stub
+		
+		
+		List<Integer> list = sqlSession.selectList("bid.dao.BidDAO.selectMemberClosedAuc", "nacastle");
+		
+		for ( Integer i : list) {
+			System.out.println(i);
+		}
+		
+	}
+	
+	@Ignore
+	@Test
+	public void 경매결과구하기 (){
+		// TODO Auto-generated method stub
+		List<ATranzVO> bidResultList = bidDAO.selectBidResult(137);
+		for ( ATranzVO i : bidResultList) {
+			System.out.println(i);
+		}
+	}
+	
+//	@Ignore
+	@Test
+	public void 사용자가낙찰성공한_경매구하기() {
+		// TODO Auto-generated method stub
+		
+		Map<String, AucGoodsVO> map = aucGoodsService.selectWinBidMap("nacastle");
+		for (String key : map.keySet()) {
+
+			AucGoodsVO value = map.get(key);
+			System.out.println("key: " + key + "value: " + value);
+
+		}
+	}
+	
+	@Ignore
+	@Test
+	public void 로그인테스트() {
+		// TODO Auto-generated method stub
+		
+		MemberVO m = new MemberVO();
+		m.setNickname("nacastle");
+		m.setTranzPwd("1212q");
+		
+		MemberVO memberVO = sqlSession.selectOne("member.dao.MemberDAO.checkLogin", m);
+
+		System.out.println("로그인한애: " +memberVO);
+
+	}
+	
+	
 	@Ignore
 	@Test
 	public void 테스트해보기() throws Exception {
@@ -51,6 +116,23 @@ public class JUnitTest {
 		
 	}
 	
+	
+	@Ignore
+	@Test
+	public void 인기경매테스트() {
+		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
+		aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectHotAucContents");
+		
+		System.out.println("인기경매 테스트");
+		
+		for(AucGoodsVO a : aucList) {
+			System.out.println(a);
+		}
+		
+		System.out.println("경매수: " + aucList.size());
+	}
+	
+	@Ignore
 	@Test
 	public void 검색테스트() {
 		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
@@ -95,6 +177,8 @@ public class JUnitTest {
 //		List<ATranzVO> aTranzList = sqlSession.selectList("bid.dao.BidDAO.selectATranzByAucNo",124);
 //		
 //	}
+	
+	
 
 	@Ignore
 	@Test
@@ -105,6 +189,7 @@ public class JUnitTest {
 		for (ATranzVO a : aTranzList) {
 			System.out.println(a);
 		}
+		System.out.println("거래개수: " + aTranzList.size());
 
 	}
 

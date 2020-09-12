@@ -18,6 +18,16 @@ public class BidServiceImpl implements BidService {
 	@Autowired
 	private BidDAO bidDAO;
 
+	
+	
+	@Override
+	public List<ATranzVO> selectBidResult(int aucNo) {
+		// TODO Auto-generated method stub
+		List<ATranzVO> bidResult = new ArrayList<ATranzVO>();
+		bidResult = bidDAO.selectBidResult(aucNo); 
+		return bidResult;
+	}
+
 	@Override
 	public List<ATranzVO> selectATranzByAucNo(int aucNo) {
 		// TODO Auto-generated method stub

@@ -17,23 +17,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="code"/>
+		<item key="selection" value="login"/>
 		<list key="findhistory">
-			<item value="code"/>
-			<item value="goodsCate"/>
-			<item value="auc"/>
-			<item value="cate"/>
-			<item value="{"/>
-			<item value="goCategory"/>
-			<item value="인기추처"/>
-			<item value="인기"/>
-			<item value="hot"/>
-			<item value="home"/>
-			<item value="footer"/>
-			<item value="bx-view"/>
-			<item value="selectATranzByAucNo"/>
-			<item value="List"/>
-			<item value="conten"/>
+			<item value="login"/>
+			<item value="mypage"/>
+			<item value="mypafw"/>
+			<item value="heart"/>
+			<item value="print"/>
+			<item value="detail"/>
+			<item value="최고"/>
+			<item value="아직 진"/>
+			<item value="아직"/>
+			<item value="img"/>
+			<item value="내역"/>
+			<item value="&lt;!"/>
+			<item value="!--"/>
+			<item value="&lt;/h3"/>
+			<item value="&lt;/h3&gt;&lt;p&gt;"/>
 		</list>
 		<list key="replacehistory">
 			<item value="tranzDate"/>
