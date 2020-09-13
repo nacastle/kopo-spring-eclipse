@@ -18,7 +18,7 @@ public class MAccountDAOImpl implements MAccountDAO{
 	
 	
 	@Override
-	public void depositWinBidMoney(Map<String, Object> depositInfo) {
+	public void depositMAccount(Map<String, Object> depositInfo) {
 		// TODO Auto-generated method stub
 		sqlSession.update("mAccount.dao.MAccountDAO.depositMAccount", depositInfo);
 		

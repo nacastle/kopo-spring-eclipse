@@ -18,7 +18,7 @@
 	where account_no = #{mAccountNo}
 </update>
 
-<!-- 판매자가 낙찰된 돈 받기 -->
+<!-- 판매자가 낙찰된 돈 받기 / 비낙찰자가 낙찰실패한 돈 환급받기 -->
 <update id="depositMAccount" parameterType="map">
 	update hf_m_account
 		set balance = balance + #{winBidMoney}

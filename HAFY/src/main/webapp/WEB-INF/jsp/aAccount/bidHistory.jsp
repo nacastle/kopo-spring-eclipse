@@ -191,7 +191,7 @@ table th img {
     <%--    입찰내역된 적이 없으면 --%>
 	     	<c:when test="${aucGoodsVO.winningBid == 0 }">
 	     			<div style="text-decoration: underline;"><div>경매시작가</div></div>
-	    			<div style="font-size: 1.5rem; font-weight: bold;">${aucGoodsVO.startPrice } 원 </div>
+	    			<div style="font-size: 1.5rem; font-weight: bold;">&nbsp;${aucGoodsVO.startPrice } 원 </div>
 	     	</c:when>
 	    <c:otherwise>
      
@@ -200,11 +200,11 @@ table th img {
 			    	<c:choose>
 			    		<c:when test="${nowTime < aucGoodsVO.endDate }">
 			    			<div style="text-decoration: underline;"><div>최고입찰가</div></div>
-			    			<div style="font-size: 1.5rem; font-weight: bold;">${result.memberBalance } 원 (${result.tranzMemberNick })</div>
+			    			<div style="font-size: 1.5rem; font-weight: bold;">&nbsp;${result.memberBalance } 원 (${result.tranzMemberNick }) </div>
 			    		</c:when>
 			    		<c:otherwise>
 			    			<div style="text-decoration: underline;"><div>낙찰가</div></div>
-			    			<div style="font-size: 1.5rem; font-weight: bold; background: rgb(26, 188, 156); display: inline-block;">${result.memberBalance } 원 (${result.tranzMemberNick }) &nbsp; </div>
+			    			<div style="font-size: 1.5rem; font-weight: bold; background: rgb(26, 188, 156); display: inline-block;">&nbsp;${result.memberBalance } 원 (${result.tranzMemberNick })&nbsp;</div>
 			    		</c:otherwise>
 			    	</c:choose>
 		    	</c:forEach>
@@ -215,9 +215,9 @@ table th img {
 	
 	<nav class="na-nav">
 			<div>
-				<a class="top-on" onclick="showHistory()" href="#"><span>입/출금</span></a> 
-				<a href="#" onclick="showRank()"><span>경매참여자</span></a> 
-				<a href="#" onclick="result()" ><span>경매결과</span></a> 
+				<a class="top-on" href="#" onclick="showRank()"><span>경매참여자</span></a> 
+				<a onclick="showHistory()" href="#"><span>입/출금</span></a> 
+				<a onclick="result()" href="#" ><span>경매결과</span></a> 
 				<span></span>
 			</div>
 
@@ -246,7 +246,7 @@ table th img {
 	
 	
 <%-- 	입/출금내역 탭 --%>
-		<table class="table table-hover history" style="margin: 0 auto; width: 96%; margin-top: .5rem;margin-bottom: 3.5rem; ">
+		<table class="table table-hover history" style="display:none; margin: 0 auto; width: 96%; margin-top: .5rem;margin-bottom: 3.5rem; ">
 			<tbody>
 				
 	  <c:forEach items="${aTranzList }" var="aTranzVO" >
@@ -280,7 +280,7 @@ table th img {
 		</table>
 
 		<%-- 경매참여자 탭 --%>
-		<table class="table table-hover rank" style="display:none; margin-bottom: 0rem; font-weight: bold; margin: 0 auto; width: 96%; margin-top: .5rem;">
+		<table class="table table-hover rank" style="margin-bottom: 0rem; font-weight: bold; margin: 0 auto; width: 96%; margin-top: .5rem;">
 			<tbody>
 			 <c:forEach items="${bidderList}" var="bidder" varStatus="i">
 				<tr>

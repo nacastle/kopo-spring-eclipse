@@ -18,8 +18,9 @@ public interface AucGoodsService {
 	AucGoodsVO selectAucGoodsByNo(int aucNo);
 	Map<String, AucGoodsVO> selectAllAuc();
 	Map<String, AucGoodsVO> selectHotAuc();
+	Map<String, AucGoodsVO> selectRecentAuc();
 	Map<String, AucGoodsVO> selectSpecificCategory(String category);
-	Map<AucGoodsVO, List<GoodsPhotoVO>> selectAucByNo(int aucNo);
+	Map<AucGoodsVO, List<GoodsPhotoVO>> selectAucByNo(int aucNo, String memberNick);
 	void incrementLikeCnt(int aucNo);
 	void decrementLikeCnt(int aucNo);
 	void insertLike(LikeVO likeVO);

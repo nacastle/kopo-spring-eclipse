@@ -45,13 +45,13 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		
 		// 경매모입통장에서 낙찰자의 낙찰액 빠져나가기
 		AAccountVO withdrawAaccountVO = new AAccountVO((Integer)transferMap.get("aucNo"), (String)transferMap.get("winner"), (Integer)transferMap.get("winBidMoney"));
-		bidDAO.withdrawBidMoney(withdrawAaccountVO);
+		bidDAO.withdrawAAccount(withdrawAaccountVO);
 		
 		// 낙찰액 판매자 계좌로 입금되기
 		Map<String, Object> depositInfo = new HashMap<String, Object>();
 		depositInfo.put("mAccountNo",(String)transferMap.get("sellerAccount"));
 		depositInfo.put("winBidMoney",(Integer)transferMap.get("winBidMoney"));
-		mAccountDAO.depositWinBidMoney(depositInfo);
+		mAccountDAO.depositMAccount(depositInfo);
 		
 		
 		
@@ -143,17 +143,20 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 
 	@Transactional
 	@Override
-	public Map<AucGoodsVO, List<GoodsPhotoVO>> selectAucByNo(int aucNo) {
+	public Map<AucGoodsVO, List<GoodsPhotoVO>> selectAucByNo(int aucNo, String memberNick) {
 		// TODO Auto-generated method stub
 
-		aucGoodsDAO.incrementViewCnt(aucNo);
 
 		Map<AucGoodsVO, List<GoodsPhotoVO>> aucMap = new HashMap<AucGoodsVO, List<GoodsPhotoVO>>();
 
 		AucGoodsVO aucGoodsVO = aucGoodsDAO.selectAucGoodsByNo(aucNo);
 		List<GoodsPhotoVO> goodsPhotoList = aucGoodsDAO.selectPhotoListByAucNo(aucNo);
-
 		aucMap.put(aucGoodsVO, goodsPhotoList);
+		
+//		판매자가 조회한 경매는 조회수 안늘어나게끔
+		if (!aucGoodsVO.getMemberNick().equals(memberNick)) {
+			aucGoodsDAO.incrementViewCnt(aucNo);
+		}
 
 		return aucMap;
 	}
@@ -167,7 +170,6 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 	@Override
 	public int genAucNo() {
 		// TODO Auto-generated method stub
-
 		int aucNo = aucGoodsDAO.genAucNo();
 
 		return aucNo;
@@ -216,21 +218,42 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 	@Override
 	public Map<String, AucGoodsVO> selectHotAuc() {
 		// TODO Auto-generated method stub
-
+		
 		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
 		List<AucGoodsVO> hotAucList = new ArrayList<AucGoodsVO>();
 		hotAucList = aucGoodsDAO.selectHotAucContents();
-
+		
 		for (AucGoodsVO auc : hotAucList) {
+			
+			int aucNo = auc.getNo();
+			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+			String firstPhoto = photoList.get(0);
+			
+			hotAucMap.put(firstPhoto, auc);
+			
+		}
+		return hotAucMap;
+	}
+	
+	@Transactional
+	@Override
+	public Map<String, AucGoodsVO> selectRecentAuc() {
+		// TODO Auto-generated method stub
+
+		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
+		List<AucGoodsVO> recentAucList = new ArrayList<AucGoodsVO>();
+		recentAucList = aucGoodsDAO.selectRecentAucContents();
+
+		for (AucGoodsVO auc : recentAucList) {
 
 			int aucNo = auc.getNo();
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
-			hotAucMap.put(firstPhoto, auc);
+			recentAucMap.put(firstPhoto, auc);
 
 		}
-		return hotAucMap;
+		return recentAucMap;
 	}
 
 	@Transactional

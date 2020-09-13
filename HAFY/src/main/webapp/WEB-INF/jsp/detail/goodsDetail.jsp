@@ -230,7 +230,7 @@ height: 16rem!important;
               	</div>
               	
               	<div style="  white-space:pre-line;  margin-bottom: 0.6rem;">
-					${auc.key.detail }
+					${auc.key.detail } 
               	
               	</div>
               	
@@ -275,11 +275,14 @@ height: 16rem!important;
 				</c:when>
 				
 				<c:when test="${nowTime >= auc.key.startDate and nowTime < auc.key.endDate }">
-			
-					<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
-						style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; 
-						height: 2.2rem; width: 7.8rem;">경매현황</button>
-						
+				
+				<c:choose>
+					<c:when test="${isBid == true }">
+						<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
+							style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; 
+							height: 2.2rem; width: 7.8rem;">경매현황</button>
+					</c:when>
+				</c:choose>
 					<button class="btn btn-warning " onclick="goBidForm(${auc.key.no })"
 						style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: orange; 
 						border: orange; vertical-align: middle; height: 2.2rem; width: 7.8rem;">입찰하기</button>

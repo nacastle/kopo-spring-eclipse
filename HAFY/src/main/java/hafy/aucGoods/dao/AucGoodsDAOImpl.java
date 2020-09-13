@@ -23,6 +23,14 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 	
 	
 	@Override
+	public void updateRefundStatus(int aucNo) {
+		// TODO Auto-generated method stub
+		sqlSession.update("auction.dao.AucGoodsDAO.updateRefundStatus",aucNo);
+	}
+
+
+
+	@Override
 	public void updatePurchaseConfirm(int aucNo) {
 		// TODO Auto-generated method stub
 		sqlSession.update("auction.dao.AucGoodsDAO.updatePurchaseConfirm",aucNo);
@@ -35,6 +43,13 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 		// TODO Auto-generated method stub
 		List<AucGoodsVO> hotAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectHotAucContents");
 		return hotAucList;
+	}
+	
+	@Override
+	public List<AucGoodsVO> selectRecentAucContents() {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> recentAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectRecentAucContents");
+		return recentAucList;
 	}
 
 

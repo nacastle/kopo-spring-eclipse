@@ -283,7 +283,8 @@ table th img {
 				return false;
 			}	
 		} else {
-			if (parseInt(bidMoney) + ${pastBidMoney} <= winningBid) {
+			if (parseInt(bidMoney) <= winningBid) {
+// 			if (parseInt(bidMoney) + ${pastBidMoney} <= winningBid) { (과거버전)
 				$("#bidError").show();
 				return false;
 			}

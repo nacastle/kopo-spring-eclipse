@@ -16,4 +16,10 @@ public interface BidService {
 	// 마감이전의 총입금액 아이디로 그룹바이해서 입찰랭킹 가져오기
 	List<ATranzVO> selectBidResult(int aucNo);
 	
+	// 마감후 낙찰제외 돈 환급
+	void refundBidMoney();
+	
+	// 사용자가 특정 경매 입찰중인지 아닌지
+	AAccountVO isBidding(AAccountVO aAccountVO);
+	
 }

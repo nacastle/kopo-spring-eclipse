@@ -107,6 +107,12 @@
 		where no = #{aucNo}
 	</update>
 	
+	<update id="updateRefundStatus" parameterType="int">
+		update hf_auc_goods 
+			set refund_status = '환급완료'
+		where no = #{aucNo}
+	</update>
+	
 	<insert id="insertAucGoods" parameterType="aucGoodsVO">
 		insert into hf_auc_goods(no, reg_date, name, method, category,
 			start_price, start_date, end_date, detail, member_nick)
@@ -176,7 +182,7 @@
 		 order by reg_date desc
 	</select>
 	                                                     
-	<select id="selectHotAucContents" resultType="aucGoodsVO" resultMap="aucGoodsMap">      
+	<select id="selectHotAucContents" resultMap="aucGoodsMap">      
 				select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
 				view_cnt, like_cnt , winning_bid, 
                 (select count(*) from hf_a_tranz t where t.auc_no = g.no and tranz_type = '입금') as bid_cnt,
@@ -184,6 +190,13 @@
 		 from hf_auc_goods g
 		 where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 		 order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc, reg_date desc
+	</select>                                                     
+	            
+	<select id="selectRecentAucContents" resultMap="aucGoodsMap">      
+				select *
+		 from hf_auc_goods
+		 where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+		 order by reg_date desc
 	</select>                                                     
 	            
 	            

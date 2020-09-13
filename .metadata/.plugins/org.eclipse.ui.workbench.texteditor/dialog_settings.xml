@@ -17,23 +17,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="login"/>
+		<item key="selection" value="낙찰가"/>
 		<list key="findhistory">
-			<item value="login"/>
-			<item value="mypage"/>
-			<item value="mypafw"/>
-			<item value="heart"/>
-			<item value="print"/>
-			<item value="detail"/>
-			<item value="최고"/>
-			<item value="아직 진"/>
-			<item value="아직"/>
-			<item value="img"/>
-			<item value="내역"/>
-			<item value="&lt;!"/>
-			<item value="!--"/>
-			<item value="&lt;/h3"/>
-			<item value="&lt;/h3&gt;&lt;p&gt;"/>
+			<item value="낙찰가"/>
+			<item value="nowtime"/>
+			<item value="bidderCnt"/>
+			<item value="goodsdet"/>
+			<item value="입찰중"/>
+			<item value="end_date"/>
+			<item value="end_daTe"/>
+			<item value="ResultType"/>
+			<item value="ResultType "/>
+			<item value="start_date"/>
+			<item value="ATranzVO aTranzVO = new ATranzVO(aucNo, bidderAccountNo, -refundMoney, bidderNick, &quot;출금&quot;);"/>
+			<item value="update"/>
+			<item value="withdrawBidMoney"/>
+			<item value="selectBidResult"/>
+			<item value="&#x09;http://www.springframework.org/schema/task"/>
 		</list>
 		<list key="replacehistory">
 			<item value="tranzDate"/>

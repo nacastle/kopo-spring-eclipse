@@ -36,10 +36,16 @@ public class BidController {
 	@Autowired
 	private BidService bidService;
 
-	@Scheduled(cron = "0 * * * * *")
-	public void schedulerTest() {
-		System.out.println("매분 10초에 스케쥴러가 잘 작동하나?");
-		
+	
+	/**
+	 * 1. 경매가 마감된건들에 대하여
+	 * 2. 낙찰액을 제외한 입찰액들을
+	 * 3. 본래 입찰자 계좌로 환급  (사용자들은 적어도 한 계좌 이상이 어플에 등록돼있어야) / 경매모임통장에 입출금 내역 남기고 / 해당 경매모임통장에서 돈 빠져나가고
+	 */	
+	@Scheduled(cron = "10 * * * * *")
+	public void refundBidMoney() {
+		System.out.println("매분 10초에 환급 알고리즘 도는중...");
+		bidService.refundBidMoney();
 	}
 	
 //	@Scheduled(cron = "0/5 * * * * *")
@@ -195,7 +201,7 @@ public class BidController {
 		// 회원 닉네임 받아오기
 		String bidderNick = memberVO.getNickname();
 
-		// 경매모임계좌에 거래내역(입찰,반환) 추가하기
+		// 경매모임계좌에 거래내역(입찰,환급) 추가하기
 		ATranzVO aTranzVO = new ATranzVO();
 		aTranzVO.setAucNo(aucNo);
 		aTranzVO.setTranzAccountNo(mAccountNo);
@@ -205,7 +211,7 @@ public class BidController {
 
 		bidService.insertBidTranz(aTranzVO);
 
-		// 경매모임계좌(hf_a_account) 입찰자 명단에 입찰자, 입찰액 추가하기 (처음 입찰 case + 두번째 이상 입찰 case)
+		// 경매모임계좌(hf_a_account) 입찰자 명단에 입찰자, 입찰액 추가하기 (처음 입찰 case / 두번째 이상 입찰 case 나뉨)
 		AAccountVO aAccountVO = new AAccountVO(aucNo, bidderNick, bidMoney);
 		bidService.bidding(aAccountVO);
 

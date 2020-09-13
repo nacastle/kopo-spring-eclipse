@@ -22,6 +22,14 @@ public class BidDAOImpl implements BidDAO {
 
 
 	@Override
+	public List<Integer> selectNotRefundAucList() {
+		// TODO Auto-generated method stub
+		List<Integer> notRefundAucList = new ArrayList<Integer>(); 
+		notRefundAucList = sqlSession.selectList("bid.dao.BidDAO.selectNotRefundAucList");
+		return notRefundAucList;
+	}
+
+	@Override
 	public List<Integer> selectMemberClosedAuc(String memberNick) {
 		// TODO Auto-generated method stub
 		List<Integer> aucNoList = new ArrayList<Integer>(); 
@@ -81,7 +89,7 @@ public class BidDAOImpl implements BidDAO {
 	}
 	
 	@Override
-	public void withdrawBidMoney(AAccountVO aAccountVO) {
+	public void withdrawAAccount(AAccountVO aAccountVO) {
 		// TODO Auto-generated method stub
 		sqlSession.update("bid.dao.BidDAO.withdrawBidMoney",aAccountVO);
 				

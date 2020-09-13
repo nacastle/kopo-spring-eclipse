@@ -1,5 +1,6 @@
 package hafy.bid.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,9 @@ public interface BidDAO {
 	List<Integer> selectMemberClosedAuc(String memberNick);
 	
 	// 경매모임통장에서 출금된 돈만큼 빠져나가기 (AAccount 업데이트)
-	void withdrawBidMoney(AAccountVO aAccountVO);
+	void withdrawAAccount(AAccountVO aAccountVO);
+	
+	// 마감된 경매 중 환급이 안된 경매번호 리스트 구하기
+	List<Integer> selectNotRefundAucList();
 
 }
