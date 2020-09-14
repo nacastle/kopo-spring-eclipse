@@ -93,42 +93,38 @@ body {
 .table th {
 	width: 40%;
 	height: 5rem;
- 	vertical-align: middle; 
- 	padding: 0; 
+	vertical-align: middle;
+	padding: 0;
 	text-align: center;
 }
 
 .table td {
-
-padding: 0.3rem;
-padding-top: 0.5rem;
-
+	padding: 0.3rem;
+	padding-top: 0.5rem;
 }
 
- 
- table th img {
+table th img {
 	max-width: 100%;
 	max-height: 100%;
-/* 	width: 100%; */
+	/* 	width: 100%; */
 	padding: 0.3rem;
 }
 
 .ongoing {
-background: rgb(26, 188, 156);
+	background: rgb(26, 188, 156);
 }
 
 .waiting {
-background: rgb(243, 156, 18);
+	background: rgb(243, 156, 18);
 }
 
 .urgent {
-background: rgb(231, 76, 60);
+	background: rgb(231, 76, 60);
 }
 
 .closed {
-background: rgb(190, 190, 190);
+	background: rgb(190, 190, 190);
 }
-
 </style>
 </head>
 <body style="padding-top: 3rem;">

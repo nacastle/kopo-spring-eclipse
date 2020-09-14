@@ -157,7 +157,7 @@ input[type="datetime-local"]:valid::before {
     </nav>
     
               <div class="na-content">
-              	<div style="width: 5rem; padding-left: 0.5rem;">출품 내역
+              	<div style="width: 5rem; padding-left: 0.5rem; margin-top: .5rem;">출품 내역
               		<hr style="width: 100%; margin-top: 0.2rem; margin-bottom: 0.3rem">
               	</div>
               	
@@ -204,7 +204,7 @@ input[type="datetime-local"]:valid::before {
 					</table>
 					
 <!-- 					<button type="button" class="btn btn-outline-success btn-small" style="margin-left:22%; margin-top:0.8rem;">내 경매글 보러가기</button> -->
-					<button type="button" class="btn btn-outline-success btn-small" onclick="goDetail(${aucGoodsVO.no })" style="width:60%; margin-top:0.8rem;">내 경매글 보러가기</button>
+					<button type="button" class="btn btn-outline-success btn-small" onclick="goDetail(${aucGoodsVO.no })" style="width:60%; margin-top:3rem;">내 경매글 보러가기</button>
 <!-- 					<button type="button" class="btn btn-outline-success btn-small" style="width:60%; margin-top:0.8rem;">출품 확정하기</button> -->
 					</div>
     

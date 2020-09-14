@@ -155,10 +155,14 @@
 	</select>
 	    
 	<select id="selectAucSearchWord" parameterType="String" resultMap="aucGoodsMap">      
-		select *
-		 from hf_auc_goods
-			where name like '%'||#{searchWord}||'%' or detail like '%'||#{searchWord}||'%'
-			order by reg_date desc
+			select * from 
+			(
+			select *
+			from hf_auc_goods g
+			where g.name like '%'||#{searchWord}||'%' or g.detail like '%'||#{searchWord}||'%' 
+			order by g.reg_date desc
+			) a
+			where a.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 	</select>
 	    
 	<select id="selectBidList" parameterType="memberVO" resultMap="aAccountMap">      

@@ -74,17 +74,24 @@ public class BidServiceImpl implements BidService {
 						withdrawAAccountInfo.setBidMoney(refundMoney);
 						
 						Map<String, Object> depositInfo = new HashMap<String, Object>();
-						depositInfo.put("mAccountNo",bidderAccountNo);
 						depositInfo.put("winBidMoney",refundMoney);
+						depositInfo.put("mAccountNo",bidderAccountNo);
 						
+						// 낙찰액 판매자 계좌로 입금되기
+//						Map<String, Object> depositInfo = new HashMap<String, Object>();
+//						depositInfo.put("mAccountNo",(String)transferMap.get("sellerAccount"));
+//						depositInfo.put("winBidMoney",(Integer)transferMap.get("winBidMoney"));
+//						mAccountDAO.depositMAccount(depositInfo);
 						
 						// 입출금내역에 출금 추가
 						bidDAO.insertBidTranz(aTranzVO);
 						// 낙찰액 제외 입찰액 모임계좌에서 빠져나가기
 						bidDAO.withdrawAAccount(withdrawAAccountInfo);
+
 						// 낙찰자 제외 입찰자의 회원계좌로 입금
+						System.out.println("환급돈(Integer)depositInfo.get(\"winBidMoney\")" + (Integer)depositInfo.get("winBidMoney"));
+						System.out.println("환급돈 refundMoney" + refundMoney);
 						mAccountDAO.depositMAccount(depositInfo);
-							
 					}
 				}
 				LocalDateTime now = LocalDateTime.now();
@@ -154,7 +161,7 @@ public class BidServiceImpl implements BidService {
 			}
 		}
 
-		System.out.println("비드서비스에서 최고입찰가:" + highestBid);
+//		System.out.println("비드서비스에서 최고입찰가:" + highestBid);
 
 		AAccountVO tempVO = new AAccountVO();
 		tempVO.setBidMoney(highestBid);

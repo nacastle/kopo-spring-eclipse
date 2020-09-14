@@ -1,7 +1,17 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Song+Myung&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+@font-face { 
+font-family:'yoon320';
+ 
+src:url('../../fonts/yoon320.ttf') format('truetype'); 
+}
 
 body {
-	font-family: 하나;
+/* 	font-family: 하나; */
+/* font-family: 'Song Myung', serif; */
+font-family: 'Nanum Gothic', sans-serif;
+/* 	font-family: 'yoon320'!important;  */
 }
 
 .justify-content-end .fa-home {

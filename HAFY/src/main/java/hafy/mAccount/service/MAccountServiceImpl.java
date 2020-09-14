@@ -28,6 +28,7 @@ public class MAccountServiceImpl implements MAccountService{
 	@Override
 	public void bidMoney(Map<String, Object> bidInfo) {
 		// TODO Auto-generated method stub
+		
 		mAccountDAO.bidMoney(bidInfo);
 		
 	}

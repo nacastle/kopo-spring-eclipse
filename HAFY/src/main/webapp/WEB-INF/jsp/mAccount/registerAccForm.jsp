@@ -68,7 +68,7 @@
 				</div>
               <div class="col-md-6 mb-3">
                 <label for="lastName">계좌번호</label>
-                <input type="text" class="form-control" name="accountNo" id="accountNumber" >
+                <input type="text" class="form-control" name="accountNo" id="accountNumber" autocomplete="off" >
                 <div class="invalid-feedback">
                   Valid 계좌번호 is required.
                 </div>

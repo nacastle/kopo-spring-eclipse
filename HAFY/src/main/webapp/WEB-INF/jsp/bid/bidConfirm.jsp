@@ -184,7 +184,7 @@ table th img {
   
               <div class="na-content" style="text-align: center;">
               
-              <img style="width: 8rem; margin-top: 3rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
+              <img style="width: 8rem; margin-top: 5rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
               <div style="margin-bottom:0rem; font-size: 1.6rem;">	
               ${bidMoney } 원으로<br>
               	입찰합니다.<br>

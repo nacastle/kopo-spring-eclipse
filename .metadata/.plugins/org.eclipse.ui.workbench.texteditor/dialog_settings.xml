@@ -17,23 +17,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="낙찰가"/>
+		<item key="selection" value="depositMAccount"/>
 		<list key="findhistory">
-			<item value="낙찰가"/>
-			<item value="nowtime"/>
-			<item value="bidderCnt"/>
-			<item value="goodsdet"/>
-			<item value="입찰중"/>
+			<item value="depositMAccount"/>
+			<item value="제목"/>
+			<item value="경매글"/>
+			<item value="search"/>
 			<item value="end_date"/>
-			<item value="end_daTe"/>
-			<item value="ResultType"/>
-			<item value="ResultType "/>
-			<item value="start_date"/>
-			<item value="ATranzVO aTranzVO = new ATranzVO(aucNo, bidderAccountNo, -refundMoney, bidderNick, &quot;출금&quot;);"/>
-			<item value="update"/>
-			<item value="withdrawBidMoney"/>
-			<item value="selectBidResult"/>
-			<item value="&#x09;http://www.springframework.org/schema/task"/>
+			<item value="sear"/>
+			<item value="end"/>
+			<item value="낙찰"/>
+			<item value="현황"/>
+			<item value="isbid"/>
+			<item value="is"/>
+			<item value="bidding"/>
+			<item value="detail"/>
+			<item value="waiting"/>
+			<item value="추천"/>
 		</list>
 		<list key="replacehistory">
 			<item value="tranzDate"/>

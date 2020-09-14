@@ -194,7 +194,7 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
 			<div class="row">
               <div class="col-md-6 mb-3" style="margin-bottom: 0!important;">
 <!--                 <label for="lastName">상품명</label> -->
-                <input type="text" class="form-control" name="name" id="lastName" placeholder="상품명" value="" required>
+                <input type="text" class="form-control" name="name" id="lastName" placeholder="상품명" value="" required autocomplete="off">
                 <div class="invalid-feedback">
                   Valid 상품명 is required.
                 </div>

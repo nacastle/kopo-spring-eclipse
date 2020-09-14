@@ -22,4 +22,6 @@ public interface BidService {
 	// 사용자가 특정 경매 입찰중인지 아닌지
 	AAccountVO isBidding(AAccountVO aAccountVO);
 	
+	
+	
 }

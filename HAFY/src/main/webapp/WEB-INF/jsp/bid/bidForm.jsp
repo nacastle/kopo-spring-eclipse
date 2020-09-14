@@ -193,7 +193,7 @@ table th img {
 						<td> ${aucGoodsVO.name }</td>
 					</tr>	              		
               		<tr>
-              			<th>경매마감일자</th>
+              			<th>경매 마감일자</th>
 						<td> ${aucGoodsVO.endDate }
 						</td>
 					</tr>	              		
@@ -214,7 +214,16 @@ table th img {
 		<table>
 			<tr>
 				<th>현 최고입찰가</th>
-				<td style="font-weight: bold;">${aucGoodsVO.winningBid} 원</td>
+				<td style="font-weight: bold;">
+					<c:choose>
+						<c:when test="${aucGoodsVO.winningBid != 0 }">
+							${aucGoodsVO.winningBid} 원
+						</c:when>
+						<c:otherwise>
+							<i>아직 입찰된 내역이 없습니다.</i>
+						</c:otherwise>
+					</c:choose>
+				</td>
 			</tr>
 			
 			<tr>

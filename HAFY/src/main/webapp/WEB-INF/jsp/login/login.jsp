@@ -25,7 +25,7 @@
       <h2>H A F Y</h2>
     </div>
       <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="text" id="inputEmail" class="form-control" name="nickname" placeholder="ID" autofocus>
+      <input type="text" id="inputEmail" class="form-control" name="nickname" placeholder="ID" autofocus autocomplete="off">
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" id="inputPassword" class="form-control" name="tranzPwd" placeholder="Password" >
       <div class="checkbox mb-3">

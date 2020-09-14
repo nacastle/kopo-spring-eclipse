@@ -210,17 +210,24 @@ public class BidController {
 		aTranzVO.setTranzType("입금");
 
 		bidService.insertBidTranz(aTranzVO);
-
-		// 경매모임계좌(hf_a_account) 입찰자 명단에 입찰자, 입찰액 추가하기 (처음 입찰 case / 두번째 이상 입찰 case 나뉨)
+		
 		AAccountVO aAccountVO = new AAccountVO(aucNo, bidderNick, bidMoney);
-		bidService.bidding(aAccountVO);
-
+		
+		AAccountVO isBidVO = bidService.isBidding(aAccountVO);
+		int withdrawMoney = bidMoney;
+		if (isBidVO != null) {
+			withdrawMoney = bidMoney - isBidVO.getBidMoney();
+		}
+		System.out.println("출금금액: "+ withdrawMoney);
+		
 		Map<String, Object> bidInfo = new HashMap<String, Object>();
 		bidInfo.put("mAccountNo", mAccountNo);
-		bidInfo.put("bidMoney", bidMoney);
+		bidInfo.put("bidMoney", withdrawMoney);
 
-		// 입찰해서 회원 계좌에서 돈 출금되기
 		mAccountService.bidMoney(bidInfo);
+		
+		// 경매모임계좌(hf_a_account) 입찰자 명단에 입찰자, 입찰액 추가하기 (처음 입찰 case / 두번째 이상 입찰 case 나뉨)
+		bidService.bidding(aAccountVO);
 
 		request.setAttribute("bidMoney", bidMoney);
 		session.removeAttribute("bidMoney");

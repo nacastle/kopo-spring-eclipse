@@ -163,7 +163,7 @@ margin-bottom: 0.2rem;
   <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .5rem 1rem; border-bottom: 0.1rem solid rgb(224, 224, 224)">
    		<div style="float: left;">
     	  <a href="javascript:history.back()" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
-    	  <span  style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">낙찰확정</span>
+    	  <span  style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">매입확정</span>
   	 	</div>
   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>
@@ -185,16 +185,28 @@ margin-bottom: 0.2rem;
 					<c:when test="${winAuc.value.startDate > nowTime }">
 						<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
 					</c:when>
-					<c:when test="${winAuc.value.startDate < nowTime and  winAuc.value.endDate > nowTime  }">
+					<c:when test="${winAuc.value.startDate <= nowTime and  winAuc.value.endDate > nowTime  }">
 						<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
 					</c:when>
 					<c:when test="${winAuc.value.purchaseConfirm == '확정' }">
 						<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
 					</c:when>
-					<c:when test="${winAuc.value.endDate < nowTime }">
+					<c:when test="${winAuc.value.endDate <= nowTime }">
 						<span id="closedTag${winAuc.value.no}" class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
 					</c:when>
 					
+				</c:choose>
+				
+				<c:choose>
+					<c:when test="${auc.value.startDate > nowTime }">
+						<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
+					</c:when>
+					<c:when test="${auc.value.startDate <= nowTime and  auc.value.endDate > nowTime  }">
+						<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
+					</c:when>
+					<c:when test="${auc.value.endDate <= nowTime }">
+						<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
+					</c:when>
 				</c:choose>
 					<span id="confirmedTag${winAuc.value.no}" class="confirmed" style="display: table; display:none; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
 				

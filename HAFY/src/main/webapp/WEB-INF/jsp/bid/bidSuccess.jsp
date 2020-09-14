@@ -183,7 +183,7 @@ table th img {
   
               <div class="na-content" style="text-align: center;">
               
-              <img style="width: 6rem; margin-top: 1.4rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
+              <img style="width: 8rem; margin-top: 5rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
               <div style="margin-bottom:1rem; font-size: 1.6rem;">
               <div style="margin-bottom: 0.7rem;">
               ${bidMoney } 원으로<br>

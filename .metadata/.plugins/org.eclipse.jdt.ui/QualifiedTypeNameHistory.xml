@@ -44,7 +44,6 @@
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
     <fullyQualifiedTypeName name="java.net.http.HttpRequest"/>
     <fullyQualifiedTypeName name="javax.servlet.http.HttpServletRequest"/>
-    <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
     <fullyQualifiedTypeName name="java.lang.Object"/>
     <fullyQualifiedTypeName name="hafy.member.service.MemberService"/>
     <fullyQualifiedTypeName name="hafy.mAccount.service.MAccountService"/>
@@ -54,10 +53,11 @@
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="hafy.member.dao.MemberDAO"/>
     <fullyQualifiedTypeName name="hafy.mAccount.dao.MAccountDAO"/>
-    <fullyQualifiedTypeName name="hafy.bid.vo.AAccountVO"/>
     <fullyQualifiedTypeName name="hafy.aucGoods.dao.AucGoodsDAO"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="java.util.HashMap"/>
     <fullyQualifiedTypeName name="org.springframework.transaction.annotation.Transactional"/>
     <fullyQualifiedTypeName name="hafy.bid.vo.ATranzVO"/>
+    <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
+    <fullyQualifiedTypeName name="hafy.bid.vo.AAccountVO"/>
 </qualifiedTypeNameHistroy>

@@ -128,6 +128,11 @@ background: rgb(231, 76, 60);
 .closed {
 background: rgb(190, 190, 190);
 }
+.confirmed {
+background: rgb(142, 68, 173);
+color: white;
+
+}
 
 </style>
 </head>
@@ -170,10 +175,13 @@ background: rgb(190, 190, 190);
 						<c:when test="${bid.value.startDate > nowTime }">
 							<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
 						</c:when>
-						<c:when test="${bid.value.startDate < nowTime and  bid.value.endDate > nowTime  }">
+						<c:when test="${bid.value.startDate <= nowTime and  bid.value.endDate > nowTime  }">
 							<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
 						</c:when>
-						<c:when test="${bid.value.endDate < nowTime }">
+						<c:when test="${bid.value.purchaseConfirm == '확정' }">
+							<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
+						</c:when>
+						<c:when test="${bid.value.endDate <= nowTime }">
 							<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
 						</c:when>
 					</c:choose>
@@ -212,10 +220,13 @@ background: rgb(190, 190, 190);
 						<c:when test="${display.value.startDate > nowTime }">
 							<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
 						</c:when>
-						<c:when test="${display.value.startDate < nowTime and  display.value.endDate > nowTime  }">
+						<c:when test="${display.value.startDate <= nowTime and  display.value.endDate > nowTime  }">
 							<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
 						</c:when>
-						<c:when test="${display.value.endDate < nowTime }">
+						<c:when test="${display.value.purchaseConfirm == '확정' }">
+							<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
+						</c:when>
+						<c:when test="${display.value.endDate <= nowTime }">
 							<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
 						</c:when>
 					</c:choose>
