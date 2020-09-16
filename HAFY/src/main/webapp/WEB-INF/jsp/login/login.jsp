@@ -22,10 +22,10 @@
 <!--       <h1 class="h3 mb-3 font-weight-normal" style="color: white;">Welcome<br>H A F Y</h1> -->
 	<div style="padding-bottom: 1rem; color: white;">
       <h5>모두를 위한 경매 플랫폼</h5>
-      <h2>H A F Y</h2>
+      <h2 style="font-weight: bold;">H A F Y</h2>
     </div>
       <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="text" id="inputEmail" class="form-control" name="nickname" placeholder="ID" autofocus autocomplete="off">
+      <input type="text" id="inputEmail" class="form-control" name="nickname" placeholder="ID" autofocus="autofocus" autocomplete="off">
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" id="inputPassword" class="form-control" name="tranzPwd" placeholder="Password" >
       <div class="checkbox mb-3">

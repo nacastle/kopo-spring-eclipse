@@ -17,23 +17,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="depositMAccount"/>
+		<item key="selection" value="like"/>
 		<list key="findhistory">
-			<item value="depositMAccount"/>
-			<item value="제목"/>
-			<item value="경매글"/>
-			<item value="search"/>
-			<item value="end_date"/>
-			<item value="sear"/>
-			<item value="end"/>
-			<item value="낙찰"/>
-			<item value="현황"/>
-			<item value="isbid"/>
-			<item value="is"/>
+			<item value="like"/>
+			<item value="now"/>
+			<item value="withdrawMAccount"/>
+			<item value="bidMoney"/>
+			<item value="isBidding"/>
+			<item value="addBidMoney"/>
 			<item value="bidding"/>
-			<item value="detail"/>
-			<item value="waiting"/>
-			<item value="추천"/>
+			<item value="mAccount"/>
+			<item value="mAccountDAO"/>
+			<item value="biddi"/>
+			<item value="bidd"/>
+			<item value="bid"/>
+			<item value="ㅠㅑㅇ"/>
+			<item value="ㅊ"/>
+			<item value="transferBidMoneySeller"/>
 		</list>
 		<list key="replacehistory">
 			<item value="tranzDate"/>
@@ -42,11 +42,11 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="9"/>
+		<item key="DIALOG_X_ORIGIN" value="11"/>
 		<item key="DIALOG_Y_ORIGIN" value="171"/>
-		<item key="DIALOG_WIDTH" value="288"/>
-		<item key="DIALOG_HEIGHT" value="391"/>
-		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+		<item key="DIALOG_WIDTH" value="393"/>
+		<item key="DIALOG_HEIGHT" value="523"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 	</section>
 	<section name="org.eclipse.jst.jsp.ui.internal.preferences.ui.JSPTemplatePreferencePage$JSPEditTemplateDialog_dialogBounds">
 		<item key="DIALOG_X_ORIGIN" value="126"/>

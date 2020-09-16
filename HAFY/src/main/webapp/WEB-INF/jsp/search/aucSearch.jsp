@@ -137,10 +137,10 @@ table th img {
     	  </a>
   	 	</div>
   	 		<div class="input-group" style="width: 90%;">
-                <input type="text" id="searchWord" class="form-control" style="width: 70%; height:2.2rem; font-size:.9rem; font-style:italic; background: rgb(248, 248, 248);"
+                <input type="text" onkeyup="enterkey()"  id="searchWord" class="form-control" style="width: 70%; height:2.2rem; font-size:.9rem; font-style:italic; background: rgb(248, 248, 248);"
     	   placeholder="제목 혹은 내용을 입력하세요.">
                 <div class="input-group-prepend" id="searchBtn" style="float: right; ">
-                  <span class="input-group-text" style="height:2.2rem; font-size: 0.9rem;">검색</span>
+                  <button type="submit" class="input-group-button" style="width:3rem; border: 1px solid #ced4da; height:2.2rem; font-size: 0.9rem; color: gray; "><i class="fa fa-search fa-lg" aria-hidden="true"></i></button>
 <!--                    <span >검색</span> -->
                 </div>
               </div>
@@ -183,14 +183,16 @@ table th img {
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
     <script type="text/javascript">
     
-    $("#searchBtn").click(function() {
-    	
-    	$("#inputTbody").empty();
+    function enterkey() {
+        if (window.event.keyCode == 13) {
+ 
+             // 엔터키가 눌렸을 때 실행할 내용
+        $("#inputTbody").empty();
     	$("#hafy").hide();
     	$("#inputMsg").hide();
     	
     	
-    	let searchWord = $("#searchWord").val()
+    	let searchWord = $("#searchWord").val().trim()
     	console.log(searchWord);
 	    $.ajax({
     		url : "${pageContext.request.contextPath}/aucSearch/" + searchWord,
@@ -205,30 +207,86 @@ table th img {
 				
 					$("#hafy").hide()
 					$("#noData").hide()
-					let map = JSON.parse(data);
+// 					let map = JSON.parse(data);
 // 					console.log(map)
-
-	 				for (key in map ) {
-	 					console.log("firstPhoto:" + key + " / " + "value:" + map[key]['name']  )
-						
-	 					let str = "";
-	 					str += '<tr onclick="goDetail(' + map[key]["no"] + ')">';
-	 					str += 	'<th scope="row">';
-	 					str +=		'<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span>';
-						str += 		'<img src="${pageContext.request.contextPath }/upload/' + key + '">';
-						str +=	'</th>';
-						str += '<td>';
-						str += 		'<div style="font-weight: bold; font-size: 1rem;">'+ map[key]['name'] + '</div>';
-						str += 		'<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: '+ map[key]['endDate'] + '</div>';
-						if(map[key]['winningBid'] == 0) {
-							str += '<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ' + map[key]['startPrice'] + ' 원</div>';
-						} else {
-							str += '<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ' + map[key]['winningBid'] + ' 원</div>';
-						}
-						str +=	'</td>';
-						
-	 					$("#inputTbody").append(str);
+// 					console.log(data)
+					$("#inputTbody").html(data);
+					
+// 					console.log("찍기"+ $("#inputTbody").text() )
+					
+					if( $("#inputTbody").text().trim() == '') {
+						$("#hafy").show()
+						$("#noData").show()
 					}
+					
+				}
+			},
+			
+			error : function() {
+				console.log("실패")
+			}
+    		
+    	
+    	})
+            
+        }
+}
+
+
+
+    
+    $("#searchBtn").click(function() {
+    	
+    	$("#inputTbody").empty();
+    	$("#hafy").hide();
+    	$("#inputMsg").hide();
+    	
+    	
+    	let searchWord = $("#searchWord").val().trim()
+    	console.log(searchWord);
+	    $.ajax({
+    		url : "${pageContext.request.contextPath}/aucSearch/" + searchWord,
+    		type : "get",
+    		success : function(data) {
+				console.log("성공");
+// 				console.log(data)
+				if (searchWord == '' || data == '{}' ) {
+					$("#hafy").show()
+					$("#noData").show()
+				} else {
+				
+					$("#hafy").hide()
+					$("#noData").hide()
+// 					let map = JSON.parse(data);
+// 					console.log(map)
+					console.log(data)
+					$("#inputTbody").html(data);
+					if( $("#inputTbody").text().trim() == '') {
+						$("#hafy").show()
+						$("#noData").show()
+					}
+					
+// 	 				for (key in map ) {
+// 	 					console.log("firstPhoto:" + key + " / " + "value:" + map[key]['name']  )
+						
+// 	 					let str = "";
+// 	 					str += '<tr onclick="goDetail(' + map[key]["no"] + ')">';
+// 	 					str += 	'<th scope="row">';
+// 	 					str +=		'<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span>';
+// 						str += 		'<img src="${pageContext.request.contextPath }/upload/' + key + '">';
+// 						str +=	'</th>';
+// 						str += '<td>';
+// 						str += 		'<div style="font-weight: bold; font-size: 1rem;">'+ map[key]['name'] + '</div>';
+// 						str += 		'<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: '+ map[key]['endDate'] + '</div>';
+// 						if(map[key]['winningBid'] == 0) {
+// 							str += '<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ' + map[key]['startPrice'] + ' 원</div>';
+// 						} else {
+// 							str += '<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ' + map[key]['winningBid'] + ' 원</div>';
+// 						}
+// 						str +=	'</td>';
+						
+// 	 					$("#inputTbody").append(str);
+// 					}
 				}
 			},
 			

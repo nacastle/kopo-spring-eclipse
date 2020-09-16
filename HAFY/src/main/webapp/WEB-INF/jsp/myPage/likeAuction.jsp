@@ -129,6 +129,12 @@ background: rgb(231, 76, 60);
 background: rgb(190, 190, 190);
 }
 
+.confirmed {
+background: rgb(142, 68, 173);
+color: white;
+
+}
+
 </style>
 </head>
 <body style="padding-top: 3rem;">
@@ -165,6 +171,9 @@ background: rgb(190, 190, 190);
 					<c:when test="${like.value.startDate <= nowTime and  like.value.endDate > nowTime  }">
 						<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
 					</c:when>
+					<c:when test="${like.value.purchaseConfirm == '확정' }">
+						<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
+					</c:when>
 					<c:when test="${like.value.endDate <= nowTime }">
 						<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
 					</c:when>
@@ -177,11 +186,18 @@ background: rgb(190, 190, 190);
 					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: ${like.value.endDate }</div>
 <%-- 					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${like.value.winningBid } 원</div> --%>
 					<c:choose>
-						<c:when test="${like.value.winningBid == 0}">
-							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${like.value.startPrice } 원</div>
+						<c:when test="${like.value.endDate <= nowTime }">
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;background: black;display: inline-block;color: wheat;">낙찰가: ${like.value.winningBid } 원</div>
 						</c:when>
 						<c:otherwise>
-							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${like.value.winningBid } 원</div>
+						<c:choose>
+							<c:when test="${like.value.winningBid == 0}">
+								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${like.value.startPrice } 원</div>
+							</c:when>
+							<c:otherwise>
+								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${like.value.winningBid } 원</div>
+							</c:otherwise>
+						</c:choose>
 						</c:otherwise>
 					</c:choose>
 				</td>

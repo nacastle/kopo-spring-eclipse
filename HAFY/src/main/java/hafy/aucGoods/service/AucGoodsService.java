@@ -1,5 +1,6 @@
 package hafy.aucGoods.service;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,4 +42,6 @@ public interface AucGoodsService {
 	
 	// 매입확정 이후 작업 (판매자에게 송금,경매모입통장에서 출금)
 	void transferBidMoneySeller(Map<String, Object> transferMap);
+	
+	Map<String, AucGoodsVO> selectHotAucLazyLoad(Map<String, Object> loadInfo);
 }

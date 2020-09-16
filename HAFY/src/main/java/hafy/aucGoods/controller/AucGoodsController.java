@@ -61,6 +61,37 @@ public class AucGoodsController {
 	
 	
 	@ResponseBody
+	@GetMapping("/loadHotAucs/{scrollCnt}/{loadCnt}")
+	public ModelAndView loadHotAucs(@PathVariable("scrollCnt") int scrollCnt,  @PathVariable("loadCnt") int loadCnt) {
+		
+		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
+		
+		Map<String, Object> loadInfo = new HashMap<String, Object>();
+		loadInfo.put("scrollCnt", scrollCnt);
+		loadInfo.put("loadCnt", loadCnt);
+		
+		hotAucMap = aucGoodsService.selectHotAucLazyLoad(loadInfo);
+		
+//		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
+//		recentAucMap = aucGoodsService.selectRecentAuc();
+
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/home/beforeLoadHot");
+		mav.addObject("hotAucMap", hotAucMap);
+		mav.addObject("nowTime", nowTime);
+//		request.setAttribute("nowTime", nowTime);
+//
+//		request.setAttribute("hotAucMap", hotAucMap);
+//		request.setAttribute("recentAucMap", recentAucMap);
+		return mav;
+	}
+	
+	@ResponseBody
 	@PostMapping("/confirmPurchase")
 	public void confirmPurchase(HttpServletRequest request, HttpSession session) {
 		
@@ -87,14 +118,25 @@ public class AucGoodsController {
 	
 	@ResponseBody
 	@GetMapping("/aucSearch/{searchWord}")
-	public Map<String, AucGoodsVO> doAucSearch(@PathVariable("searchWord") String searchWord) {
+//	public Map<String, AucGoodsVO> doAucSearch(@PathVariable("searchWord") String searchWord) {
+	public ModelAndView doAucSearch(@PathVariable("searchWord") String searchWord) {
 
 		System.out.println(searchWord);
 
+		ModelAndView mav = new ModelAndView();
 		Map<String, AucGoodsVO> aucSearchMap = new LinkedHashMap<String, AucGoodsVO>();
 		aucSearchMap = aucGoodsService.selectAucSearchWord(searchWord);
-
-		return aucSearchMap;
+		
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		
+		mav.setViewName("search/searchResult");
+		mav.addObject("nowTime", nowTime);
+		mav.addObject("aucSearchMap", aucSearchMap);
+		
+		return mav;
 	}
 
 	@GetMapping("/aucSearch")
@@ -129,7 +171,13 @@ public class AucGoodsController {
 
 		Map<String, AucGoodsVO> likeMap = new LinkedHashMap<String, AucGoodsVO>();
 		likeMap = aucGoodsService.selectLikeMap(memberVO);
-
+		
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		
+		model.addAttribute("nowTime", nowTime);
 		model.addAttribute("likeMap", likeMap);
 
 		return "/myPage/likeAuction";

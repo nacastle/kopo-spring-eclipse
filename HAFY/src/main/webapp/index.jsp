@@ -24,7 +24,7 @@
       </header>
 
       <main role="main" class="inner cover">
-        <h1 class="cover-heading">H A F Y</h1>
+        <h1 class="cover-heading" style="font-weight: bold;">H A F Y</h1>
         <p class="lead">Hana Auction For You</p>
         <p class="lead">
         </p>

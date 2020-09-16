@@ -2,6 +2,7 @@ package hafy.aucGoods.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,13 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 		return hotAucList;
 	}
 	
+	@Override
+	public List<AucGoodsVO> selectHotAucContentsLazyLoad(Map<String, Object> loadInfo) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> hotAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectHotAucContentsLazyLoad", loadInfo);
+		return hotAucList;
+	}
+
 	@Override
 	public List<AucGoodsVO> selectRecentAucContents() {
 		// TODO Auto-generated method stub
@@ -183,9 +191,9 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 	}
 	
 	@Override
-	public List<AAccountVO> selectBidList(MemberVO memberVO) {
+	public List<AucGoodsVO> selectBidList(MemberVO memberVO) {
 		// TODO Auto-generated method stub
-		List<AAccountVO> aucList = new ArrayList<AAccountVO>();
+		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
 		aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectBidList", memberVO);
 		return aucList;
 	}

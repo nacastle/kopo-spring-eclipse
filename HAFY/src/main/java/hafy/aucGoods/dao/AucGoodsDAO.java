@@ -1,6 +1,7 @@
 package hafy.aucGoods.dao;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public interface AucGoodsDAO {
 	List<AucGoodsVO> selectAllAucContents();
 	List<AucGoodsVO> selectHotAucContents();
 	List<AucGoodsVO> selectRecentAucContents();
-	List<AAccountVO> selectBidList(MemberVO memberVO);
+	List<AucGoodsVO> selectBidList(MemberVO memberVO);
 	List<AucGoodsVO> selectDisplayList(MemberVO memberVO);
 //	List<GoodsPhotoVO> selectPhotoListByAucNo(int aucNo);
 	List<String> selectPhotoNameByAucNo(int aucNo);
@@ -39,5 +40,7 @@ public interface AucGoodsDAO {
 	
 	void updatePurchaseConfirm(int aucNo);
 	void updateRefundStatus(int aucNo);
+	
+	List<AucGoodsVO> selectHotAucContentsLazyLoad(Map<String, Object> loadInfo);
 
 }

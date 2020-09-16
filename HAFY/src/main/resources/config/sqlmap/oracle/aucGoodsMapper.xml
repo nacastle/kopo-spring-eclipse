@@ -165,18 +165,39 @@
 			where a.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 	</select>
 	    
-	<select id="selectBidList" parameterType="memberVO" resultMap="aAccountMap">      
-		select *
-		 from hf_a_account
-			where bidder_nick = #{nickname}
-			order by auc_no desc                                    
+	<select id="selectBidList" parameterType="memberVO" resultMap="aucGoodsMap">      
+		SELECT * FROM (
+select * 
+    from HF_AUC_GOODS g, 
+        (select auc_no
+             from hf_a_account
+                where bidder_nick = #{nickname}) a
+                where a.auc_no = g.no and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi') ORDER BY REG_DATE      
+) 
+union all
+SELECT * FROM (
+ select * 
+    from 
+        HF_AUC_GOODS g, 
+        (select auc_no
+             from hf_a_account
+                where bidder_nick = #{nickname}) a
+                where a.auc_no = g.no and end_date <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi') order by reg_date
+)                           
 	</select>
 	    
 	<select id="selectDisplayList" parameterType="memberVO" resultMap="aucGoodsMap">      
-		select *
+	select * from             
+(select *
 		 from hf_auc_goods
-			where member_nick = #{nickname}
-			order by reg_date desc                                   
+			where member_nick = #{nickname} and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+			order by reg_date desc)  
+        union all    
+select * from
+(select *
+		 from hf_auc_goods
+			where member_nick = #{nickname} and end_date <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+			order by reg_date desc)                           
 	</select>    
 	
 	<select id="selectAllAucContents" resultType="aucGoodsVO" resultMap="aucGoodsMap">      
@@ -194,6 +215,25 @@
 		 from hf_auc_goods g
 		 where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 		 order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc, reg_date desc
+	</select>          
+	                                           
+	<select id="selectHotAucContentsLazyLoad" parameterType="map" resultMap="aucGoodsMap">      
+				SELECT * 
+FROM
+    ( 
+    SELECT ROWNUM AS RNUM, A.* 
+    FROM (
+        select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
+				view_cnt, like_cnt , winning_bid, 
+                (select count(*) from hf_a_tranz t where t.auc_no = g.no and tranz_type = '입금') as bid_cnt,
+                (select count(*) from hf_a_account a where a.auc_no = g.no) as bidder_cnt
+		 from hf_auc_goods g
+		 where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+		 order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc, reg_date desc
+            ) A 
+    WHERE ROWNUM  <![CDATA[ <= ]]> #{loadCnt} * #{scrollCnt}
+    )
+WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
 	</select>                                                     
 	            
 	<select id="selectRecentAucContents" resultMap="aucGoodsMap">      

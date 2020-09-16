@@ -217,11 +217,18 @@ margin-bottom: 0.2rem;
 					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: ${winAuc.value.endDate }</div>
 <%-- 					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${like.value.winningBid } 원</div> --%>
 					<c:choose>
-						<c:when test="${winAuc.value.winningBid == 0}">
-							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${winAuc.value.startPrice } 원</div>
+						<c:when test="${winAuc.value.endDate <= nowTime }">
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;background: black;display: inline-block;color: wheat;">낙찰가: ${winAuc.value.winningBid } 원</div>
 						</c:when>
 						<c:otherwise>
-							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${winAuc.value.winningBid } 원</div>
+						<c:choose>
+							<c:when test="${winAuc.value.winningBid == 0}">
+								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${winAuc.value.startPrice } 원</div>
+							</c:when>
+							<c:otherwise>
+								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${winAuc.value.winningBid } 원</div>
+							</c:otherwise>
+						</c:choose>
 						</c:otherwise>
 					</c:choose>
 				</td>

@@ -289,14 +289,27 @@ height: 16rem!important;
 				</c:when>
 				
 				<c:when test="${nowTime >= auc.key.endDate }">
-			
-					<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
-						style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; background: rgb(52, 152, 219); border:rgb(52, 152, 219); 
-						height: 2.2rem; width: 7.8rem;">경매결과</button>
+					<c:choose>
+						<c:when test="${auc.key.purchaseConfirm == '미확정' }">
+							<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
+							style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; background: rgb(52, 152, 219); border:rgb(52, 152, 219); 
+							height: 2.2rem; width: 7.8rem;">경매결과</button>
 						
-					<button class="btn btn-warning " 
-						style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: black; 
-						border: black; vertical-align: middle; height: 2.2rem; width: 7.8rem;">마감</button>
+							<button class="btn btn-warning " 
+							style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: black; 
+							border: black; vertical-align: middle; height: 2.2rem; width: 7.8rem;">마감</button>
+						</c:when>
+						<c:otherwise>
+							<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
+							style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; background: rgb(52, 152, 219); border:rgb(52, 152, 219); 
+							height: 2.2rem; width: 7.8rem;">경매결과</button>
+							
+							<button class="btn btn-warning " 
+							style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: rgb(142, 68, 173); 
+							border: black; vertical-align: middle; height: 2.2rem; width: 7.8rem;">확정</button>
+						</c:otherwise>
+				
+					</c:choose>
 				</c:when>
 				<c:otherwise>
 				시작날짜: ${ auc.key.startDate } / 끝날짜:${ auc.key.endDate } / 현시간: ${nowTime }

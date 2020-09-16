@@ -237,6 +237,26 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 	
 	@Transactional
 	@Override
+	public Map<String, AucGoodsVO> selectHotAucLazyLoad(Map<String, Object> loadInfo) {
+		// TODO Auto-generated method stub
+		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
+		List<AucGoodsVO> hotAucList = new ArrayList<AucGoodsVO>();
+		hotAucList = aucGoodsDAO.selectHotAucContentsLazyLoad(loadInfo);
+		
+		for (AucGoodsVO auc : hotAucList) {
+			
+			int aucNo = auc.getNo();
+			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+			String firstPhoto = photoList.get(0);
+			
+			hotAucMap.put(firstPhoto, auc);
+			
+		}
+		return hotAucMap;
+	}
+
+	@Transactional
+	@Override
 	public Map<String, AucGoodsVO> selectRecentAuc() {
 		// TODO Auto-generated method stub
 
@@ -256,23 +276,42 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		return recentAucMap;
 	}
 
+//	@Transactional
+//	@Override
+//	public Map<String, AucGoodsVO> selectBidMap(MemberVO memberVO) {
+//		// TODO Auto-generated method stub
+//		
+//		Map<String, AucGoodsVO> bidMap = new LinkedHashMap<String, AucGoodsVO>();
+//		List<AAccountVO> bidList = new ArrayList<AAccountVO>();
+//		bidList = aucGoodsDAO.selectBidList(memberVO);
+//		
+//		for (AAccountVO auc : bidList) {
+//			
+//			int aucNo = auc.getAucNo();
+//			AucGoodsVO aucGoodsVO = aucGoodsDAO.selectAucGoodsByNo(aucNo);
+//			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+//			String firstPhoto = photoList.get(0);
+//			
+//			bidMap.put(firstPhoto, aucGoodsVO);
+//		}
+//		return bidMap;
+//	}
 	@Transactional
 	@Override
 	public Map<String, AucGoodsVO> selectBidMap(MemberVO memberVO) {
 		// TODO Auto-generated method stub
 
 		Map<String, AucGoodsVO> bidMap = new LinkedHashMap<String, AucGoodsVO>();
-		List<AAccountVO> bidList = new ArrayList<AAccountVO>();
+		List<AucGoodsVO> bidList = new ArrayList<AucGoodsVO>();
 		bidList = aucGoodsDAO.selectBidList(memberVO);
 
-		for (AAccountVO auc : bidList) {
+		for (AucGoodsVO auc : bidList) {
 
-			int aucNo = auc.getAucNo();
-			AucGoodsVO aucGoodsVO = aucGoodsDAO.selectAucGoodsByNo(aucNo);
+			int aucNo = auc.getNo();
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
-			bidMap.put(firstPhoto, aucGoodsVO);
+			bidMap.put(firstPhoto, auc);
 		}
 		return bidMap;
 	}
@@ -303,6 +342,26 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		return displayMap;
 
 	}
+//	@Transactional
+//	@Override
+//	public Map<String, AucGoodsVO> selectDisplayMap(MemberVO memberVO) {
+//		// TODO Auto-generated method stub
+//
+//		Map<String, AucGoodsVO> displayMap = new LinkedHashMap<String, AucGoodsVO>();
+//		List<AucGoodsVO> displayList = new ArrayList<AucGoodsVO>();
+//		displayList = aucGoodsDAO.selectDisplayList(memberVO);
+//
+//		for (AucGoodsVO auc : displayList) {
+//
+//			int aucNo = auc.getNo();
+//			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+//			String firstPhoto = photoList.get(0);
+//
+//			displayMap.put(firstPhoto, auc);
+//		}
+//		return displayMap;
+//	}
+
 
 	@Transactional
 	@Override
