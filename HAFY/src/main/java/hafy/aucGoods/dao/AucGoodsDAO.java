@@ -10,6 +10,7 @@ import hafy.aucGoods.vo.CodeVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
 import hafy.bid.vo.AAccountVO;
+import hafy.bid.vo.NoticeVO;
 import hafy.member.vo.MemberVO;
 
 public interface AucGoodsDAO {
@@ -42,5 +43,23 @@ public interface AucGoodsDAO {
 	void updateRefundStatus(int aucNo);
 	
 	List<AucGoodsVO> selectHotAucContentsLazyLoad(Map<String, Object> loadInfo);
-
+	List<AucGoodsVO> selectRecentAucContentsLazyLoad(Map<String, Object> loadInfo);
+	
+	int selectHotAucTotalCnt();
+	
+	int selectUnreadNotiCnt(String memberNick);
+	
+	List<NoticeVO> selectNotiList(String memberNick);
+	void updateReadStatus(int notiNo);
+	
+	List<AucGoodsVO> selectImminentAucsByMin(int setMin);
+	
+	List<AucGoodsVO> selectOpenAucs();
+	
+	// 해당 경매가 회원이 설정한 마감임박 알림시간 기준으로 마감임박한 건인지 아닌지 판단하기위한 vo
+	AucGoodsVO isImminentAucByMin(Map<String, Object> setMinMap);
+	
+	void updateNotiReadDatetime(String memberNick);
+	
+	List<NoticeVO> selectNotiContentsLazyLoad(Map<String, Object> loadInfo);
 }

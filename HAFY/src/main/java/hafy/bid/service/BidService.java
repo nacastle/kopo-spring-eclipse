@@ -1,10 +1,13 @@
 package hafy.bid.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.ATranzVO;
+import hafy.bid.vo.NoticeVO;
 
 public interface BidService {
 	
@@ -22,6 +25,10 @@ public interface BidService {
 	// 사용자가 특정 경매 입찰중인지 아닌지
 	AAccountVO isBidding(AAccountVO aAccountVO);
 	
+	List<ATranzVO> selectATranzLazyLoadByAucNo(Map<String, Object> loadInfo);
 	
+	void insertNoti(NoticeVO noticeVO);
+	void noticeClosedBid();
+	void noticeImminentAucs();
 	
 }

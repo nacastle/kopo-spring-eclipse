@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -218,15 +219,15 @@ margin-bottom: 0.2rem;
 <%-- 					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${like.value.winningBid } 원</div> --%>
 					<c:choose>
 						<c:when test="${winAuc.value.endDate <= nowTime }">
-							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;background: black;display: inline-block;color: wheat;">낙찰가: ${winAuc.value.winningBid } 원</div>
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;background: black;display: inline-block;color: wheat;">낙찰가: <fmt:formatNumber value="${winAuc.value.winningBid }" pattern="#,###"/> 원</div>
 						</c:when>
 						<c:otherwise>
 						<c:choose>
 							<c:when test="${winAuc.value.winningBid == 0}">
-								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${winAuc.value.startPrice } 원</div>
+								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: <fmt:formatNumber value="${winAuc.value.startPrice }" pattern="#,###"/> 원</div>
 							</c:when>
 							<c:otherwise>
-								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${winAuc.value.winningBid } 원</div>
+								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: <fmt:formatNumber value="${winAuc.value.winningBid }" pattern="#,###"/> 원</div>
 							</c:otherwise>
 						</c:choose>
 						</c:otherwise>

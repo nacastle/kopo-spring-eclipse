@@ -120,7 +120,7 @@ body {
  }
  
  table {
- 	font-size: 0.8rem;
+ 	font-size: 1.1rem;
  	width: 100%;
 /*  	border: 1 solid rgb(158, 158, 158); */
 	border-collapse: unset;
@@ -150,7 +150,7 @@ body {
 }
  table td {
 /* 	width: 73%; */
-	height: 2rem;
+	height: 3rem;
   	padding-left: 7%;  
 	text-align: left;
 	vertical-align: middle;
@@ -240,6 +240,7 @@ input[type="datetime-local"]:valid::before {
 		<div style="float: right; text-align: center;   margin-top: 0.4rem;">
 			경매지수<br> <i class="fa fa-star" aria-hidden="true"></i> 4.5 / 5.0
 		</div>
+<!-- 		<input type="number" id="setMin"><button id="setImmTime"></button> -->
 	</div>
 
 	<div style="margin-top: 1rem;">
@@ -247,7 +248,7 @@ input[type="datetime-local"]:valid::before {
 		<div class="ttitle">경매</div>
 		<table class="table-hover">
 			<tr>
-				<a href="${pageContext.request.contextPath}"><td>입찰내역</td></a>
+				<td>입찰내역</td>
 			</tr>
 			<tr>
 				<td>판매내역</td>
@@ -321,6 +322,13 @@ input[type="datetime-local"]:valid::before {
 				<td>내 계좌 삭제</td>
 			</tr>
 		</table>
+		
+		<div class="ttitle">설정</div>
+		<table class="table-hover">
+			<tr onclick="goSetNotice()">
+				<td>알림 설정</td>
+			</tr>
+		</table>
 
 	</div>
 
@@ -339,6 +347,10 @@ input[type="datetime-local"]:valid::before {
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script> -->
       <script type="text/javascript">
       
+      
+      function goSetNotice() {
+    	  location.href = "${pageContext.request.contextPath}/noticeSetting"
+	}
       function goConfirmPurchase() {
     	  location.href = "${pageContext.request.contextPath}/confirmPurchaseForm"
 		
@@ -367,6 +379,11 @@ input[type="datetime-local"]:valid::before {
     	  location.href = "${pageContext.request.contextPath}/changePwd"
 		
 	}
+      
+      $("#setImmTime").click(function() {
+		let setTime = $("#setMin").val()
+		console.log(setTime)
+	})
       
    $('#openLogoutModal').click(function(){
 	  	$("#yes").css("background","white")

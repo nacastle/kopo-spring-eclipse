@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +22,7 @@
     </nav>
     
     <div class="container-fluid" style="text-align: center; margin-top: 10rem;"> <!--  style="text-align: center; padding-top: 8rem; color: #27b2a5;"> -->
-    	<p style="font-weight: bold; font-size: 1.3rem; margin-top: 4rem;">비밀번호가 일치하면<br>${bidMoney } 원을 송금합니다.</p>
+    	<p style="font-weight: bold; font-size: 1.3rem; margin-top: 4rem;">비밀번호가 일치하면<br><fmt:formatNumber value="${bidMoney}" pattern="#,###"/> 원을 송금합니다.</p>
     	
     	<div class="mb-3" style="text-align: center;">
 <!--               <label for="address">상위주소</label> -->

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import hafy.member.vo.MemberVO;
+import hafy.member.vo.NoticeSettingVO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
@@ -18,6 +19,20 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	
 	
+
+	
+	@Override
+	public void updateNoticeSetting(NoticeSettingVO noticeSettingVO) {
+		// TODO Auto-generated method stub
+		sqlSession.update("member.dao.MemberDAO.updateNoticeSetting",noticeSettingVO);
+	}
+
+	@Override
+	public NoticeSettingVO selectNoticeSettingVOByNick(String nickname) {
+		// TODO Auto-generated method stub
+		NoticeSettingVO noticeSettingVO = sqlSession.selectOne("member.dao.MemberDAO.selectNoticeSettingVOByNick",nickname);
+		return noticeSettingVO;
+	}
 
 	@Override
 	public void deleteMember(MemberVO memberVO) {
@@ -48,6 +63,11 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 
+	@Override
+	public void insertNoticeSetting(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("member.dao.MemberDAO.insertNoticeSetting",memberVO);
+	}
 
 	@Override
 	public void insert(MemberVO memberVO) {

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -176,10 +176,10 @@ background: rgb(190, 190, 190);
 					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: ${spec.value.endDate }</div>
 					<c:choose>
 						<c:when test="${spec.value.winningBid == 0}">
-							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${spec.value.startPrice } 원</div>
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: <fmt:formatNumber value="${spec.value.startPrice }" pattern="#,###"/> 원</div>
 						</c:when>
 						<c:otherwise>
-							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${spec.value.winningBid } 원</div>
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: <fmt:formatNumber value="${spec.value.winningBid }" pattern="#,###"/> 원</div>
 						</c:otherwise>
 					</c:choose>
 				</td>

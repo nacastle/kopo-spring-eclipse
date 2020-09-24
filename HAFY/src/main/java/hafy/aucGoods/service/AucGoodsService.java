@@ -9,6 +9,7 @@ import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.aucGoods.vo.CodeVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
+import hafy.bid.vo.NoticeVO;
 import hafy.member.vo.MemberVO;
 
 public interface AucGoodsService {
@@ -43,5 +44,25 @@ public interface AucGoodsService {
 	// 매입확정 이후 작업 (판매자에게 송금,경매모입통장에서 출금)
 	void transferBidMoneySeller(Map<String, Object> transferMap);
 	
+	// 인기경매 레이지로딩
 	Map<String, AucGoodsVO> selectHotAucLazyLoad(Map<String, Object> loadInfo);
+	//최신경매 레이지로딩
+	Map<String, AucGoodsVO> selectRecentAucLazyLoad(Map<String, Object> loadInfo);
+	
+	int selectHotAucTotalCnt();
+	
+	// 안읽은 알림 총 갯수 구하기
+	int selectUnreadNotiCnt(String memberNick);
+	
+	Map<NoticeVO, String> selectNotiMap(String memberNick);
+	
+	void updateReadStatus(int notiNo);
+	
+	List<AucGoodsVO> selectImminentAucsByMin(int setMin);
+	
+	void updateNotiReadDatetime(String memberNick);
+	
+	Map<NoticeVO, String> noticeMap = new LinkedHashMap<NoticeVO, String>();
+	
+	Map<NoticeVO, String> selectNoticeLazyLoad(Map<String, Object> loadInfo);
 }

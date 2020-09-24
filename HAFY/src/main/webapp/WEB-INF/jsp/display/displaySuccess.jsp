@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -186,7 +188,7 @@ input[type="datetime-local"]:valid::before {
 							</tr>
 							<tr>
 								<th>시작가</th>
-								<td>${aucGoodsVO.startPrice } 원</td>
+								<td><fmt:formatNumber value="${aucGoodsVO.startPrice }" pattern="#,###"/> 원</td>
 							</tr>
 							<tr>
 								<th>카테고리</th>

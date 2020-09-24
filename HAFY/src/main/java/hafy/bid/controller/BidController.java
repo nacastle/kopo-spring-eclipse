@@ -1,9 +1,11 @@
 package hafy.bid.controller;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,18 +15,25 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import hafy.aucGoods.service.AucGoodsService;
 import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.bid.service.BidService;
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.ATranzVO;
+import hafy.bid.vo.NoticeVO;
 import hafy.mAccount.service.MAccountService;
 import hafy.mAccount.vo.MAccountVO;
+import hafy.member.service.MemberService;
 import hafy.member.vo.MemberVO;
+import hafy.member.vo.NoticeSettingVO;
 
 @Controller
 public class BidController {
@@ -35,24 +44,65 @@ public class BidController {
 	private MAccountService mAccountService;
 	@Autowired
 	private BidService bidService;
+	@Autowired
+	private MemberService memberService;
 
-	
 	/**
-	 * 1. 경매가 마감된건들에 대하여
-	 * 2. 낙찰액을 제외한 입찰액들을
-	 * 3. 본래 입찰자 계좌로 환급  (사용자들은 적어도 한 계좌 이상이 어플에 등록돼있어야) / 경매모임통장에 입출금 내역 남기고 / 해당 경매모임통장에서 돈 빠져나가고
-	 */	
+	 * 1. 경매가 마감된건들에 대하여 2. 낙찰액을 제외한 입찰액들을 3. 본래 입찰자 계좌로 환급 (사용자들은 적어도 한 계좌 이상이 어플에
+	 * 등록돼있어야) / 경매모임통장에 입출금 내역 남기고 / 해당 경매모임통장에서 돈 빠져나가고
+	 */
 	@Scheduled(cron = "10 * * * * *")
 	public void refundBidMoney() {
 		System.out.println("매분 10초에 환급 알고리즘 도는중...");
+		// 마감된 경매 환급
 		bidService.refundBidMoney();
 	}
-	
-//	@Scheduled(cron = "0/5 * * * * *")
-//	public void schedulerTest2() {
-//		System.out.println("5초마다 스케쥴러가 잘 작동하나?");
-//		
+
+	@Scheduled(cron = "0 * * * * *")
+	public void noticeWithScheduler() {
+		System.out.println("매분 0초에 경매마감/경매마감임박 알림 알고리즘 도는중...");
+
+		// 마감임박한 경매 알림 (bidders)
+		bidService.noticeImminentAucs();
+
+		// 마감된 경매 알림 (seller, bidders(winner, losers))
+		bidService.noticeClosedBid();
+	}
+
+	// 마감된 경매 알림 (seller, bidders(winner, losers))
+//	@Scheduled(cron = "0 * * * * *")
+//	public void selectImminentAucsByMin() {
+//		int setMin = 5;
+//		System.out.println(setMin);
+//		System.out.println("매분 0초에 경매마감임박" + setMin + "분전 알림 알고리즘 도는중...");
+//		bidService.noticeImminentAucsByMin(setMin);
 //	}
+
+	@ResponseBody
+	@GetMapping("/loadBidHistory/{historyScrollCnt}/{loadCnt}/{aucNo}")
+	public ModelAndView loadBidHistory(@PathVariable("historyScrollCnt") int historyScrollCnt,
+			@PathVariable("loadCnt") int loadCnt, @PathVariable("aucNo") int aucNo) {
+
+		ModelAndView mav = new ModelAndView();
+
+		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
+		if (aucGoodsVO.getWinningBid() != 0) {
+
+			Map<String, Object> loadInfo = new HashMap<String, Object>();
+			loadInfo.put("scrollCnt", historyScrollCnt);
+			loadInfo.put("loadCnt", loadCnt);
+			loadInfo.put("aucNo", aucNo);
+
+			// 특정 경매의 입출금 탭 정보 구하기
+			List<ATranzVO> aTranzList = new ArrayList<ATranzVO>();
+			aTranzList = bidService.selectATranzLazyLoadByAucNo(loadInfo);
+
+			mav.addObject("aTranzList", aTranzList);
+		}
+		mav.setViewName("/aAccount/beforeLoadBidHistory");
+
+		return mav;
+	}
 
 	@GetMapping("/bidHistory/{aucNo}")
 	public String bidHistory(@PathVariable("aucNo") int aucNo, HttpServletRequest request) {
@@ -173,6 +223,7 @@ public class BidController {
 		return "/bid/pwd";
 	}
 
+	@Transactional
 	@PostMapping("/bidSuccess/{aucNo}")
 	public String bidSuccess(@PathVariable("aucNo") int aucNo, HttpServletRequest request, HttpSession session) {
 
@@ -210,25 +261,64 @@ public class BidController {
 		aTranzVO.setTranzType("입금");
 
 		bidService.insertBidTranz(aTranzVO);
-		
+
 		AAccountVO aAccountVO = new AAccountVO(aucNo, bidderNick, bidMoney);
-		
+
 		AAccountVO isBidVO = bidService.isBidding(aAccountVO);
 		int withdrawMoney = bidMoney;
 		if (isBidVO != null) {
 			withdrawMoney = bidMoney - isBidVO.getBidMoney();
 		}
-		System.out.println("출금금액: "+ withdrawMoney);
-		
+		System.out.println("출금금액: " + withdrawMoney);
+
 		Map<String, Object> bidInfo = new HashMap<String, Object>();
 		bidInfo.put("mAccountNo", mAccountNo);
 		bidInfo.put("bidMoney", withdrawMoney);
 
 		mAccountService.bidMoney(bidInfo);
-		
+
 		// 경매모임계좌(hf_a_account) 입찰자 명단에 입찰자, 입찰액 추가하기 (처음 입찰 case / 두번째 이상 입찰 case 나뉨)
 		bidService.bidding(aAccountVO);
 
+		// 알림 테이블에 데이터 삽입
+		//// 판매자에게 입찰자의 입찰 알림
+		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
+		NoticeSettingVO sellerNoticeSettingVO = memberService.selectNoticeSettingVOByNick(aucGoodsVO.getMemberNick());
+		String sellerBidNotice = sellerNoticeSettingVO.getSellerBidNotice();
+
+		DecimalFormat Commas = new DecimalFormat("#,###");
+		String rfBidMoney = (String) Commas.format(bidMoney);
+
+		if (sellerBidNotice.equals("true")) {
+
+			String notiType = "bidHistory";
+			String notiSellerMsg = bidderNick + " 님이 '" + aucGoodsVO.getName() + "' 경매" + "(번호: " + aucNo + ")에 "
+					+ rfBidMoney + " 원으로 입찰하셨습니다.";
+
+			NoticeVO noticeVO = new NoticeVO(aucGoodsVO.getMemberNick(), notiType, aucNo, notiSellerMsg);
+			bidService.insertNoti(noticeVO);
+		}
+
+		//// 다른 입찰자들에게 입찰 알림
+		List<AAccountVO> aacList = bidService.selectAAccount(aucNo);
+		String notiBidderMsg = "";
+		for (AAccountVO a : aacList) {
+			NoticeSettingVO bidderNoticeSettingVO = memberService.selectNoticeSettingVOByNick(a.getBidderNick());
+			String bidderBidNotice = bidderNoticeSettingVO.getBidderBidNotice();
+
+			if (bidderBidNotice.equals("true")) {
+
+				if (bidderNick.equals(a.getBidderNick())) {
+					notiBidderMsg = "회원님이 '" + aucGoodsVO.getName() + "' 경매" + "(번호: " + aucNo + ")에 " + rfBidMoney
+							+ " 원으로 최고입찰자가 되었습니다.";
+				} else {
+					notiBidderMsg = bidderNick + " 님이 '" + aucGoodsVO.getName() + "' 경매" + "(번호: " + aucNo + ")에 "
+							+ rfBidMoney + " 원으로 최고입찰자가 되었습니다.";
+				}
+				NoticeVO noVo = new NoticeVO(a.getBidderNick(), "bidHistory", aucNo, notiBidderMsg);
+				bidService.insertNoti(noVo);
+			}
+		}
 		request.setAttribute("bidMoney", bidMoney);
 		session.removeAttribute("bidMoney");
 		session.removeAttribute("bidAccountNo");

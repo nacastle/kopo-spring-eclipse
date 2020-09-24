@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+    
 
 <!DOCTYPE html>
 <html>
@@ -226,7 +228,7 @@ height: 16rem!important;
               		${auc.key.name}
               	</div>
               	<div style="color:rgb(94, 94, 94); font-size: 0.7rem; margin-bottom: 0.5rem;">
-              		${auc.key.category} | 마감: ${auc.key.endDate} | 시작가: ${auc.key.startPrice} 원
+              		${auc.key.category} | 마감: ${auc.key.endDate} | 시작가: <fmt:formatNumber value="${auc.key.startPrice}" pattern="#,###"/> 원
               	</div>
               	
               	<div style="  white-space:pre-line;  margin-bottom: 0.6rem;">
@@ -243,15 +245,15 @@ height: 16rem!important;
               		<c:when test="${auc.key.endDate > nowTime }">
               			<c:choose>
 							<c:when test="${auc.key.winningBid == 0}">
-			              		<span style="font-size: 0.6rem;">현재가 </span><strong>${auc.key.startPrice} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
+			              		<span style="font-size: 0.6rem;">현재가 </span><strong><fmt:formatNumber value="${auc.key.startPrice}" pattern="#,###"/> 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
 							</c:when>
 							<c:otherwise>
-			              		<span style="font-size: 0.6rem;">현재가 </span><strong>${auc.key.winningBid} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
+			              		<span style="font-size: 0.6rem;">현재가 </span><strong><fmt:formatNumber value="${auc.key.winningBid}" pattern="#,###"/> 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span>
 							</c:otherwise>              			
               			</c:choose>
               		</c:when>
               		<c:otherwise>
-	              		<span style="font-size: 0.6rem;">낙찰가 </span><strong>${auc.key.winningBid} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰&nbsp;&nbsp;</span>
+	              		<span style="font-size: 0.6rem;">낙찰가 </span><strong><fmt:formatNumber value="${auc.key.winningBid}" pattern="#,###"/> 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰&nbsp;&nbsp;</span>
               		</c:otherwise>
               	</c:choose>
               	</div>

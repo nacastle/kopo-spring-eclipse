@@ -6,6 +6,7 @@ import java.util.Map;
 
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.ATranzVO;
+import hafy.bid.vo.NoticeVO;
 
 public interface BidDAO {
 	
@@ -29,5 +30,9 @@ public interface BidDAO {
 	
 	// 마감된 경매 중 환급이 안된 경매번호 리스트 구하기
 	List<Integer> selectNotRefundAucList();
+	
+	List<ATranzVO> selectATranzLazyLoadByAucNo(Map<String, Object> loadInfo);
+	
+	void insertNoti(NoticeVO noticeVO);
 
 }

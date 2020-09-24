@@ -275,27 +275,22 @@ background: rgb(190, 190, 190);
 		
 		
 		$(document).ready(function() {
-			
-			// 맨 처음 n개 데이터 로드
 			loadHotAucs()
 			
-			// 스크롤이 일정 위치에 도달했을때 n개 데이터 로드 (반복)
 			window.addEventListener('scroll', () => {
-			if ($("#hotContents").hasClass("top-on") == true) {	
-// 				hotScrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
-				hotScrollLocation = $(window).scrollTop(); // 현재 스크롤바 위치
-				console.log("hotScrollLocation " + hotScrollLocation )
+				if ($("#hotContents").hasClass("top-on") == true) {	
+			hotScrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
+			
+			console.log("hotScrollLocation " + hotScrollLocation )
 				}
 			let windowHeight = window.innerHeight; // 스크린 창
 			let fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
-			console.log("hotScrollLocation " + hotScrollLocation )
-			console.log("windowHeight " + windowHeight )
 			console.log("fullHeight " + fullHeight )
-			console.log("hotScrollLocation + windowHeight " + Math.ceil(hotScrollLocation + windowHeight) )
+			console.log("hotScrollLocation + windowHeight " + (hotScrollLocation + windowHeight) )
 			
 			hotTrCnt = $("#hotAucBody tr").length
 			
-			if (Math.ceil(hotScrollLocation + windowHeight) >= fullHeight) {
+			while (hotScrollLocation + windowHeight == fullHeight) {
 				console.log('끝')
 				
 				setTimeout(function() {
@@ -305,6 +300,7 @@ background: rgb(190, 190, 190);
 // 					 console.log("hot tr 개수: " + hotTrCnt)
 				}, 
 				500);
+					break;
 			}
 		})
 		})
@@ -354,7 +350,7 @@ function showRecent() {
 			let windowHeight = window.innerHeight; // 스크린 창
 			let fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
 			
-			if(Math.ceil(recentScrollLocation + windowHeight )== fullHeight){
+			if(recentScrollLocation + windowHeight == fullHeight){
 				console.log('끝')
 				setTimeout(function() {  
 					loadRecentAucs()

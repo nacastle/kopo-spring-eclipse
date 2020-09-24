@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -161,28 +162,6 @@ background: rgb(190, 190, 190);
   animation-name: fadeOutUp;
 }
 
-.fa-bell-o {
-    position: absolute;
-    z-index: 9998;
-    right: 1rem;
-    top: .25rem;
-    }
- 
-#noticeCnt {
-    background: red;
-    color: white;
-    width: 1rem;
-    display: inline-block;
-    text-align: center;
-    font-size: .8rem;
-    position: relative;
-    z-index: 9998;
-    top: -0.6rem;
-    right: -.3rem;
-    font-weight: bold;
-
-}
-
 
 </style>
 
@@ -195,35 +174,51 @@ background: rgb(190, 190, 190);
     	  <span  style="font-size: 1.25rem; position:relative; top:0.2rem; /* left: 4rem; */ font-weight: bold; color:black;">홈</span>
   	 	</div>
   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      			<a href="${pageContext.request.contextPath}/aucSearch" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true" style="position: fixed;right: 2.7rem; top: 1.2rem;"></i></a>
+      			<a href="${pageContext.request.contextPath}/aucSearch" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>
       			&nbsp;&nbsp;&nbsp;
-      			<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
-      			
-      			<c:if test="${unreadNotiCnt != 0 }">
-	      			<span id="noticeCnt" style="background: red; color: white;">${unreadNotiCnt }</span>
-      			</c:if>
-      			</a>
+      			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
 		</div>
       
     </nav>
     
     <nav class="na-nav">
     	<div>
-    		<a id="hotContents" class="top-on" href="#" onclick="showHot()"><span>인기 경매</span></a>
-    		<a id="recentContents" href="#" onclick="showRecent()"><span>최신 경매</span></a>
+    		<a class="top-on" href="#" onclick="showHot()"><span>인기 경매</span></a>
+    		<a  href="#" onclick="showRecent()"><span>최신 경매</span></a>
     		<span></span>
     	</div>
     
     </nav>
 
 
-	<table id="hotAucBody" class="table table-hover" style="margin-top: 0.7rem;">
+	<table id="hotAuc" class="table table-hover" style="margin-top: 0.7rem;">
+		<tbody id ="hotAucBody" class="wow bounceInUp"  >
+			
+		</tbody>
 
+<!-- 		<tbody> -->
+<!-- 			<tr id="loadingHot"> -->
+<!-- 				<td colspan="2" style="color:turquoise; text-align: center;"> -->
+<!-- 					<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> -->
+<!-- 					<span class="sr-only">Loading...</span> -->
+<!-- 				</td> -->
+<!-- 			</tr> -->
+<!-- 		</tbody> -->
 	</table>
 	
 	
-	<table id="recentAucBody" class="table table-hover" style="display:none; margin-top: 0.7rem;">
+	<table id="recentAuc" class="table table-hover" style="display:none; margin-top: 0.7rem;">
+		<tbody id="recentAucBody"  class="wow bounceInUp" >
 		
+		</tbody>
+<!-- 		<tbody> -->
+<!-- 			<tr id="loadingRecent"> -->
+<!-- 				<td colspan="2" style="color:turquoise; text-align: center;"> -->
+<!-- 					<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i> -->
+<!-- 					<span class="sr-only">Loading...</span> -->
+<!-- 				</td> -->
+<!-- 			</tr> -->
+<!-- 		</tbody> -->
 	</table>
 
 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;">
@@ -249,8 +244,6 @@ background: rgb(190, 190, 190);
 		let recentScrollCnt = 1;
 		let hotTrCnt = 0;
 		let recentTrCnt = 0;
-		let hotScrollLocation = 0;
-		let recentScrollLocation = 0;
 		
 		// 화면뜨자마자 로드되는 인기경매목록
 		function loadHotAucs() {	
@@ -261,13 +254,9 @@ background: rgb(190, 190, 190);
 				success: function(data) {
 // 					console.log(data)
 					
-					
-						if ($("#hotContents").hasClass("top-on") == true) {	
-							$("#hotAucBody").append(data)
-							hotScrollCnt += 1;
-							console.log("hotScrollCnt " + hotScrollCnt )
-						}
-					
+					$("#hotAucBody").append(data)
+					hotScrollCnt += 1;
+					console.log("hotScrollCnt " + hotScrollCnt )
 					
 				}
 			})
@@ -275,49 +264,46 @@ background: rgb(190, 190, 190);
 		
 		
 		$(document).ready(function() {
-			
-			// 맨 처음 n개 데이터 로드
 			loadHotAucs()
-			
-			// 스크롤이 일정 위치에 도달했을때 n개 데이터 로드 (반복)
-			window.addEventListener('scroll', () => {
-			if ($("#hotContents").hasClass("top-on") == true) {	
-// 				hotScrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
-				hotScrollLocation = $(window).scrollTop(); // 현재 스크롤바 위치
-				console.log("hotScrollLocation " + hotScrollLocation )
-				}
+		})
+		
+		window.addEventListener('scroll', () => {
+			let scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
 			let windowHeight = window.innerHeight; // 스크린 창
 			let fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
-			console.log("hotScrollLocation " + hotScrollLocation )
-			console.log("windowHeight " + windowHeight )
-			console.log("fullHeight " + fullHeight )
-			console.log("hotScrollLocation + windowHeight " + Math.ceil(hotScrollLocation + windowHeight) )
+			console.log("fullHeight" +fullHeight)
+			console.log(scrollLocation + windowHeight )
 			
 			hotTrCnt = $("#hotAucBody tr").length
 			
-			if (Math.ceil(hotScrollLocation + windowHeight) >= fullHeight) {
+			if (${hotTotalCnt} == hotTrCnt ) {
+				
+				setTimeout(function() {
+// 					$("#loadingHot").show()
+				$("#loadingHot").hide()
+// 					 console.log("hot tr 개수: " + hotTrCnt)
+				}, 
+				500);
+				console.log("끝끝끈")
+//					$("#loadingHot").fadeOutUp( 'slow' )
+				 
+			 } else
+			if(scrollLocation + windowHeight == fullHeight){
 				console.log('끝')
 				
 				setTimeout(function() {
 // 					$("#loadingHot").show()
 					loadHotAucs()
-					
 // 					 console.log("hot tr 개수: " + hotTrCnt)
 				}, 
 				500);
 			}
 		})
-		})
-		
-
 		
 
 function showHot() {
-// 	console.log("다시 돌아온ㅇㅇ hotScrollLocation " + hotScrollLocation)
-	$(window).scrollTop(hotScrollLocation);
-
-	$("#hotAucBody").show()
-	$("#recentAucBody").hide()
+	$("#hotAuc").show()
+	$("#recentAuc").hide()
 	
 }
 
@@ -338,23 +324,43 @@ function loadRecentAucs() {
 }
 		
 function showRecent() {
-	$("#hotAucBody").hide()
-	$("#recentAucBody").show()
+	$("#hotAuc").hide()
+	$("#recentAuc").show()
 // 	let recentScrollCnt = 1;
 	
 	// 첫 로드
-	loadRecentAucs()
+	$.ajax({
+		url : "${pageContext.request.contextPath}/loadRecentAucs/" + recentScrollCnt + "/" + loadCnt,
+		type : 'get',
+		success: function(data) {
+// 				console.log(data)
+			$("#recentAucBody").append(data)
+			recentScrollCnt += 1;
+			console.log("recentScrollCnt " + recentScrollCnt )
+		}
+	})
 	
 	
 	window.addEventListener('scroll', () => {
-		if ($("#recentContents").hasClass("top-on") == true) {	
-			recentScrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
-// 			console.log("recentScrollLocation " + recentScrollLocation )
-		}
+			let scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
 			let windowHeight = window.innerHeight; // 스크린 창
 			let fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
 			
-			if(Math.ceil(recentScrollLocation + windowHeight )== fullHeight){
+			recentTrCnt = $("#recentAucBody tr").length
+			
+			if (${hotTotalCnt} == recentTrCnt ) {
+				
+				setTimeout(function() {
+// 					$("#loadingHot").show()
+				$("#loadingRecent").hide()
+// 					 console.log("hot tr 개수: " + hotTrCnt)
+				}, 
+				500);
+// 				console.log("끝끝끈")
+//					$("#loadingHot").fadeOutUp( 'slow' )
+				 
+			 } else
+			if(scrollLocation + windowHeight == fullHeight){
 				console.log('끝')
 				setTimeout(function() {  
 					loadRecentAucs()

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.ATranzVO;
+import hafy.bid.vo.NoticeVO;
 
 @Repository
 public class BidDAOImpl implements BidDAO {
@@ -17,9 +18,11 @@ public class BidDAOImpl implements BidDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	
-	
-
+	@Override
+	public void insertNoti(NoticeVO noticeVO) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("bid.dao.BidDAO.insertNoti", noticeVO);
+	}
 
 	@Override
 	public List<Integer> selectNotRefundAucList() {
@@ -64,6 +67,17 @@ public class BidDAOImpl implements BidDAO {
 		// TODO Auto-generated method stub
 		List<AAccountVO> bidderList = sqlSession.selectList("bid.dao.BidDAO.selectAAccount",aucNo);
 		return bidderList;
+	}
+
+	
+	
+	@Override
+	public List<ATranzVO> selectATranzLazyLoadByAucNo(Map<String, Object> loadInfo) {
+		// TODO Auto-generated method stub
+		List<ATranzVO> aTranzList = new ArrayList<ATranzVO>(); 
+		aTranzList = sqlSession.selectList("bid.dao.BidDAO.selectATranzLazyLoadByAucNo", loadInfo);
+		
+		return aTranzList;
 	}
 
 	@Override

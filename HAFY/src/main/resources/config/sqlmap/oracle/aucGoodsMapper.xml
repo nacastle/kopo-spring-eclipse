@@ -43,10 +43,31 @@
 	<result column="bid_money" property="bidMoney" />
 </resultMap>
 
+<resultMap type="noticeVO" id="noticeMap">
+	<result column="noti_no" property="notiNo" />
+	<result column="noti_member_nick" property="notiMemberNick" />
+	<result column="noti_type" property="notiType" />
+	<result column="noti_content_no" property="notiContentNo" />
+	<result column="noti_msg" property="notiMsg" />
+	<result column="noti_url" property="notiUrl" />
+	<result column="noti_datetime" property="notiDatetime" />
+	<result column="noti_read_datetime" property="notiReadDatetime" />
+</resultMap>
+
 	<select id="selectCodeVO" parameterType="String" resultMap="codeMap">
 		select * 
 		from hf_detail_code 
 		where uri_name = #{category}
+	</select>
+	
+	<select id="selectImminentAucsByMin" parameterType="int" resultMap="aucGoodsMap">
+		select * from hf_auc_goods
+		where end_date = TO_CHAR(SYSDATE + #{setMin}/24/60 ,'yyyy-mm-dd hh24:mi')
+	</select>
+	
+	<select id="isImminentAucByMin" parameterType="map" resultMap="aucGoodsMap">
+		select * from hf_auc_goods
+		where no = #{aucNo} and end_date = TO_CHAR(SYSDATE + #{setMin}/24/60 ,'yyyy-mm-dd hh24:mi')
 	</select>
 	
 	<select id="selectGoodsCategory" parameterType="String" resultMap="codeMap">
@@ -68,13 +89,13 @@
 		select *
 			from hf_like
 		where member_nick = #{nickname}
-		 order by auc_no desc
+		 order by reg_date desc
 	
 	</select>
 
 	<insert id="insertLike" parameterType="likeVO">
-		insert into hf_like(member_nick, auc_no) 
-			values(#{memberNick}, #{aucNo})
+		insert into hf_like(member_nick, auc_no, reg_date) 
+			values(#{memberNick}, #{aucNo}, to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss'))
 	</insert>
 
 	<delete id="deleteLike" parameterType="likeVO">
@@ -111,6 +132,18 @@
 		update hf_auc_goods 
 			set refund_status = '환급완료'
 		where no = #{aucNo}
+	</update>
+	
+	<update id="updateReadStatus" parameterType="int">
+		update hf_notice 
+			set noti_read_datetime = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+		where noti_no = #{notiNo}
+	</update>
+	
+	<update id="updateNotiReadDatetime" parameterType="String">
+		update hf_notice 
+			set noti_read_datetime = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+		where noti_member_nick = #{memberNick} and noti_read_datetime is null
 	</update>
 	
 	<insert id="insertAucGoods" parameterType="aucGoodsVO">
@@ -215,8 +248,25 @@ select * from
 		 from hf_auc_goods g
 		 where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 		 order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc, reg_date desc
-	</select>          
-	                                           
+	</select>       
+	   
+	
+	<select id="selectNotiContentsLazyLoad" parameterType="map" resultMap="noticeMap">      
+				SELECT * 
+FROM
+    ( 
+    SELECT ROWNUM AS RNUM, A.* 
+    FROM (
+        select *
+		 from hf_notice
+		 where noti_member_nick = #{memberNick}
+		 order by noti_datetime desc
+            ) A 
+    WHERE ROWNUM  <![CDATA[ <= ]]> #{loadCnt} * #{scrollCnt}
+    )
+WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
+	</select>   
+	                                                  
 	<select id="selectHotAucContentsLazyLoad" parameterType="map" resultMap="aucGoodsMap">      
 				SELECT * 
 FROM
@@ -234,6 +284,34 @@ FROM
     WHERE ROWNUM  <![CDATA[ <= ]]> #{loadCnt} * #{scrollCnt}
     )
 WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
+	</select>   
+	                                                  
+	<select id="selectHotAucTotalCnt" resultType="int">      
+				select count(no)
+		 from hf_auc_goods g
+		 where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+	</select>       
+	                                              
+	<select id="selectUnreadNotiCnt" parameterType="String" resultType="int">      
+				select count(noti_no)
+		 from hf_notice
+		 where noti_member_nick = #{memberNick} and noti_read_datetime is null
+	</select>                                                     
+	            
+	<select id="selectRecentAucContentsLazyLoad" parameterType="map" resultMap="aucGoodsMap">      
+				SELECT * 
+FROM
+    ( 
+    SELECT ROWNUM AS RNUM, A.* 
+    FROM (
+        select *
+		 from hf_auc_goods
+		 where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+		 order by reg_date desc
+            ) A 
+    WHERE ROWNUM  <![CDATA[ <= ]]> #{loadCnt} * #{scrollCnt}
+    )
+WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
 	</select>                                                     
 	            
 	<select id="selectRecentAucContents" resultMap="aucGoodsMap">      
@@ -241,6 +319,20 @@ WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
 		 from hf_auc_goods
 		 where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 		 order by reg_date desc
+	</select>  
+	                                                   
+	<select id="selectOpenAucs" resultMap="aucGoodsMap">      
+		select *
+		 from hf_auc_goods
+		 where start_date <![CDATA[ <= ]]> TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI') and  
+		 		end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+	</select>                                                     
+	            
+	<select id="selectNotiList" parameterType="String" resultMap="noticeMap">      
+				select *
+		 from hf_notice
+		 where noti_member_nick = #{memberNick}
+		 order by noti_datetime desc
 	</select>                                                     
 	            
 	            

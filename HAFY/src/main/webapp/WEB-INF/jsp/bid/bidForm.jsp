@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
    
 <!DOCTYPE html>
 <html>
@@ -199,7 +201,7 @@ table th img {
 					</tr>	              		
               		<tr>
               			<th>시작가 </th>
-						<td> ${aucGoodsVO.startPrice} 원&nbsp;
+						<td> <fmt:formatNumber value="${aucGoodsVO.startPrice}" pattern="#,###"/> 원&nbsp;
 						</td>
 					</tr>	              		
               		<tr>
@@ -217,7 +219,7 @@ table th img {
 				<td style="font-weight: bold;">
 					<c:choose>
 						<c:when test="${aucGoodsVO.winningBid != 0 }">
-							${aucGoodsVO.winningBid} 원
+							<fmt:formatNumber value="${aucGoodsVO.winningBid}" pattern="#,###"/> 원
 						</c:when>
 						<c:otherwise>
 							<i>아직 입찰된 내역이 없습니다.</i>
@@ -233,15 +235,15 @@ table th img {
 				<c:choose>	
 					<c:when test="${pastBidMoney != 0 }">			
 				현재까지 입찰하신 금액은<br>
-				<strong>${pastBidMoney}</strong> 원 입니다.
+				<strong><fmt:formatNumber value="${pastBidMoney}" pattern="#,###"/></strong> 원 입니다.
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${aucGoodsVO.winningBid == 0}">
-								현재 시작가인 <strong>${aucGoodsVO.startPrice}</strong> 원부터 <br>	입찰하실 수 있습니다.
+								현재 시작가인 <strong><fmt:formatNumber value="${aucGoodsVO.startPrice}" pattern="#,###"/></strong> 원부터 <br>	입찰하실 수 있습니다.
 							</c:when>
 							<c:otherwise>
-								현재 <strong>${aucGoodsVO.winningBid}</strong> 원부터 <br>	입찰하실 수 있습니다.
+								<strong><fmt:formatNumber value="${aucGoodsVO.winningBid}" pattern="#,###"/></strong> 원을 초과하는 금액부터 <br>입찰이 가능합니다.
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>

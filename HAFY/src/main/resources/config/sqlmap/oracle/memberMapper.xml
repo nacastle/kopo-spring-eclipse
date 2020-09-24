@@ -12,9 +12,27 @@
 
 </resultMap>
 
+<resultMap type="noticeSettingVO" id="noticeSettingMap">
+	<result column="member_nick" property="memberNick" />
+	<result column="bidder_bid_notice" property="bidderBidNotice" />
+	<result column="bidder_imminent_notice" property="bidderImminentNotice" />
+	<result column="bidder_imminent_time" property="bidderImminentTime" />
+	<result column="bidder_closed_notice" property="bidderClosedNotice" />
+	<result column="seller_bid_notice" property="sellerBidNotice" />
+	<result column="seller_like_notice" property="sellerLikeNotice" />
+	<result column="seller_closed_notice" property="sellerClosedNotice" />
+	<result column="seller_purchase_confirm_notice" property="sellerPurchaseConfirmNotice" />
+
+</resultMap>
+
 <insert id="insert" parameterType="memberVO">
 	insert into hf_member(nickname, name, res_no, address1, address2, phone_company, phone, sex, tranz_pwd)
 		values(#{nickname}, #{name}, #{resNo}, #{address1}, #{address2}, #{phoneCompany}, #{phone}, #{sex}, #{tranzPwd})
+</insert>
+
+<insert id="insertNoticeSetting" parameterType="memberVO">
+	insert into hf_notice_setting(member_nick)
+		values(#{nickname})
 </insert>
 
 <update id="registerPwd" parameterType="map">
@@ -32,11 +50,37 @@
 		where nickname = #{nickname}
 </update>
 
+<update id="updateNoticeSetting" parameterType="noticeSettingVO">
+	update hf_notice_setting set 
+		bidder_bid_notice = #{bidderBidNotice}, 
+		bidder_imminent_notice = #{bidderImminentNotice}, 
+		bidder_imminent_time = #{bidderImminentTime}, 
+		bidder_closed_notice = #{bidderClosedNotice}, 
+		seller_bid_notice = #{sellerBidNotice}, 
+		seller_like_notice = #{sellerLikeNotice}, 
+		seller_closed_notice = #{sellerClosedNotice}, 
+		seller_purchase_confirm_notice = #{sellerPurchaseConfirmNotice}
+	where member_nick = #{memberNick}
+</update>
+
 <select id="selectMember" parameterType="memberVO" resultMap="memberMap">
 	select *
 	from hf_member
 		where nickname = #{nickname}
 </select>
+
+<select id="selectNoticeSettingVOByNick" parameterType="String" resultMap="noticeSettingMap">
+	select *
+	from hf_notice_setting
+		where member_nick = #{nickname}
+</select>
+
+<!-- test용 -->
+<!-- <select id="selectNoticeSettingVOByNick" resultMap="noticeSettingMap"> -->
+<!-- 	select * -->
+<!-- 	from hf_notice_setting -->
+<!-- 		where member_nick = 'test4' -->
+<!-- </select> -->
 
 <select id="checkLogin" parameterType="memberVO" resultMap="memberMap">
 	select *

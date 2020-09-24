@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hafy.member.dao.MemberDAO;
 import hafy.member.vo.MemberVO;
+import hafy.member.vo.NoticeSettingVO;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -18,6 +19,14 @@ public class MemberServiceImpl implements MemberService{
 	
 	
 	
+	@Override
+	public NoticeSettingVO selectNoticeSettingVOByNick(String nickname) {
+		// TODO Auto-generated method stub
+		NoticeSettingVO noticeSettingVO = memberDAO.selectNoticeSettingVOByNick(nickname);
+		return noticeSettingVO;
+	}
+
+
 	@Override
 	public void deleteMember(MemberVO memberVO) {
 		// TODO Auto-generated method stub
@@ -34,6 +43,13 @@ public class MemberServiceImpl implements MemberService{
 
 
 	@Override
+	public void insertNoticeSetting(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		memberDAO.insertNoticeSetting(memberVO);
+	}
+
+
+	@Override
 	public void insertMember(MemberVO memberVO) {
 		// TODO Auto-generated method stub
 		memberDAO.insert(memberVO);
@@ -45,6 +61,14 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		MemberVO vo = memberDAO.selectMember(memberVO);
 		return vo;
+	}
+
+
+	@Override
+	public void updateNoticeSetting(NoticeSettingVO noticeSettingVO) {
+		// TODO Auto-generated method stub
+		memberDAO.updateNoticeSetting(noticeSettingVO);
+		
 	}
 
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -186,7 +187,7 @@ table th img {
               <img style="width: 8rem; margin-top: 5rem; margin-bottom: .5rem; " src="${pageContext.request.contextPath}/resources/img/hafy.png">
               <div style="margin-bottom:1rem; font-size: 1.6rem;">
               <div style="margin-bottom: 0.7rem;">
-              ${bidMoney } 원으로<br>
+              <fmt:formatNumber value="${bidMoney }" pattern="#,###"/> 원으로<br>
               입찰에 성공하셨습니다.
               </div>
               <div>
@@ -196,7 +197,7 @@ table th img {
                </div>
 	</div>
 	
-	<footer class="footer" style="text-align: center; bottom: 3rem; background: none">
+	<footer class="footer" style="text-align: center; bottom: 3rem; background: none; position: static;">
 			<button type="button" class="btn btn-success" onclick="goAAcount(${aucNo})"
 				style="background: rgb(22, 160, 133); font-weight: bold;">경매모임계좌 보러가기</button>
 	</footer>

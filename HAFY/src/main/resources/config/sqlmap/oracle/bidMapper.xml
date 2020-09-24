@@ -62,6 +62,12 @@
 		values(#{aucNo}, #{bidderNick}, #{bidMoney})
 </insert>
 
+<insert id="insertNoti" parameterType="noticeVO">
+	insert into hf_notice(noti_no, noti_member_nick, noti_type, noti_content_no, noti_msg)
+		values(seq_hf_notice_no.nextval, #{notiMemberNick}, #{notiType}, #{notiContentNo}, #{notiMsg})
+</insert>
+
+
 <update id="addBidMoney" parameterType="aAccountVO">
 	update hf_a_account 
 <!-- 	set bid_money = bid_money + #{bidMoney} 과거버전-->
@@ -123,6 +129,24 @@
 	from hf_a_account
 	where auc_no = #{aucNo}
 	order by bid_money desc
+</select>
+
+<select id="selectATranzLazyLoadByAucNo" parameterType="map"  resultMap="aTranzMap">
+	SELECT * 
+FROM
+    ( 
+    SELECT ROWNUM AS RNUM, A.* 
+    FROM (
+        select 
+		to_char(tranz_date,'YYYY-MM-DD HH24:MI:SS') as tranz_date, tranz_account_no, tranz_money, 
+		tranz_member_nick, tranz_type, auc_no, member_balance 
+	from hf_a_tranz
+	where auc_no = #{aucNo}
+	order by tranz_date desc
+            ) A 
+    WHERE ROWNUM  <![CDATA[ <= ]]> #{loadCnt} * #{scrollCnt}
+    )
+WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
 </select>
 
 <select id="selectATranzByAucNo" parameterType="int"  resultMap="aTranzMap">

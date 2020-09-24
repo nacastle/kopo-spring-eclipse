@@ -37,10 +37,12 @@ import hafy.aucGoods.vo.LikeVO;
 import hafy.bid.service.BidService;
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.ATranzVO;
+import hafy.bid.vo.NoticeVO;
 import hafy.mAccount.service.MAccountService;
 import hafy.mAccount.vo.MAccountVO;
 import hafy.member.service.MemberService;
 import hafy.member.vo.MemberVO;
+import hafy.member.vo.NoticeSettingVO;
 
 @Controller
 public class AucGoodsController {
@@ -53,6 +55,8 @@ public class AucGoodsController {
 	private BidService bidService;
 	@Autowired
 	private MAccountService mAccountService;
+	@Autowired
+	private MemberService memberService;
 //	@Autowired
 //	private MemberService memberService;
 
@@ -61,8 +65,8 @@ public class AucGoodsController {
 	
 	
 	@ResponseBody
-	@GetMapping("/loadHotAucs/{scrollCnt}/{loadCnt}")
-	public ModelAndView loadHotAucs(@PathVariable("scrollCnt") int scrollCnt,  @PathVariable("loadCnt") int loadCnt) {
+	@GetMapping("/loadHotAucs/{hotScrollCnt}/{loadCnt}")
+	public ModelAndView loadHotAucs(@PathVariable("hotScrollCnt") int scrollCnt,  @PathVariable("loadCnt") int loadCnt) {
 		
 		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
 		
@@ -74,7 +78,7 @@ public class AucGoodsController {
 		
 //		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
 //		recentAucMap = aucGoodsService.selectRecentAuc();
-
+		
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String nowTime = now.format(formatter);
@@ -82,7 +86,69 @@ public class AucGoodsController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/home/beforeLoadHot");
-		mav.addObject("hotAucMap", hotAucMap);
+		String contents = null;
+		if (hotAucMap.size() == 0) {
+			contents = "empty";
+		} else {
+			contents = "notEmpty";
+			mav.addObject("hotScrollCnt", scrollCnt - 1);
+			mav.addObject("hotAucMap", hotAucMap);
+		}
+		
+		mav.addObject("contents", contents);
+//		System.out.println(contents);
+		mav.addObject("nowTime", nowTime);
+//		request.setAttribute("nowTime", nowTime);
+//
+//		request.setAttribute("hotAucMap", hotAucMap);
+//		request.setAttribute("recentAucMap", recentAucMap);
+		return mav;
+	}
+	
+	@ResponseBody
+	@GetMapping("/loadNotice/{notiScrollCnt}/{loadCnt}")
+	public ModelAndView loadNotice(HttpSession session, @PathVariable("notiScrollCnt") int scrollCnt,  @PathVariable("loadCnt") int loadCnt) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+		String memberNick = memberVO.getNickname();
+
+		Map<NoticeVO, String> noticeMap = new LinkedHashMap<NoticeVO, String>();
+		
+		Map<String, Object> loadInfo = new HashMap<String, Object>();
+		loadInfo.put("scrollCnt", scrollCnt);
+		loadInfo.put("loadCnt", loadCnt);
+		loadInfo.put("memberNick", memberNick);
+		
+		noticeMap = aucGoodsService.selectNoticeLazyLoad(loadInfo);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/notice/beforeLoadNotice");
+		mav.addObject("noticeMap", noticeMap );
+		return mav;
+	}
+	@ResponseBody
+	@GetMapping("/loadRecentAucs/{recentScrollCnt}/{loadCnt}")
+	public ModelAndView loadRecentAucs(@PathVariable("recentScrollCnt") int scrollCnt,  @PathVariable("loadCnt") int loadCnt) {
+		
+		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
+		
+		Map<String, Object> loadInfo = new HashMap<String, Object>();
+		loadInfo.put("scrollCnt", scrollCnt);
+		loadInfo.put("loadCnt", loadCnt);
+		
+		recentAucMap = aucGoodsService.selectRecentAucLazyLoad(loadInfo);
+		
+//		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
+//		recentAucMap = aucGoodsService.selectRecentAuc();
+
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+//		System.out.println("After : " + nowTime);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/home/beforeLoadRecent");
+		mav.addObject("recentAucMap", recentAucMap );
 		mav.addObject("nowTime", nowTime);
 //		request.setAttribute("nowTime", nowTime);
 //
@@ -114,6 +180,19 @@ public class AucGoodsController {
 		System.out.println(aucNo);
 		aucGoodsService.updatePurchaseConfirm(aucNo);
 		aucGoodsService.transferBidMoneySeller(transferMap);
+		
+		// 매입확정 정보 알림 테이블에 넣기
+		NoticeSettingVO noticeSettingVO = memberService.selectNoticeSettingVOByNick(sellerNick);
+		String sellerPurchaseConfirmNotice = noticeSettingVO.getSellerPurchaseConfirmNotice();
+		
+		if (sellerPurchaseConfirmNotice.equals("true")) {
+			AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
+			String notiMsg= winner + " 님이 '" + aucGoodsVO.getName() + "' 경매" + 
+					"(번호: " + aucNo + ") 매입을 확정하였습니다.";
+			NoticeVO noticeVO = new NoticeVO(sellerNick, "goodsDetail", aucNo, notiMsg);
+			bidService.insertNoti(noticeVO);
+		}
+		
 	}
 	
 	@ResponseBody
@@ -426,30 +505,75 @@ public class AucGoodsController {
 	}
 
 	@RequestMapping("/hot")
-	public String mainHot(HttpServletRequest request) {
+	public String mainHot(HttpServletRequest request, HttpSession session) {
 
 		
-//		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
 //		System.out.println("hot에서 멤버"+memberVO);
+		
+		int unreadNotiCnt = 0;
+		String memberNick = memberVO.getNickname();
+//		System.out.println("memberNick" + memberNick);
+		unreadNotiCnt = aucGoodsService.selectUnreadNotiCnt(memberNick);
 
 		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
 		hotAucMap = aucGoodsService.selectHotAuc();
 		
 		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
 		recentAucMap = aucGoodsService.selectRecentAuc();
-
+		
+		int hotTotalCnt = aucGoodsService.selectHotAucTotalCnt();
+		
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String nowTime = now.format(formatter);
 //		System.out.println("After : " + nowTime);
 		request.setAttribute("nowTime", nowTime);
-
+		
+		request.setAttribute("unreadNotiCnt", unreadNotiCnt);
+		request.setAttribute("hotTotalCnt", hotTotalCnt);
 		request.setAttribute("hotAucMap", hotAucMap);
 		request.setAttribute("recentAucMap", recentAucMap);
 		
 		return "/home/hot";
 	}
-
+	
+	
+	
+	@RequestMapping("/noticeContent")
+	public String noticeContent(Model model, HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+		// 로긴한 사용자의 알림 리스트 가져오기
+		Map<NoticeVO, String> noticeMap= aucGoodsService.selectNotiMap(memberVO.getNickname());
+		
+//		for (NoticeVO key : noticeMap.keySet()) {
+//			String value = noticeMap.get(key);
+//			System.out.println("key: " + key + "value: " + value);
+//		}
+		
+		model.addAttribute("noticeMap", noticeMap);
+		
+		return "/notice/noticeContent";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/readAllNotice")
+	public void readAllNotice(HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+		String memberNick = memberVO.getNickname();
+		
+		System.out.println("읽을사람: " + memberNick);
+		aucGoodsService.updateNotiReadDatetime(memberNick);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/readNotice/{notiNo}")
+	public void readNotice(@PathVariable("notiNo")int notiNo) {
+		aucGoodsService.updateReadStatus(notiNo);
+	}
+	
 	@RequestMapping("/displayForm")
 	public String displayForm(Model model) {
 

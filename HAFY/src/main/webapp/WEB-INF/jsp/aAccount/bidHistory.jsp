@@ -2,11 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<jsp:include page="/WEB-INF/jsp/include/lib/topLibs.jsp"></jsp:include>
 <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/navbar-fixed/navbar-top-fixed.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/wow/css/libs/animate.css">
+
 <style type="text/css">
 a {
 	text-decoration: none !important;
@@ -191,7 +195,7 @@ table th img {
     <%--    입찰내역된 적이 없으면 --%>
 	     	<c:when test="${aucGoodsVO.winningBid == 0 }">
 	     			<div style="text-decoration: underline;"><div>경매시작가</div></div>
-	    			<div style="font-size: 1.5rem; font-weight: bold;">&nbsp;${aucGoodsVO.startPrice } 원 </div>
+	    			<div style="font-size: 1.5rem; font-weight: bold;">&nbsp;<fmt:formatNumber value="${aucGoodsVO.startPrice }" pattern="#,###"/> 원 </div>
 	     	</c:when>
 	    <c:otherwise>
      
@@ -200,11 +204,11 @@ table th img {
 			    	<c:choose>
 			    		<c:when test="${nowTime < aucGoodsVO.endDate }">
 			    			<div style="text-decoration: underline;"><div>최고입찰가</div></div>
-			    			<div style="font-size: 1.5rem; font-weight: bold;">&nbsp;${result.memberBalance } 원 (${result.tranzMemberNick }) </div>
+			    			<div style="font-size: 1.5rem; font-weight: bold;">&nbsp;<fmt:formatNumber value="${result.memberBalance }" pattern="#,###"/> 원 (${result.tranzMemberNick }) </div>
 			    		</c:when>
 			    		<c:otherwise>
 			    			<div style="text-decoration: underline;"><div>낙찰가</div></div>
-			    			<div style="font-size: 1.5rem; font-weight: bold; background: rgb(26, 188, 156); display: inline-block;">&nbsp;${result.memberBalance } 원 (${result.tranzMemberNick })&nbsp;</div>
+			    			<div style="font-size: 1.5rem; font-weight: bold; background: rgb(26, 188, 156); display: inline-block;">&nbsp;<fmt:formatNumber value="${result.memberBalance }" pattern="#,###"/> 원 (${result.tranzMemberNick })&nbsp;</div>
 			    		</c:otherwise>
 			    	</c:choose>
 		    	</c:forEach>
@@ -246,37 +250,8 @@ table th img {
 	
 	
 <%-- 	입/출금내역 탭 --%>
-		<table class="table table-hover history" style="display:none; margin: 0 auto; width: 96%; margin-top: .5rem;margin-bottom: 3.5rem; ">
-			<tbody>
-				
-	  <c:forEach items="${aTranzList }" var="aTranzVO" >
-					<c:set value="${aTranzVO.tranzDate }" var="tranzDate" scope="page"></c:set>
-				<tr>
-					<th scope="row" style="padding: 0.75rem 0rem;">${fn:substring(tranzDate,5,10) }</th>
-					<td style="width: 40%;">
-						<div style="font-weight: bold;">${aTranzVO.tranzMemberNick }</div>
-						<div style="font-size:0.8rem; color:#8f8f8f">${fn:substring(tranzDate,11,19) } | ${aTranzVO.tranzType }</div>
-					</td>
-					<td>
-					<c:choose>
-						<c:when test="${aTranzVO.tranzType == '입금' }">
-						<div style="color: green;">+${aTranzVO.tranzMoney } 원</div>
-						</c:when>
-						<c:otherwise>
-						<c:set var="tranzMoney"  value="${aTranzVO.tranzMoney}" scope="page"></c:set>
-<%-- 						<c:set var="tranzMoneyLength" value="${fn:length(tranzMoney)}" scope="page"></c:set> --%>
-<%-- 						<div style="color: rgb(243, 156, 18);">${fn:substring(tranzMoney,0,1)} ${fn:substring(tranzMoney,1,tranzMoneyLength)} 원</div> --%>
-						<div style="color: rgb(243, 156, 18);">${ tranzMoney} 원</div>
-						</c:otherwise>
-					</c:choose>
-						<div style="font-size:0.8rem; color:#8f8f8f">${aTranzVO.memberBalance } 원</div>
-					</td>
-				</tr>
-				</c:forEach>
-					
-				
-				
-			</tbody>
+		<table id="bidHistory" class="table table-hover history" style="display:none; margin: 0 auto; width: 96%; margin-top: .5rem;margin-bottom: 3.5rem; ">
+			
 		</table>
 
 		<%-- 경매참여자 탭 --%>
@@ -289,7 +264,7 @@ table th img {
 						<div>${bidder.bidderNick }</div>
 					</td>
 					<td>
-						<div style="color:rgb(39, 178, 165);">${bidder.bidMoney } 원</div>
+						<div style="color:rgb(39, 178, 165);"><fmt:formatNumber value="${bidder.bidMoney }" pattern="#,###"/> 원</div>
 					</td>
 				</tr>
 	</c:forEach>
@@ -331,7 +306,7 @@ table th img {
 								</c:otherwise>
 							</c:choose>
 							<td>
-								<div style="color:rgb(39, 178, 165);">${result.memberBalance } 원</div>
+								<div style="color:rgb(39, 178, 165);"><fmt:formatNumber value="${result.memberBalance }" pattern="#,###"/> 원</div>
 							</td>
 						</tr>
 			</c:forEach>
@@ -350,8 +325,11 @@ table th img {
 <%-- 			마감시간 전이면  / 후면--%>
 		<c:choose>
 			<c:when test="${nowTime < aucGoodsVO.endDate }">
+				<button type="button" class="btn btn-success" onclick="goGoodsDetail()"
+					style="background: rgb(46, 204, 113); border:rgb(46, 204, 113); font-weight: bold; width: 35%;">상품보기</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button type="button" class="btn btn-success" onclick="goBid()"
-					style="background: rgb(22, 160, 133); font-weight: bold; width: 45%;">입찰하기</button>
+					style="background: rgb(22, 160, 133); font-weight: bold; width: 35%;">입찰하기</button>
 			</c:when>
 			<c:otherwise>
 			
@@ -360,27 +338,65 @@ table th img {
 		</c:choose>
 	</nav>
 
-
-
-
-
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
-    <script type="text/javascript">
-  
-	
-
+        <script src="${pageContext.request.contextPath }/resources/wow/dist/wow.min.js"></script>
     
+    <script type="text/javascript">
+    
+	new WOW().init();
+
+	function goGoodsDetail() {
+		location.href= "${pageContext.request.contextPath}/goodsDetail/" + ${aucNo};
+	}
+	 	
 	function result() {
 		$(".history").hide();
 		$(".rank").hide()
 		$(".result").show();
 		
 	}
+	
+	let historyScrollCnt = 1;
+	let loadCnt = 6;
+	let historyScrollLocation = 0;
+	
+	function loadBidHistory() {
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/loadBidHistory/" + historyScrollCnt + "/" + loadCnt + "/" + ${aucNo},
+			type : 'get',
+			success: function(data) {
+				
+				$("#loading").show
+				$("#bidHistory").append(data)
+				historyScrollCnt += 1;
+				console.log("historyScrollCnt " + historyScrollCnt )
+			}
+		})
+	}
 	function showHistory() {
 		$(".history").show();
 		$(".rank").hide()
 		$(".result").hide();
 		
+		loadBidHistory()
+		
+		window.addEventListener('scroll', () => {
+				historyScrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
+				let windowHeight = window.innerHeight; // 스크린 창
+				let fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
+				console.log("historyScrollLocation " + historyScrollLocation )
+				console.log("historyScrollLocation + windowHeight " + (historyScrollLocation + windowHeight ))
+				console.log("fullHeight " + fullHeight )
+				
+				if(Math.ceil(historyScrollLocation + windowHeight) == fullHeight){
+					console.log('끝')
+					setTimeout(function() {  
+						loadBidHistory()
+					}, 
+					500);
+				}
+			})
 	}
 	function showRank() {
 		$(".history").hide();
@@ -388,8 +404,6 @@ table th img {
 		$(".result").hide();
 		
 	}
-	
-	
     
 	  function goBid() {
 	location.href = "${pageContext.request.contextPath}/bidForm/"+${aucNo};

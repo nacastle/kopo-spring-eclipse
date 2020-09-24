@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import hafy.member.vo.MemberVO;
+import hafy.member.vo.NoticeSettingVO;
 
 public interface MemberDAO {
 	
@@ -12,6 +13,7 @@ public interface MemberDAO {
 	*/
 	
 	void insert(MemberVO memberVO);
+	void insertNoticeSetting(MemberVO memberVO);
 	
 	void updateMember(MemberVO memberVO);
 	void deleteMember(MemberVO memberVO);
@@ -24,6 +26,11 @@ public interface MemberDAO {
 	
 	MemberVO selectMember(MemberVO memberVO);
 	MemberVO checkLogin(MemberVO inputMemberVO);
+	
+	NoticeSettingVO selectNoticeSettingVOByNick(String nickname);
+
+	void updateNoticeSetting(NoticeSettingVO noticeSettingVO);
+	
 	
 	
 }	

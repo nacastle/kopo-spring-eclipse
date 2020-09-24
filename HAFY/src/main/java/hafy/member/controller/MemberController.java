@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import hafy.member.service.MemberService;
 import hafy.member.vo.MemberVO;
+import hafy.member.vo.NoticeSettingVO;
 
 
 
@@ -30,6 +32,36 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 
+	
+	
+	
+	
+	@GetMapping("/noticeSetting")
+	public String noticeSetting(HttpSession session, Model model) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+		String nickname = memberVO.getNickname();
+		
+		NoticeSettingVO noticeSettingVO = memberService.selectNoticeSettingVOByNick(nickname);
+//		System.out.println(nickname + "의 " + noticeSettingVO);
+		model.addAttribute("noticeSettingVO", noticeSettingVO);
+		
+		return "/myPage/noticeSetting";
+	}
+	
+	@ResponseBody
+	@PostMapping("/noticeSettingProcess")
+	public void noticeSettingProcess(HttpSession session, NoticeSettingVO noticeSettingVO) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+		String nickname = memberVO.getNickname();
+		noticeSettingVO.setMemberNick(nickname);
+		
+//		System.out.println("noticeSettingVO" + noticeSettingVO);
+		memberService.updateNoticeSetting(noticeSettingVO);
+		
+	}
+	
 	@PostMapping("/changePwdSuccess")
 	public String changePwdSuccess(@RequestParam("tranzPwd") String tranzPwd, HttpSession session) {
 		
@@ -74,12 +106,12 @@ public class MemberController {
 	public String checkPwd(HttpServletRequest request, HttpSession session) {
 
 		String inputPwd = request.getParameter("inputPwd");
-		System.out.println("회원탈퇴시 입력받은 패스워드: " + inputPwd);
+//		System.out.println("회원탈퇴시 입력받은 패스워드: " + inputPwd);
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 		String memberPwd = memberVO.getTranzPwd();
 		
-		System.out.println(inputPwd.equals(memberPwd));
+//		System.out.println(inputPwd.equals(memberPwd));
 
 		if (inputPwd.equals(memberPwd)) {
 			return "correct";
@@ -153,7 +185,7 @@ public class MemberController {
 		
 		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
 //		ModelAndView mav = new ModelAndView();
-		System.out.println("컨트롤러에서 멤버 받아오는지?"+memberVO);
+//		System.out.println("컨트롤러에서 멤버 받아오는지?"+memberVO);
 
 		if (memberVO == null) {
 			return "redirect:/login";
@@ -228,6 +260,7 @@ public class MemberController {
 		memberVO.setTranzPwd(tranzPwd);
 
 		memberService.insertMember(memberVO);
+		memberService.insertNoticeSetting(memberVO);
 		session.setAttribute("memberVO", memberVO);
 
 		return "signUp/signUpSuccess";

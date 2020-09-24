@@ -210,19 +210,19 @@ float: ri
 	<div>입찰자 알림</div>	
 	<table class="table-hover">
 		<tr>
-			<th>다른 사람의 입찰</th>
-			<td><input id="test" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
+			<th>경매 입찰</th>
+			<td><input id="bidderBidNotice" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
 		</tr>
 		<tr>
 			<th>경매 마감임박</th>
-			<td><input id="imm" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
+			<td><input id="bidderImminentNotice" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
 		</tr>
 		<tr>
-			<td id="setMin" colspan="2">*마감 <input  type="number" class="form-control" style="width: 20%; display: inline-block;" value="5"> 분 전 알림 <button id="immSuccessModal" class="btn btn-primary">설정</button></td>
+			<td id="bidderImminentTime" colspan="2">*마감 <input id="setMin"  type="number" class="form-control" style="width: 20%; display: inline-block;" value="${noticeSettingVO.bidderImminentTime }"> 분 전 알림 <button id="immSuccessModal" class="btn btn-primary">설정</button></td>
 		</tr>
 		<tr>
 			<th>경매 마감</th>
-			<td><input id="test" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
+			<td><input id="bidderClosedNotice" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
 		</tr>
 	</table>
 	
@@ -232,13 +232,13 @@ float: ri
    <div class="modal-dialog"><!--  큰창:<div class="modal-dialog modal-lg"> 작은창 :<div class="modal-dialog modal-sm">  -->
       <div class="modal-content">
          <div class="modal-body" style="text-align: center; margin: 1rem;">
-            마감임박 알림 설정이 완료되었습니다.
+            경매 마감임박 알림 설정이 완료되었습니다.
          </div>
         
          <div class="modal-footer" style="border-top:0; padding:0; ">
           		<table style="margin-bottom: 0;">
 			<tr>
-				<td style="text-align: center;" id="confirm" data-dismiss="modal" onclick="no()">확인</td>
+				<td id="confirmSetting" style="text-align: center; height: 2.4rem; font-size: 1rem; border-top:0.1rem solid rgb(224, 224, 224);" id="confirm" data-dismiss="modal" >확인</td>
 			</tr>
 		</table>
          </div>
@@ -252,19 +252,19 @@ float: ri
 	<table class="table-hover">
 		<tr>
 			<th>입찰자의 입찰</th>
-			<td><input id="test" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
+			<td><input id="sellerBidNotice" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
 		</tr>
 		<tr>
 			<th>상품 좋아요</th>
-			<td><input id="test" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
+			<td><input id="sellerLikeNotice" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
 		</tr>
 		<tr>
 			<th>경매 마감</th>
-			<td><input id="test" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
+			<td><input id="sellerClosedNotice" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
 		</tr>
 		<tr>
 			<th>상품 매입확정</th>
-			<td><input id="test" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
+			<td><input id="sellerPurchaseConfirmNotice" type="checkbox" checked data-toggle="toggle" data-onstyle="success"></td>
 		</tr>
 	</table>
 	
@@ -285,20 +285,148 @@ float: ri
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
       <script type="text/javascript">
+
       
+      // checked true or false ?
+  	if(${noticeSettingVO.bidderBidNotice == 'true'}) {
+      $("input:checkbox[id='bidderBidNotice']").prop("checked", true); /* by ID */
+  	} else {
+      $("input:checkbox[id='bidderBidNotice']").prop("checked", false); /* by ID */
+  	}
+
+  	if(${noticeSettingVO.bidderImminentNotice == 'true'}) {
+      $("input:checkbox[id='bidderImminentNotice']").prop("checked", true); /* by ID */
+      $("#bidderImminentTime").show()
+  	} else {
+      $("input:checkbox[id='bidderImminentNotice']").prop("checked", false); /* by ID */
+      $("#bidderImminentTime").hide()
+  	}
+
+  	if(${noticeSettingVO.bidderClosedNotice == 'true'}) {
+      $("input:checkbox[id='bidderClosedNotice']").prop("checked", true); /* by ID */
+  	} else {
+      $("input:checkbox[id='bidderClosedNotice']").prop("checked", false); /* by ID */
+  	}
+
+  	if(${noticeSettingVO.sellerBidNotice == 'true'}) {
+      $("input:checkbox[id='sellerBidNotice']").prop("checked", true); /* by ID */
+  	} else {
+      $("input:checkbox[id='sellerBidNotice']").prop("checked", false); /* by ID */
+  	}
+
+  	if(${noticeSettingVO.sellerLikeNotice == 'true'}) {
+      $("input:checkbox[id='sellerLikeNotice']").prop("checked", true); /* by ID */
+  	} else {
+      $("input:checkbox[id='sellerLikeNotice']").prop("checked", false); /* by ID */
+  	}
+
+  	if(${noticeSettingVO.sellerClosedNotice == 'true'}) {
+      $("input:checkbox[id='sellerClosedNotice']").prop("checked", true); /* by ID */
+  	} else {
+      $("input:checkbox[id='sellerClosedNotice']").prop("checked", false); /* by ID */
+  	}
+
+  	if(${noticeSettingVO.sellerPurchaseConfirmNotice == 'true'}) {
+      $("input:checkbox[id='sellerPurchaseConfirmNotice']").prop("checked", true); /* by ID */
+  	} else {
+      $("input:checkbox[id='sellerPurchaseConfirmNotice']").prop("checked", false); /* by ID */
+  	}
+
+
       $("#immSuccessModal").click(function() {
+    	  $("#confirmSetting").css("background", "white");
+    	  bidderImminentTime = $("#setMin").val()
+    	  console.log("바뀐 bidderImminentTime : " +bidderImminentTime)
+    	  changeNoticeSetting()
     	  $(".modal").modal("show")
 		
 	})
+	
+	$("#confirmSetting").click(function() {
+		$(".modal").modal("hide")
+		$(this).css("background", "rgb(224, 224, 224)");
+	})
+	
       
-      $("#imm").change(function(event) {
+      $("#bidderImminentNotice").change(function(event) {
 		console.log(event.currentTarget.checked);
 		if(event.currentTarget.checked == true){
-	    	  $("#setMin").show()
+	    	  $("#bidderImminentTime").show()
 		} else {
-	    	  $("#setMin").hide() 
+	    	  $("#bidderImminentTime").hide() 
 		}
 	})
+	
+		// 변경된 세팅값 가져오기
+		let bidderBidNotice = ${noticeSettingVO.bidderBidNotice}
+      console.log("기존 bidderBidNotice : " + bidderBidNotice)
+		let bidderImminentNotice = ${noticeSettingVO.bidderImminentNotice};
+		let bidderImminentTime = ${noticeSettingVO.bidderImminentTime};
+  	  console.log("기존 bidderImminentTime : " +bidderImminentTime)
+
+		let bidderClosedNotice = ${noticeSettingVO.bidderClosedNotice};
+		let sellerBidNotice = ${noticeSettingVO.sellerBidNotice};
+		let sellerLikeNotice = ${noticeSettingVO.sellerLikeNotice};
+		let sellerClosedNotice = ${noticeSettingVO.sellerClosedNotice};
+		let sellerPurchaseConfirmNotice = ${noticeSettingVO.sellerPurchaseConfirmNotice};
+		
+		 $("#bidderBidNotice").change(function(event) {
+	    	  bidderBidNotice = event.currentTarget.checked;
+      console.log("변경된 bidderBidNotice : " + bidderBidNotice)
+      changeNoticeSetting()
+	  	})
+	      $("#bidderImminentNotice").change(function(event) {
+	    	  bidderImminentNotice = event.currentTarget.checked;
+	    	  changeNoticeSetting()
+	  	})
+	      $("#bidderClosedNotice").change(function(event) {
+	    	  bidderClosedNotice = event.currentTarget.checked;
+	    	  changeNoticeSetting()
+	  	})
+	      $("#sellerBidNotice").change(function(event) {
+	    	  sellerBidNotice= event.currentTarget.checked;
+	    	  changeNoticeSetting()
+	  	})
+	      $("#sellerLikeNotice").change(function(event) {
+	    	  sellerLikeNotice= event.currentTarget.checked;
+	    	  changeNoticeSetting()
+	  	})
+	      $("#sellerClosedNotice").change(function(event) {
+	    	  sellerClosedNotice= event.currentTarget.checked;
+	    	  changeNoticeSetting()
+	  	})
+	      $("#sellerPurchaseConfirmNotice").change(function(event) {
+	    	  sellerPurchaseConfirmNotice= event.currentTarget.checked;
+	    	  changeNoticeSetting()
+	  	})
+	  	
+		
+	// ajax로 db테이블에 on/off 변경값 반영하기
+	function changeNoticeSetting() {
+		
+		$.ajax({
+		     
+		  	url : "${pageContext.request.contextPath}/noticeSettingProcess",
+		  	type : 'post',
+		  	data : {
+		  		bidderBidNotice : bidderBidNotice,
+		  		bidderImminentNotice : bidderImminentNotice,
+		  		bidderImminentTime : bidderImminentTime,
+		  		bidderClosedNotice : bidderClosedNotice,
+		  		sellerBidNotice : sellerBidNotice,
+		  		sellerLikeNotice : sellerLikeNotice,
+		  		sellerClosedNotice : sellerClosedNotice,
+		  		sellerPurchaseConfirmNotice : sellerPurchaseConfirmNotice
+		  	},
+		  	success : function() {
+				console.log("성공")
+			}, error : function() {
+				console.log("실패")
+			}
+		})
+		
+	}
+	
       
 	  $('.na-nav a').on('click',function(){
 		 $(this).addClass('top-on');
