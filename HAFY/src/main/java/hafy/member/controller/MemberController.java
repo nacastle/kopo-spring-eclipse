@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import hafy.aucGoods.service.AucGoodsService;
 import hafy.member.service.MemberService;
 import hafy.member.vo.MemberVO;
 import hafy.member.vo.NoticeSettingVO;
@@ -31,6 +32,8 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private AucGoodsService aucGoodsService;
 
 	
 	
@@ -204,7 +207,18 @@ public class MemberController {
 	}
 
 	@RequestMapping("/myPage")
-	public String myPage() {
+	public String myPage(HttpSession session, HttpServletRequest request) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+//		System.out.println("hot에서 멤버"+memberVO);
+
+		int unreadNotiCnt = 0;
+		String memberNick = memberVO.getNickname();
+//		System.out.println("memberNick" + memberNick);
+		unreadNotiCnt = aucGoodsService.selectUnreadNotiCnt(memberNick);
+		
+		request.setAttribute("unreadNotiCnt", unreadNotiCnt);
+
+		
 		return "/myPage/myPage";
 	}
 

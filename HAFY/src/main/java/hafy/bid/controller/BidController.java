@@ -69,14 +69,6 @@ public class BidController {
 		bidService.noticeClosedBid();
 	}
 
-	// 마감된 경매 알림 (seller, bidders(winner, losers))
-//	@Scheduled(cron = "0 * * * * *")
-//	public void selectImminentAucsByMin() {
-//		int setMin = 5;
-//		System.out.println(setMin);
-//		System.out.println("매분 0초에 경매마감임박" + setMin + "분전 알림 알고리즘 도는중...");
-//		bidService.noticeImminentAucsByMin(setMin);
-//	}
 
 	@ResponseBody
 	@GetMapping("/loadBidHistory/{historyScrollCnt}/{loadCnt}/{aucNo}")
@@ -106,7 +98,8 @@ public class BidController {
 
 	@GetMapping("/bidHistory/{aucNo}")
 	public String bidHistory(@PathVariable("aucNo") int aucNo, HttpServletRequest request) {
-
+		
+		
 		// 특정경매의 마감시간 가져오려고 vo 구하기
 		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
 
@@ -154,7 +147,7 @@ public class BidController {
 		List<MAccountVO> mAccountList = mAccountService.selectMAccountList(memberNick);
 
 		// 현 로그인한 회원이 여태 입찰한 금액 불러오기
-		int pastBidMoney = 0;
+		double pastBidMoney = 0;
 
 		List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
 		bidderList = bidService.selectAAccount(aucNo);
@@ -175,7 +168,7 @@ public class BidController {
 		//// 시작가
 		int startPrice = aucGoodsVO.getStartPrice();
 
-		int highestBid = 0;
+		double highestBid = 0;
 		if (bidderList.isEmpty()) {
 			highestBid = startPrice;
 //			System.out.println("시작가가 최고입찰가: " + highestBid);
@@ -265,7 +258,7 @@ public class BidController {
 		AAccountVO aAccountVO = new AAccountVO(aucNo, bidderNick, bidMoney);
 
 		AAccountVO isBidVO = bidService.isBidding(aAccountVO);
-		int withdrawMoney = bidMoney;
+		double withdrawMoney = bidMoney;
 		if (isBidVO != null) {
 			withdrawMoney = bidMoney - isBidVO.getBidMoney();
 		}

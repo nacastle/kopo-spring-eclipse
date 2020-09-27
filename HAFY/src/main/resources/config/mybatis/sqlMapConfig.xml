@@ -12,6 +12,7 @@
 		<typeAlias type="hafy.aucGoods.vo.GoodsPhotoVO" alias="goodsPhotoVO"/>
 		<typeAlias type="hafy.aucGoods.vo.CodeVO" alias="codeVO"/>
 		<typeAlias type="hafy.aucGoods.vo.LikeVO" alias="likeVO"/>
+		<typeAlias type="hafy.aucGoods.vo.ReturnGoodsVO" alias="returnGoodsVO"/>
 		<typeAlias type="hafy.bid.vo.AAccountVO" alias="aAccountVO"/>
 		<typeAlias type="hafy.bid.vo.ATranzVO" alias="aTranzVO"/>
 		<typeAlias type="hafy.bid.vo.NoticeVO" alias="noticeVO"/>

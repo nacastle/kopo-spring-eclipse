@@ -9,6 +9,7 @@ import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.aucGoods.vo.CodeVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
+import hafy.aucGoods.vo.ReturnGoodsVO;
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.NoticeVO;
 import hafy.member.vo.MemberVO;
@@ -39,7 +40,7 @@ public interface AucGoodsDAO {
 	CodeVO selectCodeVO(String category);
 	List<AucGoodsVO> selectAucSearchWord(String searchWord);
 	
-	void updatePurchaseConfirm(int aucNo);
+	void updatePurchaseConfirm(Map<String, Object> updateMap);
 	void updateRefundStatus(int aucNo);
 	
 	List<AucGoodsVO> selectHotAucContentsLazyLoad(Map<String, Object> loadInfo);
@@ -62,4 +63,19 @@ public interface AucGoodsDAO {
 	void updateNotiReadDatetime(String memberNick);
 	
 	List<NoticeVO> selectNotiContentsLazyLoad(Map<String, Object> loadInfo);
+	
+	List<AucGoodsVO> selectOnGoingAucContents(String memberNick);
+	List<AucGoodsVO> selectDisplayClosedAucContents(String memberNick);
+	List<AucGoodsVO> selectDisplayOnGoingAucContents(String memberNick);
+	List<AucGoodsVO> selectWinAucContents(String memberNick);
+	
+	void insertReturnGoods(ReturnGoodsVO returnGoodsVO);
+	void insertReturnPhoto(GoodsPhotoVO goodsPhotoVO);
+	
+	ReturnGoodsVO selectReturnGoodsByNo(int aucNo);
+	
+	List<GoodsPhotoVO> selectReturnPhotoListByAucNo(int aucNo);
+	
+	List<AucGoodsVO> selectDisplayPurchaseConfirmContents(String memberNick);
+	List<AucGoodsVO> selectDisplayReturnGoodsContents(String memberNick);
 }

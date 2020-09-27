@@ -49,6 +49,21 @@ public class BidServiceImpl implements BidService {
 
 	@Transactional
 	@Override
+	public void returnBidMoney(AAccountVO aAccountVO, Map<String, Object> depositInfo, ATranzVO aTranzVO) {
+		// TODO Auto-generated method stub
+		
+		// 모임계좌에서 돈 빠져나가기
+		bidDAO.withdrawAAccount(aAccountVO);
+		
+		// 본래 낙찰자에게 돈 되돌려주기
+		mAccountDAO.depositMAccount(depositInfo);
+		
+		// 입출금 기록 남기기
+		bidDAO.insertBidTranz(aTranzVO);
+	}
+
+	@Transactional
+	@Override
 	public void noticeImminentAucs() {
 		// TODO Auto-generated method stub
 
@@ -287,7 +302,7 @@ public class BidServiceImpl implements BidService {
 		List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
 		bidderList = bidDAO.selectAAccount(aAccountVO.getAucNo());
 
-		int highestBid = bidderList.get(0).getBidMoney();
+		double highestBid = bidderList.get(0).getBidMoney();
 		for (int i = 1; i < bidderList.size(); i++) {
 			if (bidderList.get(i).getBidMoney() >= highestBid) {
 
@@ -319,8 +334,8 @@ public class BidServiceImpl implements BidService {
 		} else {
 
 			// 수정한부분
-			int pastBidMoney = isBid.getBidMoney();
-			int nowBidMoney = aTranzVO.getTranzMoney();
+			double pastBidMoney = isBid.getBidMoney();
+			double nowBidMoney = aTranzVO.getTranzMoney();
 			// 지금 입찰액과 과거 입찰액 차액만큼 입금액 추가
 			aTranzVO.setTranzMoney(nowBidMoney - pastBidMoney);
 			// 여기까지해서

@@ -28,7 +28,7 @@
 	where end_date <![CDATA[<=]]> TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI') and REFUND_STATUS = '미환급' and winning_bid != 0
 </select>
 
-<!-- 사용자가 입찰한 경매 중 마감된 경매 번호 구하기 -->
+<!-- 사용자가 입찰한 경매 중 마감된 경매 번호 최신마감일자 순으로 구하기 -->
 <select id="selectMemberClosedAuc" parameterType="String" resultType="int">
 	select auc_no
 	from 
@@ -36,7 +36,28 @@
 	    (select auc_no from HF_A_ACCOUNT
 	    where bidder_nick = #{memberNick}) s
 	where s.auc_no = g.no and g.end_date <![CDATA[<=]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
-	order by auc_no desc
+	order by g.end_date desc
+</select>
+
+<!-- 사용자가 입찰한 경매 중 마감된 경매 번호 최신확정일자 순으로 구하기 -->
+<select id="selectMemberClosedAucOBConfirmDate" parameterType="String" resultType="int">
+	select auc_no
+	from 
+	    HF_AUC_GOODS g,
+	    (select auc_no from HF_A_ACCOUNT
+	    where bidder_nick = #{memberNick}) s
+	where s.auc_no = g.no and g.end_date <![CDATA[<=]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+	order by g.confirm_date desc
+</select>
+
+<select id="selectMemberClosedAucOBReturnRequestDate" parameterType="String" resultType="int">
+	select auc_no
+	from 
+	    HF_AUC_GOODS g,
+	    (select auc_no from HF_A_ACCOUNT
+	    where bidder_nick = #{memberNick}) s
+	where s.auc_no = g.no and g.end_date <![CDATA[<=]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+	order by g.return_request_date desc
 </select>
 
 <!-- 특정 경매의 마감일시 기준으로 그 전까지 입금(입찰)된 정보 가져오기 -->

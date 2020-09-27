@@ -5,7 +5,7 @@ public class ATranzVO {
 	private int aucNo;
 	private String tranzDate;
 	private String tranzAccountNo;
-	private int tranzMoney;
+	private double tranzMoney;
 	private int memberBalance;
 	private String tranzMemberNick;
 	private String tranzType;
@@ -18,7 +18,7 @@ public class ATranzVO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ATranzVO(int aucNo, String tranzAccountNo, int tranzMoney, String tranzMemberNick,
+	public ATranzVO(int aucNo, String tranzAccountNo, double tranzMoney, String tranzMemberNick,
 			String tranzType) {
 		super();
 		this.aucNo = aucNo;
@@ -40,10 +40,10 @@ public class ATranzVO {
 	public void setTranzAccountNo(String tranzAccountNo) {
 		this.tranzAccountNo = tranzAccountNo;
 	}
-	public int getTranzMoney() {
+	public double getTranzMoney() {
 		return tranzMoney;
 	}
-	public void setTranzMoney(int tranzMoney) {
+	public void setTranzMoney(double tranzMoney) {
 		this.tranzMoney = tranzMoney;
 	}
 	public String getTranzMemberNick() {

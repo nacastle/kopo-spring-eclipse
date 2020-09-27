@@ -135,6 +135,28 @@ color: white;
 
 }
 
+.fa-bell-o {
+    position: fixed;
+    z-index: 9998;
+    right: 1rem;
+    top: 1.3rem;
+    }
+ 
+#noticeCnt {
+    background: red;
+    color: white;
+    width: 1rem;
+    display: inline-block;
+    text-align: center;
+    font-size: .8rem;
+    position: relative;
+    z-index: 9998;
+    top: -0.6rem;
+    right: -.3rem;
+    font-weight: bold;
+
+}
+
 </style>
 </head>
 <body>
@@ -145,9 +167,15 @@ color: white;
     	  <span   style="font-size: 1.25rem; position:relative; top:0.2rem; font-weight: bold; color:black;">내 경매</span>
   	 	</div>
   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>
-      			&nbsp;&nbsp;&nbsp;
-      			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
+<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a> -->
+<!--       			&nbsp;&nbsp;&nbsp; -->
+<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
+				<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+      			
+      			<c:if test="${unreadNotiCnt != 0 }">
+	      			<span id="noticeCnt" style="background: red; color: white;">${unreadNotiCnt }</span>
+      			</c:if>
+      			</a>	
 		</div>
       
     </nav>

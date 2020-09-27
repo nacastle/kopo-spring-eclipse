@@ -202,7 +202,27 @@ input[type="datetime-local"]:valid::before {
 /* 	float: left; */
 }
 
+.fa-bell-o {
+    position: fixed;
+    z-index: 9998;
+    right: 1rem;
+    top: 1.3rem;
+    }
+ 
+#noticeCnt {
+    background: red;
+    color: white;
+    width: 1rem;
+    display: inline-block;
+    text-align: center;
+    font-size: .8rem;
+    position: relative;
+    z-index: 9998;
+    top: -0.6rem;
+    right: -.3rem;
+    font-weight: bold;
 
+}
 
 </style>
 
@@ -220,7 +240,13 @@ input[type="datetime-local"]:valid::before {
   	 	</div>
   	 	
   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      		<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
+<!--       		<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
+			<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+      			
+      			<c:if test="${unreadNotiCnt != 0 }">
+	      			<span id="noticeCnt" style="background: red; color: white;">${unreadNotiCnt }</span>
+      			</c:if>
+      			</a>	
 		</div>
     </nav>
 
@@ -245,26 +271,29 @@ input[type="datetime-local"]:valid::before {
 
 	<div style="margin-top: 1rem;">
 
-		<div class="ttitle">경매</div>
+		<div class="ttitle">입찰</div>
 		<table class="table-hover">
-			<tr>
-				<td>입찰내역</td>
+			<tr onclick="goBidOnGoing()">
+				<td>진행내역</td>
 			</tr>
-			<tr>
-				<td>판매내역</td>
+			<tr onclick="goBidWin()">
+				<td>낙찰내역</td>
 			</tr>
 			<tr onclick="goLikeList()">
 				<td>관심경매</td>
 			</tr>
 		</table>
 
-		<div class="ttitle">상품</div>
+		<div class="ttitle">출품</div>
 		<table class="table-hover">
-			<tr onclick="goConfirmPurchase()">
-				<td>매입확정</td>
+			<tr onclick="goDisplayOnGoing()">
+				<td>진행내역</td>
 			</tr>
-			<tr>
-				<td>환불하기</td>
+<!-- 			<tr onclick="goConfirmPurchase()"> -->
+<!-- 				<td>매입확정</td> -->
+<!-- 			</tr> -->
+			<tr onclick="goDisplayClosed()">
+				<td>마감내역</td>
 			</tr>
 		</table>
 
@@ -308,8 +337,6 @@ input[type="datetime-local"]:valid::before {
       </div>
    </div>
 </div>
-		                
-
 		<div class="ttitle">계좌</div>
 		<table class="table-hover">
 			<tr onclick="goMyAccount()">
@@ -348,6 +375,18 @@ input[type="datetime-local"]:valid::before {
       <script type="text/javascript">
       
       
+      function goDisplayClosed() {
+    	  location.href = "${pageContext.request.contextPath}/displayClosed"
+	}
+      function goDisplayOnGoing() {
+    	  location.href = "${pageContext.request.contextPath}/displayOnGoing"
+	}
+      function goBidOnGoing() {
+    	  location.href = "${pageContext.request.contextPath}/bidOnGoing"
+	}
+      function goBidWin() {
+    	  location.href = "${pageContext.request.contextPath}/bidWin"
+	}
       function goSetNotice() {
     	  location.href = "${pageContext.request.contextPath}/noticeSetting"
 	}

@@ -4,7 +4,7 @@ public class AAccountVO {
 	
 	private int aucNo;
 	private String bidderNick;
-	private int bidMoney;
+	private double bidMoney;
 	
 	
 	public AAccountVO() {
@@ -27,7 +27,7 @@ public class AAccountVO {
 	}
 
 
-	public AAccountVO(int aucNo, String bidderNick, int bidMoney) {
+	public AAccountVO(int aucNo, String bidderNick, double bidMoney) {
 		super();
 		this.aucNo = aucNo;
 		this.bidderNick = bidderNick;
@@ -35,10 +35,10 @@ public class AAccountVO {
 	}
 
 
-	public int getBidMoney() {
+	public double getBidMoney() {
 		return bidMoney;
 	}
-	public void setBidMoney(int bidMoney) {
+	public void setBidMoney(double bidMoney) {
 		this.bidMoney = bidMoney;
 	}
 	public int getAucNo() {

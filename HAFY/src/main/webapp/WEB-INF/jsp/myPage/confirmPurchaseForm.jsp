@@ -259,7 +259,7 @@ margin-bottom: 0.2rem;
 		</tbody>
 	</table>
 	
-	<!-- 로그아웃 모달창 -->
+	<!-- 매입확정창 -->
 <div class="modal fade"  tabindex="-1" role="dialog"
    aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 10rem;">
    <div class="modal-dialog"><!--  큰창:<div class="modal-dialog modal-lg"> 작은창 :<div class="modal-dialog modal-sm">  -->

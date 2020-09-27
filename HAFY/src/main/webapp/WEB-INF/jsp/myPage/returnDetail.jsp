@@ -113,7 +113,7 @@ table th img {
 }
 
 hr {
-	width: 90vw
+	width: 98%
 }
 
 label {
@@ -135,6 +135,10 @@ label {
 	height: 2.4rem;
 /* 	float: left; */
 }
+
+.na-content {
+	padding: 0 3%;	
+}
 </style>
 
 
@@ -142,7 +146,25 @@ label {
 <body>
 
 <c:forEach items="${returnMap}" var="returnGoods">
-     <div class="col-md-8 order-md-1">
+<nav class="navbar fixed-top" style=" background:white; color:black; height:3rem; padding: .1rem 1rem;border-bottom: 0.1rem solid rgb(224, 224, 224)">
+   		<div style="float: left;">
+    	  <a href="javascript:history.go(-1)" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+    	  <span  style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">환불요청글</span>
+  	 	</div>
+      
+      	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
+      		
+<!--       		<a href="http://www.naver.com" style="float: right; font-weight: bold; font-size: 1.25rem; color:black;">완료</a> -->
+      		<c:if test="${memberVO.nickname == aucGoodsVO.memberNick }">
+      		<a style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
+      			onclick="openApproveModal(${returnGoods.key.aucNo },'${returnGoods.key.writer }')">승인</a>
+      		</c:if>
+<!--       		<input type="submit" class="form-control" value="완료" style="border:0; float: right; font-weight: bold; font-size: 1.25rem; color:black;" > -->
+      			
+		</div>
+    </nav>
+    
+     <div class="na-content">
      	<div style="margin-top: 1rem;"> 
 <%--      		경매 번호 : ${returnGoods.key.aucNo }<br> --%>
 <%--      		등록일자: ${returnGoods.key.regDate }<br> --%>
@@ -150,19 +172,21 @@ label {
      		
 	 
      	</div>
-    	<div class="row" style="margin-top: .6rem;">
-              <div class="col-md-6 mb-3" style="margin-bottom: 0!important;">
+    	<div style="margin-top: .6rem;">
+              <div>
 <!--                 <label for="lastName">상품명</label> -->
-				<div>
-					<span>${returnGoods.key.title } </span>
+				<div style="margin-bottom: 2rem;">
+					<span style="font-weight: bold; font-size: 1.2rem;">${returnGoods.key.title } </span>
 					<br>
-					<div style="float: right;">
-						<span >번호: ${returnGoods.key.aucNo }</span><span> | ${returnGoods.key.regDate }</span>
+					<div style="float: right; font-size: 0.8rem; color: rgb(94, 94, 94);">
+						<span ><strong>번호: ${returnGoods.key.aucNo }</strong></span><span> | ${returnGoods.key.regDate }</span>
               		</div>
               	</div>
 
               </div>
          </div>
+         <hr>
+         <div>상품수령자 | <strong>${returnGoods.key.writer }</strong></div>
          
          <hr>
 			<c:forEach items="${returnGoods.value }" var="photo">
@@ -172,8 +196,10 @@ label {
 			</c:forEach>
          
             <hr>
-            <div style="white-space:pre-line;  margin-bottom: 0.6rem;">
-					${returnGoods.key.detail} 
+            <div style="margin-top:-.4rem;">
+				<strong>[환불 내용]</strong>
+				<br>
+				<div style="margin-top:.5rem; white-space:pre-line;  ">${returnGoods.key.detail} </div>
               	
             </div>
             
@@ -182,19 +208,19 @@ label {
         </c:forEach>
         
 <!-- 환불승인창 -->
-<div id="returnModal" class="modal fade"  tabindex="-1" role="dialog"
+<div id="approveModal" class="modal fade"  tabindex="-1" role="dialog"
    aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 10rem;">
    <div class="modal-dialog"><!--  큰창:<div class="modal-dialog modal-lg"> 작은창 :<div class="modal-dialog modal-sm">  -->
       <div class="modal-content">
          <div class="modal-body" style="text-align: center; margin: 1rem;">
-           환불요청을 완료하시겠습니까?
+           환불요청을 수락하시겠습니까?
          </div>
         
          <div class="modal-footer" style="border-top:0; padding:0; ">
           	<table style="margin-bottom: 0; width: 100%;    border-top: 0.1rem solid rgb(224, 224, 224);">
 			<tr>
-				<td class="yn" id="yesReturn" data-dismiss="modal" style="border-right: 0.1rem solid rgb(224, 224, 224);">예</td>
-				<td class="yn" id="noReturn" data-dismiss="modal" >아니오</td>
+				<td class="yn" id="yesApprove" data-dismiss="modal" style="border-right: 0.1rem solid rgb(224, 224, 224);">예</td>
+				<td class="yn" id="noApprove" data-dismiss="modal" >아니오</td>
 			</tr>
 		</table>
          </div>
@@ -205,21 +231,7 @@ label {
         
         <br>
         
-    	 <nav class="navbar fixed-top" style=" background:white; color:black; height:3rem; padding: .1rem 1rem;border-bottom: 0.1rem solid rgb(224, 224, 224)">
-   		<div style="float: left;">
-    	  <a href="javascript:history.go(-1)" style="color: black; margin-right: -3rem;"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
-    	  <span  style="font-size: 1.25rem; position:relative; top:0.2rem; left: 4rem; font-weight: bold; color:black;">환불요청</span>
-  	 	</div>
-      
-      	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      		
-<!--       		<a href="http://www.naver.com" style="float: right; font-weight: bold; font-size: 1.25rem; color:black;">완료</a> -->
-      		<a style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
-      			onclick="openReturnModal()">승인</a>
-<!--       		<input type="submit" class="form-control" value="완료" style="border:0; float: right; font-weight: bold; font-size: 1.25rem; color:black;" > -->
-      			
-		</div>
-    </nav>
+    	 
     
     
 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;">
@@ -238,22 +250,29 @@ label {
     
 	<script type="text/javascript">
 	
-	  function openReturnModal(aucNo) {
-			$("#yesReturn").css("background","white")
-		  	$("#noReturn").css("background","white")
+	  function openApproveModal(aucNo,winner) {
+			$("#yesApprove").css("background","white")
+		  	$("#noApprove").css("background","white")
 //	 	  	$(".modal").modal("show")
-		  	$("#returnModal").modal("show")
-		  	console.log("환불요청할 경매번호: "+aucNo)
+		  	$("#approveModal").modal("show")
+		  	console.log("환불수락할 경매번호: "+aucNo)
 		  	
-		  	$("#yesReturn").click(function() {
-		  	  	$("#yesReturn").css("background","rgb(224, 224, 224)")
-				document.dForm.submit();
+		  	$("#yesApprove").click(function() {
+		  	  	$("#yesApprove").css("background","rgb(224, 224, 224)")
+		  	  	
+		  	  	$.ajax({
+		  	  		url : "${pageContext.request.contextPath}/approveReturn/" + aucNo + "/" + winner,
+		  	  		success : function() {
+						console.log("성공")
+						location.href = "${pageContext.request.contextPath}/displayClosed"
+					}
+		  	  	})
 		})
 
 		
 		$("#noReturn").click(function() {
-		  	  	$("#noReturn").css("background","rgb(224, 224, 224)")
-				$("#returnModal").modal("hide")
+		  	  	$("#noApprove").css("background","rgb(224, 224, 224)")
+				$("#approveModal").modal("hide")
 			})
 	  }
 	  

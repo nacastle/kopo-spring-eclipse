@@ -120,6 +120,24 @@ label {
 	margin: 0;
 }
 
+input[type="datetime-local"]::before {
+	color: #999999;
+	content: attr(placeholder);
+}
+
+input[type="datetime-local"] {
+	color: #ffffff;
+}
+
+input[type="datetime-local"]:focus, input[type="datetime-local"]:valid {
+	color: #666666;
+}
+
+input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::before
+	{
+	content: "" !important;
+}
+
 
 .col-md-6 {
 	flex: none;
@@ -141,47 +159,48 @@ label {
 </head>
 <body>
 
-<c:forEach items="${returnMap}" var="returnGoods">
+   <form class="needs-validation" action="${pageContext.request.contextPath}/returnRequest" 
+   				name="dForm" method="post" enctype="multipart/form-data">
      <div class="col-md-8 order-md-1">
      	<div style="margin-top: 1rem;"> 
-<%--      		경매 번호 : ${returnGoods.key.aucNo }<br> --%>
-<%--      		등록일자: ${returnGoods.key.regDate }<br> --%>
-<%--      		작성자: ${returnGoods.key.writer} --%>
+     		경매 번호 : ${aucNo }
+     		<input type="hidden" class="form-control" name="aucNo" value="${aucNo }" >
      		
-	 
      	</div>
     	<div class="row" style="margin-top: .6rem;">
               <div class="col-md-6 mb-3" style="margin-bottom: 0!important;">
 <!--                 <label for="lastName">상품명</label> -->
-				<div>
-					<span>${returnGoods.key.title } </span>
-					<br>
-					<div style="float: right;">
-						<span >번호: ${returnGoods.key.aucNo }</span><span> | ${returnGoods.key.regDate }</span>
-              		</div>
-              	</div>
-
+                <input type="text" class="form-control" name="title" placeholder="제목" value="" required autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid 제목 is required.
+                </div>
               </div>
          </div>
          
          <hr>
-			<c:forEach items="${returnGoods.value }" var="photo">
-				<a href="${pageContext.request.contextPath}/upload/${photo.saveName}">
-					<img style="width: 4rem;" src="${pageContext.request.contextPath}/upload/${photo.saveName}">
-				</a>
-			</c:forEach>
          
+
+			<div class="form-group">
+			
+				<input type="file" name="photo">
+				<input type="file" name="photo2">
+				<input type="file" name="photo3">
+<!-- 				<div class="input-group input-file"  name="Fichier1"> -->
+<!-- 					<span class="input-group-btn"> -->
+<!-- 						<button class="btn btn-default btn-choose" type="button"><i class="fa fa-picture-o fa-lg" aria-hidden="true"></i></button> -->
+<!-- 					</span>  -->
+<!-- 						<input type="text" class="form-control" -->
+<!-- 							placeholder='사진 올리기' /> <span class="input-group-btn"> -->
+<!-- 						<button class="btn btn-danger" type="button">삭제</button> -->
+<!-- 					</span> -->
+<!-- 				</div> -->
+			</div>
             <hr>
-            <div style="white-space:pre-line;  margin-bottom: 0.6rem;">
-					${returnGoods.key.detail} 
-              	
-            </div>
-            
+			<textarea class="form-control" name="detail" placeholder="상세 설명" rows="8"></textarea>
 
         </div>
-        </c:forEach>
         
-<!-- 환불승인창 -->
+        		<!-- 매입확정창 -->
 <div id="returnModal" class="modal fade"  tabindex="-1" role="dialog"
    aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 10rem;">
    <div class="modal-dialog"><!--  큰창:<div class="modal-dialog modal-lg"> 작은창 :<div class="modal-dialog modal-sm">  -->
@@ -201,7 +220,6 @@ label {
       </div>
    </div>
 </div>
-
         
         <br>
         
@@ -215,12 +233,13 @@ label {
       		
 <!--       		<a href="http://www.naver.com" style="float: right; font-weight: bold; font-size: 1.25rem; color:black;">완료</a> -->
       		<a style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
-      			onclick="openReturnModal()">승인</a>
+      			onclick="openReturnModal()">완료</a>
 <!--       		<input type="submit" class="form-control" value="완료" style="border:0; float: right; font-weight: bold; font-size: 1.25rem; color:black;" > -->
       			
 		</div>
     </nav>
     
+     </form>
     
 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;">
 

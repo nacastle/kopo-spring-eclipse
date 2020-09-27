@@ -9,6 +9,7 @@ import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.aucGoods.vo.CodeVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
+import hafy.aucGoods.vo.ReturnGoodsVO;
 import hafy.bid.vo.NoticeVO;
 import hafy.member.vo.MemberVO;
 
@@ -23,6 +24,7 @@ public interface AucGoodsService {
 	Map<String, AucGoodsVO> selectRecentAuc();
 	Map<String, AucGoodsVO> selectSpecificCategory(String category);
 	Map<AucGoodsVO, List<GoodsPhotoVO>> selectAucByNo(int aucNo, String memberNick);
+	Map<ReturnGoodsVO, List<GoodsPhotoVO>> selectReturnDetailByNo(int aucNo);
 	void incrementLikeCnt(int aucNo);
 	void decrementLikeCnt(int aucNo);
 	void insertLike(LikeVO likeVO);
@@ -39,7 +41,7 @@ public interface AucGoodsService {
 	Map<String, AucGoodsVO> selectWinBidMap(String memberNick);
 	
 	// 매입확정 업데이트
-	void updatePurchaseConfirm(int aucNo);
+	void updatePurchaseConfirm(Map<String, Object> updateMap);
 	
 	// 매입확정 이후 작업 (판매자에게 송금,경매모입통장에서 출금)
 	void transferBidMoneySeller(Map<String, Object> transferMap);
@@ -62,7 +64,27 @@ public interface AucGoodsService {
 	
 	void updateNotiReadDatetime(String memberNick);
 	
-	Map<NoticeVO, String> noticeMap = new LinkedHashMap<NoticeVO, String>();
-	
 	Map<NoticeVO, String> selectNoticeLazyLoad(Map<String, Object> loadInfo);
+	
+	// 입찰진행내역 불러오기
+	Map<String, AucGoodsVO> selectOnGoingAuc(String memberNick);
+	// 출품한 경매중 진행내역(진행중/대기중) 불러오기
+	Map<String, AucGoodsVO> selectDisplayOnGoingAuc(String memberNick);
+	// 낙찰내역 불러오기
+	Map<String, AucGoodsVO> selectWinAuc(String memberNick);
+	// 출품한 경매 중 마감된 경매 불러오기
+	Map<String, AucGoodsVO> selectDisplayClosedAuc(String memberNick);
+	
+	// 매입확정 내역 불러오기
+	Map<String, AucGoodsVO> selectPurchaseConfirmMap(String memberNick);
+	
+	// 출품내역 중 매입확정 내역 불러오기
+	Map<String, AucGoodsVO> selectDisplayPurchaseConfirmMap(String memberNick);
+	Map<String, AucGoodsVO> selectReturnGoodsMap(String memberNick);
+	
+	// 출품내역 중 환불 내역 불러오기
+	Map<String, AucGoodsVO> selectDisplayReturnGoodsMap(String memberNick);
+	
+	void insertReturnGoods(ReturnGoodsVO returnGoodsVO);
+	void insertReturnPhoto(GoodsPhotoVO goodsPhotoVO);
 }

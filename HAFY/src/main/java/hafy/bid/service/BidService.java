@@ -31,4 +31,6 @@ public interface BidService {
 	void noticeClosedBid();
 	void noticeImminentAucs();
 	
+	void returnBidMoney(AAccountVO aAccountVO,Map<String,Object> depositInfo,ATranzVO aTranzVO);
+	
 }

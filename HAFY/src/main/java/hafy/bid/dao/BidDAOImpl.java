@@ -39,6 +39,22 @@ public class BidDAOImpl implements BidDAO {
 		aucNoList =	sqlSession.selectList("bid.dao.BidDAO.selectMemberClosedAuc",memberNick);
 		return aucNoList;
 	}
+	
+	@Override
+	public List<Integer> selectMemberClosedAucOBConfirmDate(String memberNick) {
+		// TODO Auto-generated method stub
+		List<Integer> aucNoList = new ArrayList<Integer>(); 
+		aucNoList =	sqlSession.selectList("bid.dao.BidDAO.selectMemberClosedAucOBConfirmDate",memberNick);
+		return aucNoList;
+	}
+
+	@Override
+	public List<Integer> selectMemberClosedAucOBReturnRequestDate(String memberNick) {
+		// TODO Auto-generated method stub
+		List<Integer> aucNoList = new ArrayList<Integer>(); 
+		aucNoList =	sqlSession.selectList("bid.dao.BidDAO.selectMemberClosedAucOBReturnRequestDate",memberNick);
+		return aucNoList;
+	}
 
 	@Override
 	public List<ATranzVO> selectBidResult(int aucNo) {

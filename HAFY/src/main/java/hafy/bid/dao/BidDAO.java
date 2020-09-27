@@ -22,8 +22,12 @@ public interface BidDAO {
 	// 마감이전의 총입금액 아이디로 그룹바이해서 입찰랭킹 가져오기
 	List<ATranzVO> selectBidResult(int aucNo);
 	
-//	사용자가 입찰한 경매 중 마감된 경매 번호 구하기 
+//	사용자가 입찰한 경매 중 마감된 경매 번호 최신마감일자 순으로 구하기 
 	List<Integer> selectMemberClosedAuc(String memberNick);
+
+//	사용자가 입찰한 경매 중 마감된 경매 번호 최신확정일자 순으로 구하기 
+	List<Integer> selectMemberClosedAucOBConfirmDate(String memberNick);
+	List<Integer> selectMemberClosedAucOBReturnRequestDate(String memberNick);
 	
 	// 경매모임통장에서 출금된 돈만큼 빠져나가기 (AAccount 업데이트)
 	void withdrawAAccount(AAccountVO aAccountVO);

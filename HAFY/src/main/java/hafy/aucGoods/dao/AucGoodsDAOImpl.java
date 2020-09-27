@@ -12,6 +12,7 @@ import hafy.aucGoods.vo.AucGoodsVO;
 import hafy.aucGoods.vo.CodeVO;
 import hafy.aucGoods.vo.GoodsPhotoVO;
 import hafy.aucGoods.vo.LikeVO;
+import hafy.aucGoods.vo.ReturnGoodsVO;
 import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.NoticeVO;
 import hafy.member.vo.MemberVO;
@@ -91,12 +92,52 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 
 
 	@Override
-	public void updatePurchaseConfirm(int aucNo) {
+	public void updatePurchaseConfirm(Map<String, Object> updateMap) {
 		// TODO Auto-generated method stub
-		sqlSession.update("auction.dao.AucGoodsDAO.updatePurchaseConfirm",aucNo);
+		sqlSession.update("auction.dao.AucGoodsDAO.updatePurchaseConfirm",updateMap);
 	}
 
 
+
+	@Override
+	public List<AucGoodsVO> selectWinAucContents(String memberNick) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> winAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectWinAucContents", memberNick);
+		return winAucList;
+	}
+	
+	@Override
+	public List<AucGoodsVO> selectDisplayClosedAucContents(String memberNick) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> AucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectDisplayClosedAucContents", memberNick);
+		return AucList;	
+	}
+
+	@Override
+	public List<AucGoodsVO> selectOnGoingAucContents(String memberNick) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> onGoingAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectOnGoingAucContents", memberNick);
+		return onGoingAucList;
+	}
+
+	@Override
+	public List<AucGoodsVO> selectDisplayPurchaseConfirmContents(String memberNick) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectDisplayPurchaseConfirmContents", memberNick);
+		return aucList;	}
+	
+	@Override
+	public List<AucGoodsVO> selectDisplayReturnGoodsContents(String memberNick) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectDisplayReturnGoodsContents", memberNick);
+		return aucList;	}
+
+	@Override
+	public List<AucGoodsVO> selectDisplayOnGoingAucContents(String memberNick) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> onGoingAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectDisplayOnGoingAucContents", memberNick);
+		return onGoingAucList;
+	}
 
 	@Override
 	public List<AucGoodsVO> selectHotAucContents() {
@@ -220,6 +261,16 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 		sqlSession.update("auction.dao.AucGoodsDAO.incrementViewCnt",aucNo);
 		
 	}
+	
+	
+	@Override
+	public List<GoodsPhotoVO> selectReturnPhotoListByAucNo(int aucNo) {
+		// TODO Auto-generated method stub
+		List<GoodsPhotoVO> returnPhotoList = new ArrayList<GoodsPhotoVO>();
+		returnPhotoList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectReturnPhotoListByAucNo",aucNo);
+		
+		return returnPhotoList;
+	}
 
 	@Override
 	public List<GoodsPhotoVO> selectPhotoListByAucNo(int aucNo) {
@@ -229,11 +280,24 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 		
 		return goodsPhotoList;
 	}
+	
+	@Override
+	public ReturnGoodsVO selectReturnGoodsByNo(int aucNo) {
+		// TODO Auto-generated method stub
+		ReturnGoodsVO returnGoodsVO = sqlSession.selectOne("auction.dao.AucGoodsDAO.selectReturnGoodsByNo",aucNo);
+		return returnGoodsVO;
+	}
 
 	@Override
 	public void insertAucGoods(AucGoodsVO aucGoodsVO) {
 		// TODO Auto-generated method stub
 		sqlSession.insert("auction.dao.AucGoodsDAO.insertAucGoods",aucGoodsVO);
+	}
+	
+	@Override
+	public void insertReturnGoods(ReturnGoodsVO returnGoodsVO) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("auction.dao.AucGoodsDAO.insertReturnGoods",returnGoodsVO);
 	}
 
 	@Override
@@ -248,6 +312,14 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 	public void insertGoodsPhoto(GoodsPhotoVO goodsPhotoVO) {
 		// TODO Auto-generated method stub
 		sqlSession.insert("auction.dao.AucGoodsDAO.insertGoodsPhoto",goodsPhotoVO);
+		
+	}
+	
+
+	@Override
+	public void insertReturnPhoto(GoodsPhotoVO goodsPhotoVO) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("auction.dao.AucGoodsDAO.insertReturnPhoto",goodsPhotoVO);
 		
 	}
 

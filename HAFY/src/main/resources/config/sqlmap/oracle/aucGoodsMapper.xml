@@ -5,7 +5,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="auction.dao.AucGoodsDAO">
 
-<resultMap type="aucGoodsVO" id="aucGoodsMap">
+	<resultMap type="aucGoodsVO" id="aucGoodsMap">
 		<result column="start_price" property="startPrice" />
 		<result column="reg_date" property="regDate" />
 		<result column="start_date" property="startDate" />
@@ -15,339 +15,477 @@
 		<result column="like_cnt" property="likeCnt" />
 		<result column="winning_bid" property="winningBid" />
 		<result column="purchase_confirm" property="purchaseConfirm" />
-	
-</resultMap>
-	
-<resultMap type="goodsPhotoVO" id="goodsPhotoMap">
+		<result column="refund_status" property="refundStatus" />
+		<result column="confirm_date" property="confirmDate" />
+		<result column="return_request_date" property="returnRequestDate" />
+
+	</resultMap>
+
+	<resultMap type="goodsPhotoVO" id="goodsPhotoMap">
 		<result column="ori_name" property="oriName" />
 		<result column="save_name" property="saveName" />
 		<result column="file_size" property="fileSize" />
 		<result column="auc_no" property="aucNo" />
-</resultMap>
+	</resultMap>
 
-<resultMap type="likeVO" id="likeMap">
+	<resultMap type="likeVO" id="likeMap">
 		<result column="member_nick" property="memberNick" />
 		<result column="auc_no" property="aucNo" />
-</resultMap>
+	</resultMap>
 
-<resultMap type="codeVO" id="codeMap">
+	<resultMap type="codeVO" id="codeMap">
 		<result column="code_no" property="codeNo" />
 		<result column="code_name" property="codeName" />
 		<result column="code_category" property="codeCategory" />
 		<result column="uri_name" property="uriName" />
-</resultMap>
+	</resultMap>
 
-<resultMap type="aAccountVO" id="aAccountMap">
-	<result column="bidder_nick" property="bidderNick" />
-	<result column="auc_no" property="aucNo" />
-	<result column="bid_money" property="bidMoney" />
-</resultMap>
+	<resultMap type="aAccountVO" id="aAccountMap">
+		<result column="bidder_nick" property="bidderNick" />
+		<result column="auc_no" property="aucNo" />
+		<result column="bid_money" property="bidMoney" />
+	</resultMap>
 
-<resultMap type="noticeVO" id="noticeMap">
-	<result column="noti_no" property="notiNo" />
-	<result column="noti_member_nick" property="notiMemberNick" />
-	<result column="noti_type" property="notiType" />
-	<result column="noti_content_no" property="notiContentNo" />
-	<result column="noti_msg" property="notiMsg" />
-	<result column="noti_url" property="notiUrl" />
-	<result column="noti_datetime" property="notiDatetime" />
-	<result column="noti_read_datetime" property="notiReadDatetime" />
-</resultMap>
+	<resultMap type="noticeVO" id="noticeMap">
+		<result column="noti_no" property="notiNo" />
+		<result column="noti_member_nick" property="notiMemberNick" />
+		<result column="noti_type" property="notiType" />
+		<result column="noti_content_no" property="notiContentNo" />
+		<result column="noti_msg" property="notiMsg" />
+		<result column="noti_url" property="notiUrl" />
+		<result column="noti_datetime" property="notiDatetime" />
+		<result column="noti_read_datetime" property="notiReadDatetime" />
+	</resultMap>
 
-	<select id="selectCodeVO" parameterType="String" resultMap="codeMap">
-		select * 
-		from hf_detail_code 
+	<select id="selectCodeVO" parameterType="String"
+		resultMap="codeMap">
+		select *
+		from hf_detail_code
 		where uri_name = #{category}
 	</select>
-	
-	<select id="selectImminentAucsByMin" parameterType="int" resultMap="aucGoodsMap">
+
+	<select id="selectImminentAucsByMin" parameterType="int"
+		resultMap="aucGoodsMap">
 		select * from hf_auc_goods
-		where end_date = TO_CHAR(SYSDATE + #{setMin}/24/60 ,'yyyy-mm-dd hh24:mi')
+		where end_date = TO_CHAR(SYSDATE +
+		#{setMin}/24/60 ,'yyyy-mm-dd hh24:mi')
 	</select>
-	
-	<select id="isImminentAucByMin" parameterType="map" resultMap="aucGoodsMap">
+
+	<select id="isImminentAucByMin" parameterType="map"
+		resultMap="aucGoodsMap">
 		select * from hf_auc_goods
-		where no = #{aucNo} and end_date = TO_CHAR(SYSDATE + #{setMin}/24/60 ,'yyyy-mm-dd hh24:mi')
+		where no = #{aucNo} and end_date =
+		TO_CHAR(SYSDATE + #{setMin}/24/60 ,'yyyy-mm-dd hh24:mi')
 	</select>
-	
-	<select id="selectGoodsCategory" parameterType="String" resultMap="codeMap">
-		select * 
-		from hf_detail_code 
-		where code_category = #{codeCategory} and usage = 'y' 
+
+	<select id="selectGoodsCategory" parameterType="String"
+		resultMap="codeMap">
+		select *
+		from hf_detail_code
+		where code_category = #{codeCategory} and usage = 'y'
 		order by code_no
 	</select>
 
-	<select id="selectIsLike" parameterType="likeVO" resultMap="likeMap">
+	<select id="selectIsLike" parameterType="likeVO"
+		resultMap="likeMap">
 		select member_nick, auc_no
-			from hf_like
+		from hf_like
 		where member_nick = #{memberNick} and auc_no = #{aucNo}
-	
+
 	</select>
 
 	<!-- 특정회원의 관심목록 조회 -->
-	<select id="selectLikeList" parameterType="memberVO" resultMap="likeMap">
+	<select id="selectLikeList" parameterType="memberVO"
+		resultMap="likeMap">
 		select *
-			from hf_like
+		from hf_like
 		where member_nick = #{nickname}
-		 order by reg_date desc
-	
+		order by reg_date desc
+
 	</select>
 
 	<insert id="insertLike" parameterType="likeVO">
-		insert into hf_like(member_nick, auc_no, reg_date) 
-			values(#{memberNick}, #{aucNo}, to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss'))
+		insert into
+		hf_like(member_nick, auc_no, reg_date)
+		values(#{memberNick}, #{aucNo}, to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss'))
 	</insert>
 
 	<delete id="deleteLike" parameterType="likeVO">
-		delete hf_like 
-			where member_nick = #{memberNick} and auc_no = #{aucNo}
+		delete hf_like
+		where member_nick = #{memberNick} and auc_no = #{aucNo}
 	</delete>
 
 
 	<update id="decrementLikeCnt" parameterType="int">
-		update hf_auc_goods 
-			set like_cnt = like_cnt - 1
+		update hf_auc_goods
+		set like_cnt = like_cnt - 1
 		where no = #{no}
 	</update>
-	
+
 	<update id="incrementLikeCnt" parameterType="int">
-		update hf_auc_goods 
-			set like_cnt = like_cnt + 1
+		update hf_auc_goods
+		set like_cnt = like_cnt + 1
 		where no = #{no}
 	</update>
-	
+
 	<update id="incrementViewCnt" parameterType="int">
-		update hf_auc_goods 
-			set view_cnt = view_cnt + 1
+		update hf_auc_goods
+		set view_cnt = view_cnt + 1
 		where no = #{no}
 	</update>
-	
-	<update id="updatePurchaseConfirm" parameterType="int">
-		update hf_auc_goods 
-			set purchase_confirm = '확정'
+
+	<update id="updatePurchaseConfirm" parameterType="map">
+		update hf_auc_goods
+		set purchase_confirm = #{content}
+		<choose>
+			<when test="content == '확정'">
+				,confirm_date = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+			</when>
+			<when test="content == '환불요청중'">
+				,return_request_date = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+			</when>
+		</choose>
 		where no = #{aucNo}
 	</update>
-	
+
 	<update id="updateRefundStatus" parameterType="int">
-		update hf_auc_goods 
-			set refund_status = '환급완료'
+		update
+		hf_auc_goods
+		set refund_status = '환급완료'
 		where no = #{aucNo}
 	</update>
-	
+
 	<update id="updateReadStatus" parameterType="int">
-		update hf_notice 
-			set noti_read_datetime = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
-		where noti_no = #{notiNo}
+		update hf_notice
+		set noti_read_datetime = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+		where
+		noti_no = #{notiNo}
 	</update>
-	
+
 	<update id="updateNotiReadDatetime" parameterType="String">
-		update hf_notice 
-			set noti_read_datetime = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
-		where noti_member_nick = #{memberNick} and noti_read_datetime is null
+		update
+		hf_notice
+		set noti_read_datetime = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+		where
+		noti_member_nick = #{memberNick} and noti_read_datetime is null
 	</update>
-	
+
 	<insert id="insertAucGoods" parameterType="aucGoodsVO">
-		insert into hf_auc_goods(no, reg_date, name, method, category,
-			start_price, start_date, end_date, detail, member_nick)
-		values(#{no}, #{regDate}, #{name}, #{method}, #{category}, #{startPrice}, #{startDate}, #{endDate},
-			#{detail}, #{memberNick})
+		insert into
+		hf_auc_goods(no, reg_date, name, method, category,
+		start_price, start_date, end_date, detail, member_nick)
+		values(#{no}, #{regDate},
+		#{name}, #{method}, #{category}, #{startPrice}, #{startDate},
+		#{endDate},
+		#{detail}, #{memberNick})
 	</insert>
-	
+
+	<insert id="insertReturnGoods" parameterType="returnGoodsVO">
+		insert into
+		hf_return_goods(auc_no, title, detail, writer)
+		values(#{aucNo},
+		#{title}, #{detail}, #{writer})
+	</insert>
+
+	<insert id="insertReturnPhoto" parameterType="goodsPhotoVO">
+		insert into hf_return_photo(no, ori_name, save_name,
+		file_size, auc_no)
+		values
+		(
+		seq_hf_return_photo_no.nextval,
+		#{oriName}, #{saveName}, #{fileSize}, #{aucNo}
+		)
+	</insert>
+
 	<insert id="insertGoodsPhoto" parameterType="goodsPhotoVO">
-			insert into hf_goods_photo(no, ori_name, save_name,
-				file_size, auc_no)
-			values
-			(
-			 seq_hf_goods_photo_no.nextval,
-				#{oriName}, #{saveName}, #{fileSize}, #{aucNo}
-			)
+		insert into hf_goods_photo(no, ori_name, save_name,
+		file_size, auc_no)
+		values
+		(
+		seq_hf_goods_photo_no.nextval,
+		#{oriName}, #{saveName}, #{fileSize}, #{aucNo}
+		)
 	</insert>
 
 	<select id="genAucNo" parameterType="int" resultType="int">
-		select seq_hf_auc_goods_no.nextval from dual
+		select
+		seq_hf_auc_goods_no.nextval from dual
+	</select>
+
+	<select id="selectSpecificCategory" parameterType="String"
+		resultMap="aucGoodsMap">
+		select no, name, category, reg_date, start_date, end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt, winning_bid, purchase_confirm
+		from hf_auc_goods
+		where category = #{category} and end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD
+		HH24:MI')
+		order by reg_date desc
+	</select>
+
+	<select id="selectAucGoodsByNo" parameterType="int"
+		resultMap="aucGoodsMap">
+		select
+		no, name,
+		(select code_name from hf_detail_code where uri_name =
+		(select category from hf_auc_goods where no = #{aucNo})
+		) as category
+		, reg_date, start_date, end_date, start_price, member_nick, method,
+		detail,
+		view_cnt, like_cnt, winning_bid, purchase_confirm
+		from hf_auc_goods
+		where no = #{aucNo}
 	</select>
 	
-	<select id="selectSpecificCategory" parameterType="String" resultMap="aucGoodsMap">      
-		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
-				view_cnt, like_cnt, winning_bid, purchase_confirm
-		 from hf_auc_goods
-			where category = #{category} and end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-			order by reg_date desc                                        
+	<select id="selectReturnGoodsByNo" parameterType="int"
+		resultType="returnGoodsVO">
+		select
+		auc_no as aucNo, title, detail, writer, reg_date as regDate
+		from hf_return_goods
+		where auc_no = #{aucNo}
 	</select>
-	
-	<select id="selectAucGoodsByNo" parameterType="int" resultMap="aucGoodsMap">      
-			select 
-			no, name, 
-		    (select code_name from hf_detail_code where uri_name =
-		        (select category from hf_auc_goods where no = #{aucNo})
-		    ) as category
-		    , reg_date, start_date, end_date, start_price, member_nick, method, detail,
-						view_cnt, like_cnt, winning_bid, purchase_confirm
-		 from hf_auc_goods
-			where no = #{aucNo}                                      
-	</select>
-	    
-	<select id="selectAucSearchWord" parameterType="String" resultMap="aucGoodsMap">      
-			select * from 
-			(
-			select *
-			from hf_auc_goods g
-			where g.name like '%'||#{searchWord}||'%' or g.detail like '%'||#{searchWord}||'%' 
-			order by g.reg_date desc
-			) a
-			where a.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-	</select>
-	    
-	<select id="selectBidList" parameterType="memberVO" resultMap="aucGoodsMap">      
-		SELECT * FROM (
-select * 
-    from HF_AUC_GOODS g, 
-        (select auc_no
-             from hf_a_account
-                where bidder_nick = #{nickname}) a
-                where a.auc_no = g.no and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi') ORDER BY REG_DATE      
-) 
-union all
-SELECT * FROM (
- select * 
-    from 
-        HF_AUC_GOODS g, 
-        (select auc_no
-             from hf_a_account
-                where bidder_nick = #{nickname}) a
-                where a.auc_no = g.no and end_date <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi') order by reg_date
-)                           
-	</select>
-	    
-	<select id="selectDisplayList" parameterType="memberVO" resultMap="aucGoodsMap">      
-	select * from             
-(select *
-		 from hf_auc_goods
-			where member_nick = #{nickname} and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
-			order by reg_date desc)  
-        union all    
-select * from
-(select *
-		 from hf_auc_goods
-			where member_nick = #{nickname} and end_date <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
-			order by reg_date desc)                           
-	</select>    
-	
-	<select id="selectAllAucContents" resultType="aucGoodsVO" resultMap="aucGoodsMap">      
-		select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
-				view_cnt, like_cnt , winning_bid, purchase_confirm
-		 from hf_auc_goods
-		 order by reg_date desc
-	</select>
-	                                                     
-	<select id="selectHotAucContents" resultMap="aucGoodsMap">      
-				select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
-				view_cnt, like_cnt , winning_bid, 
-                (select count(*) from hf_a_tranz t where t.auc_no = g.no and tranz_type = '입금') as bid_cnt,
-                (select count(*) from hf_a_account a where a.auc_no = g.no) as bidder_cnt
-		 from hf_auc_goods g
-		 where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-		 order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc, reg_date desc
-	</select>       
-	   
-	
-	<select id="selectNotiContentsLazyLoad" parameterType="map" resultMap="noticeMap">      
-				SELECT * 
-FROM
-    ( 
-    SELECT ROWNUM AS RNUM, A.* 
-    FROM (
-        select *
-		 from hf_notice
-		 where noti_member_nick = #{memberNick}
-		 order by noti_datetime desc
-            ) A 
-    WHERE ROWNUM  <![CDATA[ <= ]]> #{loadCnt} * #{scrollCnt}
-    )
-WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
-	</select>   
-	                                                  
-	<select id="selectHotAucContentsLazyLoad" parameterType="map" resultMap="aucGoodsMap">      
-				SELECT * 
-FROM
-    ( 
-    SELECT ROWNUM AS RNUM, A.* 
-    FROM (
-        select no, name, category, reg_date, start_date, end_date, start_price, member_nick, method, detail,
-				view_cnt, like_cnt , winning_bid, 
-                (select count(*) from hf_a_tranz t where t.auc_no = g.no and tranz_type = '입금') as bid_cnt,
-                (select count(*) from hf_a_account a where a.auc_no = g.no) as bidder_cnt
-		 from hf_auc_goods g
-		 where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-		 order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc, reg_date desc
-            ) A 
-    WHERE ROWNUM  <![CDATA[ <= ]]> #{loadCnt} * #{scrollCnt}
-    )
-WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
-	</select>   
-	                                                  
-	<select id="selectHotAucTotalCnt" resultType="int">      
-				select count(no)
-		 from hf_auc_goods g
-		 where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-	</select>       
-	                                              
-	<select id="selectUnreadNotiCnt" parameterType="String" resultType="int">      
-				select count(noti_no)
-		 from hf_notice
-		 where noti_member_nick = #{memberNick} and noti_read_datetime is null
-	</select>                                                     
-	            
-	<select id="selectRecentAucContentsLazyLoad" parameterType="map" resultMap="aucGoodsMap">      
-				SELECT * 
-FROM
-    ( 
-    SELECT ROWNUM AS RNUM, A.* 
-    FROM (
-        select *
-		 from hf_auc_goods
-		 where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-		 order by reg_date desc
-            ) A 
-    WHERE ROWNUM  <![CDATA[ <= ]]> #{loadCnt} * #{scrollCnt}
-    )
-WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
-	</select>                                                     
-	            
-	<select id="selectRecentAucContents" resultMap="aucGoodsMap">      
-				select *
-		 from hf_auc_goods
-		 where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-		 order by reg_date desc
-	</select>  
-	                                                   
-	<select id="selectOpenAucs" resultMap="aucGoodsMap">      
+
+	<select id="selectAucSearchWord" parameterType="String"
+		resultMap="aucGoodsMap">
+		select * from
+		(
 		select *
-		 from hf_auc_goods
-		 where start_date <![CDATA[ <= ]]> TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI') and  
-		 		end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-	</select>                                                     
-	            
-	<select id="selectNotiList" parameterType="String" resultMap="noticeMap">      
-				select *
-		 from hf_notice
-		 where noti_member_nick = #{memberNick}
-		 order by noti_datetime desc
-	</select>                                                     
-	            
-	            
-	     <!-- 사진 파일 리스트 VO로 받아오려는거 성공...자바빈클래스의 특징인 기본생성자 미씽 문제 -->                                                  
-	<select id="selectPhotoListByAucNo" parameterType="int" resultType="goodsPhotoVO" >      
-		select no, auc_no as aucNo, save_name as saveName, ori_name as oriName, file_size as fileSize
-		 from hf_goods_photo
-		 where auc_no = #{aucNo}
-	</select>                  
-	                                   
-	                                                     
-	<select id="selectPhotoNameByAucNo" parameterType="int" resultType="String">
-		select save_name from hf_goods_photo where auc_no = #{aucNo} order by no
-	</select>                                                     
-	                                                              
+		from hf_auc_goods g
+		where g.name like '%'||#{searchWord}||'%' or g.detail like
+		'%'||#{searchWord}||'%'
+		order by g.reg_date desc
+		) a
+		where a.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+	</select>
+
+	<select id="selectBidList" parameterType="memberVO"
+		resultMap="aucGoodsMap">
+		SELECT * FROM (
+		select *
+		from HF_AUC_GOODS g,
+		(select auc_no
+		from hf_a_account
+		where bidder_nick = #{nickname}) a
+		where a.auc_no = g.no and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+		ORDER BY REG_DATE desc
+		)
+		union all
+		SELECT * FROM (
+		select *
+		from
+		HF_AUC_GOODS g,
+		(select auc_no
+		from hf_a_account
+		where bidder_nick = #{nickname}) a
+		where a.auc_no = g.no and end_date <![CDATA[ <= ]]>
+		to_char(sysdate, 'yyyy-mm-dd hh24:mi') order by end_date desc
+		)
+	</select>
+
+	<select id="selectDisplayList" parameterType="memberVO"
+		resultMap="aucGoodsMap">
+		select * from
+		(select *
+		from hf_auc_goods
+		where member_nick = #{nickname} and end_date > to_char(sysdate, 'yyyy-mm-dd
+		hh24:mi')
+		order by reg_date desc)
+		union all
+		select * from
+		(select *
+		from hf_auc_goods
+		where member_nick = #{nickname} and end_date <![CDATA[ <= ]]>
+		to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+		order by end_date desc)
+	</select>
+
+	<select id="selectAllAucContents" resultType="aucGoodsVO"
+		resultMap="aucGoodsMap">
+		select no, name, category, reg_date, start_date, end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid, purchase_confirm
+		from hf_auc_goods
+		order by reg_date desc
+	</select>
+
+	<select id="selectHotAucContents" resultMap="aucGoodsMap">
+		select no, name, category, reg_date, start_date, end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid,
+		(select count(*) from hf_a_tranz t where t.auc_no = g.no and tranz_type =
+		'입금') as bid_cnt,
+		(select count(*) from hf_a_account a where a.auc_no = g.no) as bidder_cnt
+		from hf_auc_goods g
+		where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+		order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc,
+		reg_date desc
+	</select>
+
+	<select id="selectOnGoingAucContents" parameterType="String"
+		resultMap="aucGoodsMap">
+		select *
+		from HF_AUC_GOODS g,
+		(select auc_no
+		from hf_a_account
+		where bidder_nick = #{memberNick}) a
+		where a.auc_no = g.no and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+		ORDER BY REG_DATE desc
+	</select>
+
+	<select id="selectDisplayClosedAucContents" parameterType="String"
+		resultMap="aucGoodsMap">
+		select *
+		from HF_AUC_GOODS 
+		where member_nick = #{memberNick} and end_date  <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+		ORDER BY REG_DATE desc
+	</select>
+
+	<select id="selectDisplayOnGoingAucContents" parameterType="String"
+		resultMap="aucGoodsMap">
+		select *
+		from HF_AUC_GOODS 
+		where member_nick = #{memberNick} and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+		ORDER BY REG_DATE desc
+	</select>
+	
+	<select id="selectDisplayPurchaseConfirmContents" parameterType="String"
+		resultMap="aucGoodsMap">
+		select *
+		from HF_AUC_GOODS 
+		where member_nick = #{memberNick} and end_date <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi') and purchase_confirm = '확정'
+		ORDER BY confirm_date desc
+	</select>
+
+	<select id="selectDisplayReturnGoodsContents" parameterType="String"
+		resultMap="aucGoodsMap">
+		select *
+		from HF_AUC_GOODS 
+		where member_nick = #{memberNick} and end_date <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi') and purchase_confirm = '환불요청중' or purchase_confirm = '환불완료'
+		ORDER BY return_request_date desc
+	</select>
+
+	<select id="selectNotiContentsLazyLoad" parameterType="map"
+		resultMap="noticeMap">
+		SELECT *
+		FROM
+		(
+		SELECT ROWNUM AS RNUM, A.*
+		FROM (
+		select *
+		from hf_notice
+		where noti_member_nick = #{memberNick}
+		order by noti_datetime desc
+		) A
+		WHERE ROWNUM  <![CDATA[ <= ]]>
+		#{loadCnt} * #{scrollCnt}
+		)
+		WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
+	</select>
+
+	<select id="selectHotAucContentsLazyLoad" parameterType="map"
+		resultMap="aucGoodsMap">
+		SELECT *
+		FROM
+		(
+		SELECT ROWNUM AS RNUM, A.*
+		FROM (
+		select no, name, category, reg_date, start_date, end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid,
+		(select count(*) from hf_a_tranz t where t.auc_no = g.no and tranz_type =
+		'입금') as bid_cnt,
+		(select count(*) from hf_a_account a where a.auc_no = g.no) as bidder_cnt
+		from hf_auc_goods g
+		where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+		order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc,
+		reg_date desc
+		) A
+		WHERE ROWNUM  <![CDATA[ <= ]]>
+		#{loadCnt} * #{scrollCnt}
+		)
+		WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
+	</select>
+
+	<select id="selectHotAucTotalCnt" resultType="int">
+		select count(no)
+		from hf_auc_goods g
+		where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+	</select>
+
+	<select id="selectUnreadNotiCnt" parameterType="String"
+		resultType="int">
+		select count(noti_no)
+		from hf_notice
+		where noti_member_nick = #{memberNick} and noti_read_datetime is null
+	</select>
+
+	<select id="selectRecentAucContentsLazyLoad" parameterType="map"
+		resultMap="aucGoodsMap">
+		SELECT *
+		FROM
+		(
+		SELECT ROWNUM AS RNUM, A.*
+		FROM (
+		select *
+		from hf_auc_goods
+		where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+		order by reg_date desc
+		) A
+		WHERE ROWNUM  <![CDATA[ <= ]]>
+		#{loadCnt} * #{scrollCnt}
+		)
+		WHERE RNUM > #{loadCnt}*( #{scrollCnt} - 1)
+	</select>
+
+	<select id="selectRecentAucContents" resultMap="aucGoodsMap">
+		select *
+		from hf_auc_goods
+		where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+		order by reg_date desc
+	</select>
+
+	<select id="selectOpenAucs" resultMap="aucGoodsMap">
+		select *
+		from hf_auc_goods
+		where start_date <![CDATA[ <= ]]>
+		TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI') and
+		end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+	</select>
+
+	<select id="selectNotiList" parameterType="String"
+		resultMap="noticeMap">
+		select *
+		from hf_notice
+		where noti_member_nick = #{memberNick}
+		order by noti_datetime desc
+	</select>
+
+
+	<!-- 사진 파일 리스트 VO로 받아오려는거 성공...자바빈클래스의 특징인 기본생성자 미씽 문제 -->
+	<select id="selectPhotoListByAucNo" parameterType="int"
+		resultType="goodsPhotoVO">
+		select no, auc_no as aucNo, save_name as saveName, ori_name as oriName,
+		file_size as fileSize
+		from hf_goods_photo
+		where auc_no = #{aucNo}
+	</select>
+
+	<!-- 사진 파일 리스트 VO로 받아오려는거 성공...자바빈클래스의 특징인 기본생성자 미씽 문제 -->
+	<select id="selectReturnPhotoListByAucNo" parameterType="int"
+		resultType="goodsPhotoVO">
+		select no, auc_no as aucNo, save_name as saveName, ori_name as oriName,
+		file_size as fileSize
+		from hf_return_photo
+		where auc_no = #{aucNo}
+	</select>
+
+
+	<select id="selectPhotoNameByAucNo" parameterType="int"
+		resultType="String">
+		select save_name from hf_goods_photo where auc_no =
+		#{aucNo} order by no
+	</select>
+
 
 
 </mapper>

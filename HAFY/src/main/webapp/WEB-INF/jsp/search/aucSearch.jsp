@@ -132,7 +132,7 @@ table th img {
    <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; 
    padding: .5rem 1rem; border-bottom: 0.1rem solid rgb(224, 224, 224);">
    		<div style="float: left;">
-    	  <a href="${pageContext.request.contextPath}/hot" style="color: black; ">
+    	  <a href="javascript:history.go(-1)" style="color: black; ">
     	  	<i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
     	  </a>
   	 	</div>

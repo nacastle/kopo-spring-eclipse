@@ -16,6 +16,10 @@ public class AucGoodsVO {
 	private int likeCnt;
 	private int winningBid;
 	private String purchaseConfirm;
+	
+	private String confirmDate;
+	private String refundStatus;
+	private String returnRequestDate;
 
 	
 	
@@ -23,11 +27,9 @@ public class AucGoodsVO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-    	
 	public AucGoodsVO(int no, String name, String memberNick, String category, String detail, String regDate,
 			String method, int startPrice, String startDate, String endDate, int viewCnt, int likeCnt, int winningBid,
-			String purchaseConfirm) {
+			String purchaseConfirm, String confirmDate, String refundStatus, String returnRequestDate) {
 		super();
 		this.no = no;
 		this.name = name;
@@ -43,9 +45,32 @@ public class AucGoodsVO {
 		this.likeCnt = likeCnt;
 		this.winningBid = winningBid;
 		this.purchaseConfirm = purchaseConfirm;
+		this.confirmDate = confirmDate;
+		this.refundStatus = refundStatus;
+		this.returnRequestDate = returnRequestDate;
 	}
 
 
+
+
+	public String getConfirmDate() {
+		return confirmDate;
+	}
+	public void setConfirmDate(String confirmDate) {
+		this.confirmDate = confirmDate;
+	}
+	public String getRefundStatus() {
+		return refundStatus;
+	}
+	public void setRefundStatus(String refundStatus) {
+		this.refundStatus = refundStatus;
+	}
+	public String getReturnRequestDate() {
+		return returnRequestDate;
+	}
+	public void setReturnRequestDate(String returnRequestDate) {
+		this.returnRequestDate = returnRequestDate;
+	}
 	public String getPurchaseConfirm() {
 		return purchaseConfirm;
 	}
@@ -137,14 +162,16 @@ public class AucGoodsVO {
 		this.endDate = endDate;
 	}
 
-
 	@Override
 	public String toString() {
 		return "AucGoodsVO [no=" + no + ", name=" + name + ", memberNick=" + memberNick + ", category=" + category
 				+ ", detail=" + detail + ", regDate=" + regDate + ", method=" + method + ", startPrice=" + startPrice
 				+ ", startDate=" + startDate + ", endDate=" + endDate + ", viewCnt=" + viewCnt + ", likeCnt=" + likeCnt
-				+ ", winningBid=" + winningBid + ", purchaseConfirm=" + purchaseConfirm + "]";
+				+ ", winningBid=" + winningBid + ", purchaseConfirm=" + purchaseConfirm + ", confirmDate=" + confirmDate
+				+ ", refundStatus=" + refundStatus + ", returnRequestDate=" + returnRequestDate + "]";
 	}
+
+
 
 	
 

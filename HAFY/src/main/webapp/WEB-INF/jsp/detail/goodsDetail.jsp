@@ -291,25 +291,21 @@ height: 16rem!important;
 				</c:when>
 				
 				<c:when test="${nowTime >= auc.key.endDate }">
+					<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
+							style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; background: rgb(52, 152, 219); border:rgb(52, 152, 219); 
+							height: 2.2rem; width: 7.8rem;">경매결과</button>
 					<c:choose>
-						<c:when test="${auc.key.purchaseConfirm == '미확정' }">
-							<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
-							style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; background: rgb(52, 152, 219); border:rgb(52, 152, 219); 
-							height: 2.2rem; width: 7.8rem;">경매결과</button>
-						
-							<button class="btn btn-warning " 
-							style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: black; 
-							border: black; vertical-align: middle; height: 2.2rem; width: 7.8rem;">마감</button>
-						</c:when>
-						<c:otherwise>
-							<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
-							style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; background: rgb(52, 152, 219); border:rgb(52, 152, 219); 
-							height: 2.2rem; width: 7.8rem;">경매결과</button>
-							
+						<c:when test="${auc.key.purchaseConfirm == '확정' }">
 							<button class="btn btn-warning " 
 							style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: rgb(142, 68, 173); 
 							border: black; vertical-align: middle; height: 2.2rem; width: 7.8rem;">확정</button>
+						</c:when>
+						<c:otherwise>
+							<button class="btn btn-warning " 
+							style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: black; 
+							border: black; vertical-align: middle; height: 2.2rem; width: 7.8rem;">마감</button>
 						</c:otherwise>
+						
 				
 					</c:choose>
 				</c:when>
@@ -375,6 +371,8 @@ height: 16rem!important;
 //     	  console.log("경매번호: "+aucNo);
 //     	  console.log(aucNo+1);
 		let curLikeCnt = parseInt($("#likeCnt").text());
+		
+		console.log("좋아요 경매번호: " + aucNo)
 
     	  
     	  $.ajax({
@@ -389,7 +387,7 @@ height: 16rem!important;
 			},
 			error : function(request, error) {
 				console.log("실패");
-				console.log("code: "+request.status + "\n" +"message: " + request.responseText + "\n"+"error: "+error)
+// 				console.log("code: "+request.status + "\n" +"message: " + request.responseText + "\n"+"error: "+error)
 			}
       	})
 	}

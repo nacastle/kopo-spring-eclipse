@@ -3,6 +3,7 @@ package hafy.aucGoods.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ public class LikeController {
 	@Autowired
 	private MemberService memberService;
 
+	@Transactional
 	@PutMapping("incrementLike/{aucNo}")
 	public void incrementLikeCnt(@PathVariable("aucNo") int aucNo, HttpSession session) {
 //		System.out.println("읽긴하겠지?");bidResult.get(0).getTranzMemberNick()
@@ -52,7 +54,8 @@ public class LikeController {
 
 		}
 	}
-
+	
+	@Transactional
 	@PutMapping("decrementLike/{aucNo}")
 	public void decrementLikeCnt(@PathVariable("aucNo") int aucNo, HttpSession session) {
 //		System.out.println("읽긴하겠지?");

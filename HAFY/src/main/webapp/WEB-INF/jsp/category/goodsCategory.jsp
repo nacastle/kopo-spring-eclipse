@@ -113,6 +113,28 @@ table th img {
 	max-width: 100%;
 	max-height: 100%;
 }
+.fa-bell-o {
+    position: absolute;
+    z-index: 9998;
+    right: 1rem;
+    top: .25rem;
+    }
+ 
+#noticeCnt {
+    background: red;
+    color: white;
+    width: 1rem;
+    display: inline-block;
+    text-align: center;
+    font-size: .8rem;
+    position: relative;
+    z-index: 9998;
+    top: -0.6rem;
+    right: -.3rem;
+    font-weight: bold;
+
+}
+
 </style>
 </head>
 <body>
@@ -121,9 +143,17 @@ table th img {
       <span class="navbar-brand" style="font-weight: bold; color:black;">카테고리</span>
       
       		<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>
+<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a> -->
+<!--       			&nbsp;&nbsp;&nbsp; -->
+				<a href="${pageContext.request.contextPath}/aucSearch" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true" style="position: fixed;right: 2.7rem; top: 1.2rem;"></i></a>
       			&nbsp;&nbsp;&nbsp;
-      			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
+<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
+				<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+      			
+      			<c:if test="${unreadNotiCnt != 0 }">
+	      			<span id="noticeCnt" style="background: red; color: white;">${unreadNotiCnt }</span>
+      			</c:if>
+      			</a>	
 			</div>
     </nav>
 	
