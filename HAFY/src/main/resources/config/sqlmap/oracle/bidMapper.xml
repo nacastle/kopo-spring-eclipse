@@ -96,7 +96,7 @@
 	where auc_no = #{aucNo} and bidder_nick = #{bidderNick}
 </update>
 
-<update id="withdrawBidMoney" parameterType="aAccountVO">
+<update id="withdrawAAccount" parameterType="aAccountVO">
 	update hf_a_account 
 	set bid_money = bid_money - #{bidMoney}
 	where auc_no = #{aucNo} and bidder_nick = #{bidderNick}

@@ -142,26 +142,23 @@ table th img {
     <nav class="navbar fixed-top" style="height:3rem; background:white; color:black; padding: .1rem 1rem; border-bottom: 0.1rem solid rgb(224, 224, 224)">
       <span class="navbar-brand" style="font-weight: bold; color:black;">카테고리</span>
       
-      		<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a> -->
-<!--       			&nbsp;&nbsp;&nbsp; -->
-				<a href="${pageContext.request.contextPath}/aucSearch" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true" style="position: fixed;right: 2.7rem; top: 1.2rem;"></i></a>
+<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
+      			<a href="${pageContext.request.contextPath}/aucSearch" style="float: right; color:black;" ><i class="fa fa-search fa-lg material-ripple " aria-hidden="true" style="overflow:unset; position: fixed;right: 2.7rem; top: 1.2rem;"></i></a>
       			&nbsp;&nbsp;&nbsp;
-<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
-				<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+      			<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg material-ripple" style="overflow:unset;" aria-hidden="true"></i>
       			
       			<c:if test="${unreadNotiCnt != 0 }">
 	      			<span id="noticeCnt" style="background: red; color: white;">${unreadNotiCnt }</span>
       			</c:if>
-      			</a>	
-			</div>
+      			</a>
+		</div>
     </nav>
 	
 		<table class="table table-hover">
 			<tbody>
 			<c:forEach items="${goodsCategory }" var="category">
 					<tr onClick="goCategory('${category.uriName}')">
-						<th scope="row" >${category.codeName }</th>
+						<th class="material-ripple" scope="row" >${category.codeName }</th>
 					</tr>
 			</c:forEach>
 			</tbody>

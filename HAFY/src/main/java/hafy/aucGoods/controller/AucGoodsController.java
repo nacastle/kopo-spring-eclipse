@@ -1,6 +1,7 @@
 package hafy.aucGoods.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -210,7 +211,7 @@ public class AucGoodsController {
 
 			request.removeAttribute("aucNo");
 		}
-
+		
 	}
 
 	@Transactional
@@ -959,7 +960,7 @@ public class AucGoodsController {
 		// 출품자에게 환불요청 알림 남기기
 		// 알림 테이블에 데이터 삽입
 		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
-		String notiType = "goodsDetail";
+		String notiType = "returnDetail";
 		String notiMsg = "'" + aucGoodsVO.getName() + "' 경매" + "(번호: " + aucNo + ")의 환불요청이 접수되었습니다.";
 		NoticeVO noticeVO = new NoticeVO(aucGoodsVO.getMemberNick(), notiType, aucNo, notiMsg);
 		bidService.insertNoti(noticeVO);
@@ -967,6 +968,93 @@ public class AucGoodsController {
 		return "redirect:/bidWin/";
 	}
 
+//	@Transactional
+//	@RequestMapping("/displayLoading")
+//	public String displayLoading(AucGoodsVO aucGoodsVO, MultipartHttpServletRequest mRequest, HttpSession session,
+//			Model model) throws Exception {
+//		
+//		// 출품자 닉네임 가져오기
+//		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+//		String memberNick = memberVO.getNickname();
+//		
+//		// 경매번호 생성
+//		int aucNo = aucGoodsService.genAucNo();
+//		
+//		// 등록일시 생성
+//		LocalDateTime regDate = LocalDateTime.now();
+//		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		String formatDateTime = regDate.format(formatter2);
+//		System.out.println("등록일시 : " + formatDateTime);
+//		
+//		// date 정제
+//		String startDate = aucGoodsVO.getStartDate();
+//		String fStartDate = startDate.substring(0, 10);
+//		String bStartDate = startDate.substring(11);
+//		String rStartDate = fStartDate + " " + bStartDate;
+//		
+//		String endDate = aucGoodsVO.getEndDate();
+//		String fEndDate = endDate.substring(0, 10);
+//		String bEndDate = endDate.substring(11);
+//		String rEndDate = fEndDate + " " + bEndDate;
+//		
+//		// 상품내용 VO에 설정
+//		aucGoodsVO.setRegDate(formatDateTime);
+//		aucGoodsVO.setMemberNick(memberNick);
+//		aucGoodsVO.setNo(aucNo);
+//		aucGoodsVO.setStartDate(rStartDate);
+//		aucGoodsVO.setEndDate(rEndDate);
+//		
+//		// 실행되는 웹어플리케이션의 실제 경로 가져오기
+//		String uploadDir = servletContext.getRealPath("/upload/");
+//		
+//		System.out.println(uploadDir);
+//		
+//		model.addAttribute("aucGoodsVO", aucGoodsVO);
+//		aucGoodsService.insertAucGoods(aucGoodsVO);
+//		
+//		Iterator<String> iter = mRequest.getFileNames();
+//		while (iter.hasNext()) {
+//			
+//			String formFileName = iter.next();
+//			// 폼에서 파일을 선택하지 않아도 객체 생성됨
+//			MultipartFile mFile = mRequest.getFile(formFileName);
+//			
+//			// 원본 파일명
+//			String oriFileName = mFile.getOriginalFilename();
+//			System.out.println("원본 파일명 : " + oriFileName);
+//			
+//			if (oriFileName != null && !oriFileName.equals("")) {
+//				
+//				// 확장자 처리
+//				String ext = "";
+//				// 뒤쪽에 있는 . 의 위치
+//				int index = oriFileName.lastIndexOf(".");
+//				if (index != -1) {
+//					// 파일명에서 확장자명(.포함)을 추출
+//					ext = oriFileName.substring(index);
+//				}
+//				
+//				// 파일 사이즈
+//				long fileSize = mFile.getSize();
+//				System.out.println("파일 사이즈 : " + fileSize);
+//				
+//				// 고유한 파일명 만들기
+//				String saveFileName = "hafy-" + UUID.randomUUID().toString() + ext;
+//				System.out.println("저장할 파일명 : " + saveFileName);
+//				
+//				// 임시저장된 파일을 원하는 경로에 저장
+//				mFile.transferTo(new File(uploadDir + saveFileName));
+//				
+//				GoodsPhotoVO goodsPhotoVO = new GoodsPhotoVO(oriFileName, saveFileName, fileSize, aucNo);
+////				photoList.add(photoVO);
+//				
+//				aucGoodsService.insertGoodsPhoto(goodsPhotoVO);
+//			}
+//		}
+//		
+//		return "redirect:/displaySuccess/" + aucNo;
+////		return "/display/displayLoading"; // 로딩.jsp로 안가고 바로 displaysuccess로 가게끔 redirect 해줫음
+//	}
 	@Transactional
 	@RequestMapping("/displayLoading")
 	public String displayLoading(AucGoodsVO aucGoodsVO, MultipartHttpServletRequest mRequest, HttpSession session,
@@ -1010,45 +1098,45 @@ public class AucGoodsController {
 
 		model.addAttribute("aucGoodsVO", aucGoodsVO);
 		aucGoodsService.insertAucGoods(aucGoodsVO);
+		
+		 List<MultipartFile> fileList = mRequest.getFiles("photos");
+//	        String src = mRequest.getParameter("src");
+//	        System.out.println("src value : " + src);
 
-		Iterator<String> iter = mRequest.getFileNames();
-		while (iter.hasNext()) {
+//	        String path = "C:\\image\\";
 
-			String formFileName = iter.next();
-			// 폼에서 파일을 선택하지 않아도 객체 생성됨
-			MultipartFile mFile = mRequest.getFile(formFileName);
+	        for (MultipartFile mFile : fileList) {
+	        	String oriFileName = mFile.getOriginalFilename(); // 원본 파일 명
+//	        	System.out.println("다음 오리파일은?" + oriFileName);
+	        	
+				if (oriFileName != null && !oriFileName.equals("") && !oriFileName.equals("delete")) {
 
-			// 원본 파일명
-			String oriFileName = mFile.getOriginalFilename();
-			System.out.println("원본 파일명 : " + oriFileName);
+					// 확장자 처리
+					String ext = "";
+					// 뒤쪽에 있는 . 의 위치
+					int index = oriFileName.lastIndexOf(".");
+					if (index != -1) {
+						// 파일명에서 확장자명(.포함)을 추출
+						ext = oriFileName.substring(index);
+					}
 
-			if (oriFileName != null && !oriFileName.equals("")) {
+					// 파일 사이즈
+					long fileSize = mFile.getSize();
+					System.out.println("파일 사이즈 : " + fileSize);
 
-				// 확장자 처리
-				String ext = "";
-				// 뒤쪽에 있는 . 의 위치
-				int index = oriFileName.lastIndexOf(".");
-				if (index != -1) {
-					// 파일명에서 확장자명(.포함)을 추출
-					ext = oriFileName.substring(index);
+					// 고유한 파일명 만들기
+					String saveFileName = "hafy-" + UUID.randomUUID().toString() + ext;
+					System.out.println("저장할 파일명 : " + saveFileName);
+
+					// 임시저장된 파일을 원하는 경로에 저장
+					mFile.transferTo(new File(uploadDir + saveFileName));
+
+					GoodsPhotoVO goodsPhotoVO = new GoodsPhotoVO(oriFileName, saveFileName, fileSize, aucNo);
+//					photoList.add(photoVO);
+
+					aucGoodsService.insertGoodsPhoto(goodsPhotoVO);
 				}
 
-				// 파일 사이즈
-				long fileSize = mFile.getSize();
-				System.out.println("파일 사이즈 : " + fileSize);
-
-				// 고유한 파일명 만들기
-				String saveFileName = "hafy-" + UUID.randomUUID().toString() + ext;
-				System.out.println("저장할 파일명 : " + saveFileName);
-
-				// 임시저장된 파일을 원하는 경로에 저장
-				mFile.transferTo(new File(uploadDir + saveFileName));
-
-				GoodsPhotoVO goodsPhotoVO = new GoodsPhotoVO(oriFileName, saveFileName, fileSize, aucNo);
-//				photoList.add(photoVO);
-
-				aucGoodsService.insertGoodsPhoto(goodsPhotoVO);
-			}
 		}
 
 		return "redirect:/displaySuccess/" + aucNo;

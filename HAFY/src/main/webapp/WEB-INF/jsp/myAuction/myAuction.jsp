@@ -170,12 +170,12 @@ color: white;
 <!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a> -->
 <!--       			&nbsp;&nbsp;&nbsp; -->
 <!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
-				<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+				<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg material-ripple" style="overflow:unset;" aria-hidden="true"></i>
       			
       			<c:if test="${unreadNotiCnt != 0 }">
 	      			<span id="noticeCnt" style="background: red; color: white;">${unreadNotiCnt }</span>
       			</c:if>
-      			</a>	
+      			</a>
 		</div>
       
     </nav>
@@ -185,8 +185,8 @@ color: white;
     
     <nav class="na-nav">
     	<div>
-    		<a class="top-on" href="#" onclick="showBid()"><span>입찰</span></a>
-    		<a href="#" onclick="showDisplay()"><span>판매</span></a>
+    		<a class="top-on material-ripple" href="#" onclick="showBid()"><span>입찰</span></a>
+    		<a class="material-ripple" href="#" onclick="showDisplay()"><span>출품</span></a>
     		<span></span>
     	</div>
     

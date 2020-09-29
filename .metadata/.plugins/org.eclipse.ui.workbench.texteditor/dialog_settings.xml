@@ -17,23 +17,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="Modal"/>
+		<item key="selection" value="이미지"/>
 		<list key="findhistory">
+			<item value="이미지"/>
+			<item value="deleteall"/>
+			<item value="최대"/>
+			<item value="oad({"/>
+			<item value="photos"/>
+			<item value="maxl"/>
+			<item value="완료"/>
+			<item value="photo"/>
+			<item value="imgPreview"/>
+			<item value="uploadPhotos"/>
+			<item value="다음 오리파일은"/>
+			<item value="close"/>
+			<item value="prev"/>
 			<item value="modal"/>
 			<item value="openModal"/>
-			<item value="로그"/>
-			<item value="분 전"/>
-			<item value="Modal"/>
-			<item value="button"/>
-			<item value="마감"/>
-			<item value="number"/>
-			<item value="출품자"/>
-			<item value="추"/>
-			<item value="selectNotiMap"/>
-			<item value="th"/>
-			<item value="noti"/>
-			<item value="notice"/>
-			<item value="수정"/>
 		</list>
 		<list key="replacehistory">
 			<item value="tranzDate"/>

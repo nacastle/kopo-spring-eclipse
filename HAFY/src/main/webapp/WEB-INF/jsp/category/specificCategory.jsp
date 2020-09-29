@@ -141,11 +141,11 @@ background: rgb(190, 190, 190);
     	  </a>
     	  <span style="font-size: 1.25rem; position:relative; top:0.2rem; left: 3.5rem; font-weight: bold; color:black;">${categoryName }</span>
   	 	</div>
-  	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>
-      			&nbsp;&nbsp;&nbsp;
-      			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
-		</div>
+<!--   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;"> -->
+<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a> -->
+<!--       			&nbsp;&nbsp;&nbsp; -->
+<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
+<!-- 		</div> -->
       
     </nav>
     

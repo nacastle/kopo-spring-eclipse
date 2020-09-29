@@ -12,6 +12,8 @@
     <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/navbar-fixed/navbar-top-fixed.css" rel="stylesheet">
 <!--     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+<%--     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/slick/slick.css"/> --%>
+<%-- 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/slick/slick-theme.css"/> --%>
 <style type="text/css">
 a {
 	text-decoration: none !important;
@@ -176,6 +178,11 @@ table th img {
  margin-left: 0;
  }
  
+ .photos img {
+ width: 22rem;
+ margin-left: 0;
+ }
+ 
 /*  .bxslider li  { */
 /*  text-align: center; */
 /*  } */
@@ -198,7 +205,7 @@ height: 16rem!important;
   	 	</div>
       
       	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      	
+      		<span id="ripple" class="material-ripple" data-color="fc0905" style="overflow: unset;">
       		<c:choose>
       			<c:when test="${isLike == false }">
       		<i class="btn-like fa fa-heart-o fa-lg" onclick="like(${auc.key.no},${auc.key.likeCnt })" aria-hidden="true"></i>
@@ -209,12 +216,16 @@ height: 16rem!important;
       		<i class="btn-dislike fa fa-heart fa-lg" onclick="dislike(${auc.key.no},${auc.key.likeCnt })" style="color: red;" aria-hidden="true"></i>
       			</c:otherwise>
       		</c:choose>
+      		</span>
 		</div>
     </nav>
     <ul class="bxslider">
+<!--     <div class="photos"> -->
 		<c:forEach items="${auc.value }" var="photo">
-			<li><a href="${pageContext.request.contextPath}/upload/${photo.saveName}"><img src="${pageContext.request.contextPath}/upload/${photo.saveName}"></a></li>
+<%-- 			<li><a href="${pageContext.request.contextPath}/upload/${photo.saveName}"><img src="${pageContext.request.contextPath}/upload/${photo.saveName}"></a></li> --%>
+			<a href="${pageContext.request.contextPath}/upload/${photo.saveName}"><img src="${pageContext.request.contextPath}/upload/${photo.saveName}"></a>
 		</c:forEach>
+<!-- 		</div> -->
     </ul>
               <div class="na-content">
               
@@ -268,7 +279,6 @@ height: 16rem!important;
 <%--     	<span style="font-size: 0.6rem;">현재가 </span><strong>${highestBid} 원</strong> | <span id="bidderCnt" style="color: red;">${bidderCnt}명 입찰중&nbsp;&nbsp;</span> --%>
 <%-- 			<button type="button" class="btn btn-success" onclick="goAAcount(${auc.key.no })" --%>
 <!-- 				style="background: rgb(22, 160, 133); margin-top: -0.2rem; font-weight: bold;">경매현황</button> -->
-			
 			<c:choose>
 				<c:when test="${nowTime < auc.key.startDate }">
 					<button class="btn btn-warning"
@@ -279,7 +289,7 @@ height: 16rem!important;
 				<c:when test="${nowTime >= auc.key.startDate and nowTime < auc.key.endDate }">
 				
 				<c:choose>
-					<c:when test="${isBid == true }">
+					<c:when test="${isBid == true or auc.key.memberNick == memberVO.nickname}">
 						<button class="btn btn-success" onclick="goAAcount(${auc.key.no })"
 							style="margin-right: -1%; margin-top: -0.2rem; float: left; font-weight: bold; vertical-align: middle; 
 							height: 2.2rem; width: 7.8rem;">경매현황</button>
@@ -330,8 +340,22 @@ height: 16rem!important;
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
 <!--     <script src="https://code.jquery.com/jquery-3.4.1.js"></script> -->
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<!--     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> -->
+<%--     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/slick/slick.min.js"></script> --%>
     
       <script type="text/javascript">
+      
+      
+//       $(document).ready(function(){
+//     	  $(".photos").slick({
+//     		  dots: true,
+//     		  infinite: true,
+//     		  speed: 300,
+//     		  slidesToShow: 1,
+//     		  adaptiveHeight: true
+//     	  });
+//     	});
+      
       
 <%--       console.log(<%= request.getQueryString() %>) --%>
 <%--       alert(<%= request.getQueryString() %>) --%>
@@ -370,6 +394,9 @@ height: 16rem!important;
       function like(aucNo, likeCnt) {
 //     	  console.log("경매번호: "+aucNo);
 //     	  console.log(aucNo+1);
+		
+		$("#ripple").addClass("material-ripple");
+
 		let curLikeCnt = parseInt($("#likeCnt").text());
 		
 		console.log("좋아요 경매번호: " + aucNo)
@@ -395,7 +422,7 @@ height: 16rem!important;
       function dislike(aucNo, likeCnt) {
 //     	  console.log("경매번호: "+aucNo);
 //     	  console.log(aucNo+1);
-
+			$("#ripple").removeClass("material-ripple");
 			let curLikeCnt = parseInt($("#likeCnt").text());
     	  
     	  $.ajax({

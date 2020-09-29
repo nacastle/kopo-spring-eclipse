@@ -78,4 +78,7 @@ public interface AucGoodsDAO {
 	
 	List<AucGoodsVO> selectDisplayPurchaseConfirmContents(String memberNick);
 	List<AucGoodsVO> selectDisplayReturnGoodsContents(String memberNick);
+	
+	// 낙찰일로부터 confirmDay일 지난 경매건 리스트 구하기
+	List<AucGoodsVO> selectNotPurchaseConfirmList(int confirmDay);
 }

@@ -8,6 +8,10 @@
 	<jsp:include page="/WEB-INF/jsp/include/lib/topLibs.jsp"></jsp:include>
 <title>하피 - 모두를 위한 경매</title>
     <link href="${pageContext.request.contextPath }/resources/bootstrap-4.0.0/docs/4.0/examples/navbar-fixed/navbar-top-fixed.css" rel="stylesheet">
+<!-- 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script> -->
+<!-- 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"  -->
+<!--         type="text/javascript" language="javascript"> </script> -->
+<%--     <script src="${pageContext.request.contextPath }/resources/multiFile/jquery.MultiFile.min.js"></script> --%>
 
 <style type="text/css">
 a {
@@ -143,7 +147,33 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
 	flex: none;
 	max-width: 100%;
 }
+
+.yn {
+ 	width: 50%; 
+/* 	border: 0.1rem solid rgb(224, 224, 224); */
+	text-align: center;
+	padding: 0;
+	font-size: 1rem;
+	height: 2.4rem;
+/* 	float: left; */
+}
+/* .preview_img{ */
+/*   width: 50px; */
+/*   height: 50px; */
+/*   margin-right: .2rem; */
+/* } */
+
+#imgPreview img {
+	width: 4rem;
+	height: 4rem;
+  margin-right: .3rem;
+}
+
+
+
 </style>
+
+
 
 
 </head>
@@ -167,16 +197,32 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
                 <div class="invalid-feedback">
                   Valid 입찰방식 체크 is required.
                 </div>
-<!--               </div> -->
               </div>
-             </div>
+              </div>
+<!--              </div> -->
               <hr>
+<!--               </div> -->
 
-			<div class="form-group">
 			
-				<input type="file" name="photo">
-				<input type="file" name="photo2">
-				<input type="file" name="photo3">
+				<input id="photos" type="file"  multiple="multiple" maxlength="5" style="display: none;" name="photos" accept="image/*" > 
+				 <div>
+				 <label class="material-ripple" style="overflow: unset;" for="photos" onclick="{photos.click}">
+    				<i  class="fa fa-camera-retro fa-3x" style='margin-left:1rem; color:darkgray; cursor:pointer' aria-hidden="true"></i>
+    			</label>
+    				<span style="position:absolute; margin-top:.6rem; margin-left:.6rem; "> 상품 이미지를 업로드해주세요.</span>
+ 				</div>
+ 				   			
+				<div id="imgPreview" style=" background:rgb(230, 230, 230); border:.1rem solid rgb(200, 200, 200);  display:none; padding:.3rem; margin-top: .3rem;"></div>
+				<i id="deleteAll" onclick="deleteAllFiles()" class="fa fa-times fa-2x" style="margin-left:.6rem; display: none" aria-hidden="true"></i>
+
+<!-- <input id="myInput" type="file" style="display:none" onchange="myFunc.onFileSelect(event)" multiple="multiple"> -->
+<!--     <label for="myInput" onclick="{myInput.click}"> -->
+<!--     <i class="fa fa-camera-retro fa-3x" style='margin-right:1rem; cursor:pointer' aria-hidden="true"></i> -->
+<!--     </label> -->
+<!--     <div class="results" style="display: inline-block;"> -->
+    
+<!-- 				<input type="file" name="photo2"> <i onclick="cancelFile2()" class="fa fa-times" aria-hidden="true"></i> -->
+<!-- 				<input type="file" name="photo3"> <i onclick="cancelFile3()" class="fa fa-times" aria-hidden="true"></i> -->
 <!-- 				<div class="input-group input-file"  name="Fichier1"> -->
 <!-- 					<span class="input-group-btn"> -->
 <!-- 						<button class="btn btn-default btn-choose" type="button"><i class="fa fa-picture-o fa-lg" aria-hidden="true"></i></button> -->
@@ -186,7 +232,6 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
 <!-- 						<button class="btn btn-danger" type="button">삭제</button> -->
 <!-- 					</span> -->
 <!-- 				</div> -->
-			</div>
 			
 			<hr>
 
@@ -238,14 +283,35 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
       	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
       		
 <!--       		<a href="http://www.naver.com" style="float: right; font-weight: bold; font-size: 1.25rem; color:black;">완료</a> -->
-      		<a style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
-      			onclick="submit()">완료</a>
+      		<a class="material-ripple" data-color="27b2a5"; style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
+      			onclick="openSubmitModal()">완료</a>
 <!--       		<input type="submit" class="form-control" value="완료" style="border:0; float: right; font-weight: bold; font-size: 1.25rem; color:black;" > -->
       			
 		</div>
     </nav>
-    
+    </div>
      </form>
+     
+     <!-- 	마감 알림시간 설정완료 안내 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 10rem;">
+   <div class="modal-dialog"><!--  큰창:<div class="modal-dialog modal-lg"> 작은창 :<div class="modal-dialog modal-sm">  -->
+      <div class="modal-content">
+         <div class="modal-body" style="text-align: center; margin: 1rem;">
+            경매 출품을 완료하시겠습니까?
+         </div>
+        
+         <div class="modal-footer" style="border-top:0; padding:0; ">
+          		<table style="margin-bottom: 0; width: 100%;">
+			<tr style="border-top: 0.1rem solid rgb(224, 224, 224);">
+				<td class="yn material-ripple" id="yes" onclick="submit()" data-dismiss="modal" style="width:50%; border-right: 0.1rem solid rgb(224, 224, 224);">예</td>
+				<td class="yn material-ripple" id="no" data-dismiss="modal" style="width:50%;" onclick="no()">아니오</td>
+			</tr>
+		</table>
+         </div>
+      </div>
+   </div>
+</div>
     
 	<nav class="na-nav2 navbar fixed-bottom navbar-expand-sm navbar-dark" style="background: #27b2a5; padding: .1rem 0rem; height: 3rem;">
 
@@ -261,14 +327,107 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
 
     <jsp:include page="/WEB-INF/jsp/include/lib/botLibs.jsp"></jsp:include>
     
+    
 	<script type="text/javascript">
 	
-	console.log(typeof document.dForm.startDate.value)
+// 	var uploadPhotos = [];
+
+// $('#photos').fileupload({
+// maxNumberOfFiles: 6
+// });
+	
+	$("#photos").change(function(event) {
+		
+		$("#deleteAll").show()
+		$("#imgPreview").show()
+		$("#imgPreview").css("display","inline-block")
+		var imgFiles = event.target.files
+		
+// 		for (var i = 0; i < imgFiles.length; i++) {
+		for (var image of event.target.files) {
+
+// 			uploadPhotos.push(imgFiles[i])
+			
+			var reader = new FileReader();
+			
+			reader.onload = function(event) { 
+				var img = document.createElement("img"); 
+				img.setAttribute("src", event.target.result);
+				
+// 				img.addEventListener('click',function(){
+// 				img.remove();
+// // 				uploadPhotos.splice(i-1,1)
+// 		           })
+
+				document.querySelector("#imgPreview").appendChild(img); 
+				};
+				
+				reader.readAsDataURL(image);
+		}
+
+	})
+	
+	function deleteAllFiles() {
+		$("#photos").val("")
+		$("#imgPreview").html("")
+		$("#deleteAll").hide()
+		$("#imgPreview").hide()
+		
+		
+		
+	}
+	
+	
+// 	$("#photo").change(function(event) {
+// 		console.log(event.currentTarget)
+// 		console.log(event)
+// 		console.log(event.currentTarget.files)
+		
+// 		for (var i = 0; i < event.currentTarget.files.length; i++) {
+			
+// 			var reader = new FileReader();
+			
+// 			reader.onload = function(event) { 
+// 				var img = document.createElement("img"); 
+// 				img.setAttribute("src", event.target.result); 
+// 				document.querySelector("div#image_container").appendChild(img); 
+// 				};
+
+
+// 			console.log(event.currentTarget.files[i].name)
+// 			$("#uploadFile").append(event.currentTarget.files[i].name + '<i id="close' +i + '" class="close fa fa-times" style="float:right; margin-right:1.4rem;" aria-hidden="true"></i>' + "<br>")
+
+// 			$('#close' + i ).click(function() {
+// 			console.log("close" + i + "클릭 성공")
+			
+// 			})
+// 		}
+
+// 	})
+	
+// 			imgCnt = $(".close").length
+// 		console.log("upload 개수: " + imgCnt);
+		
+// 		for (var i = 0; i < imgCnt; i++) {
+// 			$('#close' + i ).click(function() {
+// 			console.log("close" + i + "클릭 성공")
+		
+// 			})
+		
+// 	}
+// 	var imgCnt;
+	function openSubmitModal() {
+		$(".modal").modal("show")
+		
+	}
 	
 	function submit() {
 		document.dForm.submit();
 		
 	}
+	 function no() {
+	    	$(".modal").modal("hide")
+		}
 	
 	
 		$('.na-nav a').on('click', function() {

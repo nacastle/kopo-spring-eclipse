@@ -71,6 +71,12 @@
 		#{setMin}/24/60 ,'yyyy-mm-dd hh24:mi')
 	</select>
 
+	<select id="selectNotPurchaseConfirmList" parameterType="int"
+		resultMap="aucGoodsMap">
+		select * from hf_auc_goods
+		where end_date = TO_CHAR(SYSDATE - #{confirmDay} ,'yyyy-mm-dd hh24:mi')
+	</select>
+
 	<select id="isImminentAucByMin" parameterType="map"
 		resultMap="aucGoodsMap">
 		select * from hf_auc_goods

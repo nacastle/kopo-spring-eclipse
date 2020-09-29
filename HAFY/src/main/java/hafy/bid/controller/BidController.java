@@ -53,15 +53,23 @@ public class BidController {
 	 */
 	@Scheduled(cron = "10 * * * * *")
 	public void refundBidMoney() {
-		System.out.println("매분 10초에 환급 알고리즘 도는중...");
+		// 현재시간 가져오기
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+		
+		System.out.println("매분 10초에 환급 알고리즘 도는중..." + " (현재시각:" + nowTime +")");
 		// 마감된 경매 환급
 		bidService.refundBidMoney();
 	}
 
+	// 스케쥴러로 알림메세지 보내기
 	@Scheduled(cron = "0 * * * * *")
 	public void noticeWithScheduler() {
-		System.out.println("매분 0초에 경매마감/경매마감임박 알림 알고리즘 도는중...");
-
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+		System.out.println("매분 0초에 경매마감/경매마감임박 알림 알고리즘 도는중..." + " (현재시각:" + nowTime +")");
 		// 마감임박한 경매 알림 (bidders)
 		bidService.noticeImminentAucs();
 
@@ -69,6 +77,19 @@ public class BidController {
 		bidService.noticeClosedBid();
 	}
 
+	@Scheduled(cron = "0 * * * * *")
+	public void autoPurchaseConfirm() {
+		
+		int confirmDay = 2;
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String nowTime = now.format(formatter);
+		System.out.println("매분 0초에 자동 매입확정 알고리즘 도는중..." + " (현재시각:" + nowTime +")");
+
+		// 자동 매입확정 알고리즘 (낙찰액 전달 / 출품자에게 알림메세지) (낙찰된지 confirmDay일 지난  건들에 대해 매입확정 알고리즘)
+		bidService.autoPurchaseConfirm(confirmDay);
+	}
+	
 
 	@ResponseBody
 	@GetMapping("/loadBidHistory/{historyScrollCnt}/{loadCnt}/{aucNo}")
@@ -98,8 +119,7 @@ public class BidController {
 
 	@GetMapping("/bidHistory/{aucNo}")
 	public String bidHistory(@PathVariable("aucNo") int aucNo, HttpServletRequest request) {
-		
-		
+
 		// 특정경매의 마감시간 가져오려고 vo 구하기
 		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
 

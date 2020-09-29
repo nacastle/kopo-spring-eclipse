@@ -182,7 +182,7 @@ table th img {
 			style="margin-top: 0.5rem; margin-right: -1rem;">
 			<%-- 				<a class="p-2 bottom-on" href="${pageContext.request.contextPath}/hot"><div><i class="fa fa-home fa-lg"></i></div> 홈</a>  --%>
 			<a href="${pageContext.request.contextPath}/hot" style="float: right; color: black;">
-				<i class="fa fa-home fa-lg" aria-hidden="true"></i>
+				<i class="fa fa-home fa-lg material-ripple" aria-hidden="true"></i>
 			</a>
 		</div>
       
@@ -219,9 +219,9 @@ table th img {
 	
 	<nav class="na-nav">
 			<div>
-				<a class="top-on" href="#" onclick="showRank()"><span>경매참여자</span></a> 
-				<a onclick="showHistory()" href="#"><span>입/출금</span></a> 
-				<a onclick="result()" href="#" ><span>경매결과</span></a> 
+				<a class="top-on material-ripple" href="#" onclick="showRank()"><span>경매참여자</span></a> 
+				<a class="material-ripple" onclick="showHistory()" href="#"><span>입/출금</span></a> 
+				<a class="material-ripple" onclick="result()" href="#" ><span>경매결과</span></a> 
 				<span></span>
 			</div>
 

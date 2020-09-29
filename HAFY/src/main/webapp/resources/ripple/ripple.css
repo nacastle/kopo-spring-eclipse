@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+@keyframes materialRipple {
+    0% {
+        transform: translate(-50%, -50%) scale(1)
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(var(--material-scale));
+        opacity: 0
+    }
+}
+
+.material-ripple {
+    position: relative;
+    overflow: hidden;
+  
+    /* Additional */
+/*     display: inline-block; */
+/*     padding: 10px 20px; */
+/*     color: #000; */
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent
+}
+
+.material-ripple .animate {
+    width: 2px;
+    height: 2px;
+    position: absolute;
+    border-radius: 50%;
+    animation: materialRipple 0.5s linear
+}
+

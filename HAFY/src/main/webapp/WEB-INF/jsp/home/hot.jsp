@@ -195,9 +195,9 @@ background: rgb(190, 190, 190);
     	  <span  style="font-size: 1.25rem; position:relative; top:0.2rem; /* left: 4rem; */ font-weight: bold; color:black;">홈</span>
   	 	</div>
   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      			<a href="${pageContext.request.contextPath}/aucSearch" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true" style="position: fixed;right: 2.7rem; top: 1.2rem;"></i></a>
+      			<a href="${pageContext.request.contextPath}/aucSearch" style="float: right; color:black;" ><i class="fa fa-search fa-lg material-ripple " aria-hidden="true" style="overflow:unset; position: fixed;right: 2.7rem; top: 1.3rem;"></i></a>
       			&nbsp;&nbsp;&nbsp;
-      			<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+      			<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg material-ripple" style="overflow:unset;" aria-hidden="true"></i>
       			
       			<c:if test="${unreadNotiCnt != 0 }">
 	      			<span id="noticeCnt" style="background: red; color: white;">${unreadNotiCnt }</span>
@@ -209,8 +209,8 @@ background: rgb(190, 190, 190);
     
     <nav class="na-nav">
     	<div>
-    		<a id="hotContents" class="top-on" href="#" onclick="showHot()"><span>인기 경매</span></a>
-    		<a id="recentContents" href="#" onclick="showRecent()"><span>최신 경매</span></a>
+    		<a  id="hotContents" class="top-on" href="#" onclick="showHot()"><span style="display: block;" class="material-ripple">인기 경매</span></a>
+    		<a  id="recentContents" href="#" onclick="showRecent()"><span style="display: block;" class="material-ripple">최신 경매</span></a>
     		<span></span>
     	</div>
     
@@ -265,7 +265,7 @@ background: rgb(190, 190, 190);
 						if ($("#hotContents").hasClass("top-on") == true) {	
 							$("#hotAucBody").append(data)
 							hotScrollCnt += 1;
-							console.log("hotScrollCnt " + hotScrollCnt )
+// 							console.log("hotScrollCnt " + hotScrollCnt )
 						}
 					
 					
@@ -284,19 +284,19 @@ background: rgb(190, 190, 190);
 			if ($("#hotContents").hasClass("top-on") == true) {	
 // 				hotScrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
 				hotScrollLocation = $(window).scrollTop(); // 현재 스크롤바 위치
-				console.log("hotScrollLocation " + hotScrollLocation )
+// 				console.log("hotScrollLocation " + hotScrollLocation )
 				}
 			let windowHeight = window.innerHeight; // 스크린 창
 			let fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
-			console.log("hotScrollLocation " + hotScrollLocation )
-			console.log("windowHeight " + windowHeight )
-			console.log("fullHeight " + fullHeight )
-			console.log("hotScrollLocation + windowHeight " + Math.ceil(hotScrollLocation + windowHeight) )
+// 			console.log("hotScrollLocation " + hotScrollLocation )
+// 			console.log("windowHeight " + windowHeight )
+// 			console.log("fullHeight " + fullHeight )
+// 			console.log("hotScrollLocation + windowHeight " + Math.ceil(hotScrollLocation + windowHeight) )
 			
 			hotTrCnt = $("#hotAucBody tr").length
 			
 			if (Math.ceil(hotScrollLocation + windowHeight) >= fullHeight) {
-				console.log('끝')
+// 				console.log('끝')
 				
 				setTimeout(function() {
 // 					$("#loadingHot").show()
@@ -332,7 +332,7 @@ function loadRecentAucs() {
 			$("#loading").show
 			$("#recentAucBody").append(data)
 			recentScrollCnt += 1;
-			console.log("recentScrollCnt " + recentScrollCnt )
+// 			console.log("recentScrollCnt " + recentScrollCnt )
 		}
 	})
 }
@@ -355,17 +355,13 @@ function showRecent() {
 			let fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
 			
 			if(Math.ceil(recentScrollLocation + windowHeight )== fullHeight){
-				console.log('끝')
+// 				console.log('끝')
 				setTimeout(function() {  
 					loadRecentAucs()
 				}, 
 				500);
 			}
 		})
-	
-	
-
-	
 }
   
   function goDetail(aucNo) {

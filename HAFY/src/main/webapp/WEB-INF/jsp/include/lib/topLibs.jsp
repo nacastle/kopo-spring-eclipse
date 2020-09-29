@@ -16,5 +16,8 @@
 	<!-- font-Awesome 아이콘 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" >
 	
+	<!-- ripple 버튼들 맛있게-->
+	<link href="${pageContext.request.contextPath}/resources/ripple/ripple.css" rel="stylesheet">
+	
     
     

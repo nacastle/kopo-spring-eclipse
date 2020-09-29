@@ -30,7 +30,7 @@ public interface BidDAO {
 	List<Integer> selectMemberClosedAucOBReturnRequestDate(String memberNick);
 	
 	// 경매모임통장에서 출금된 돈만큼 빠져나가기 (AAccount 업데이트)
-	void withdrawAAccount(AAccountVO aAccountVO);
+	void withdrawAAccount(AAccountVO aAccselectBidResultountVO);
 	
 	// 마감된 경매 중 환급이 안된 경매번호 리스트 구하기
 	List<Integer> selectNotRefundAucList();

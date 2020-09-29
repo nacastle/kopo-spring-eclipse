@@ -156,8 +156,8 @@ label {
       		
 <!--       		<a href="http://www.naver.com" style="float: right; font-weight: bold; font-size: 1.25rem; color:black;">완료</a> -->
       		<c:if test="${memberVO.nickname == aucGoodsVO.memberNick }">
-      		<a style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
-      			onclick="openApproveModal(${returnGoods.key.aucNo },'${returnGoods.key.writer }')">승인</a>
+      		<a class="material-ripple" style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
+      			onclick="openApproveModal(${returnGoods.key.aucNo },'${returnGoods.key.writer }')">수락</a>
       		</c:if>
 <!--       		<input type="submit" class="form-control" value="완료" style="border:0; float: right; font-weight: bold; font-size: 1.25rem; color:black;" > -->
       			
@@ -219,8 +219,8 @@ label {
          <div class="modal-footer" style="border-top:0; padding:0; ">
           	<table style="margin-bottom: 0; width: 100%;    border-top: 0.1rem solid rgb(224, 224, 224);">
 			<tr>
-				<td class="yn" id="yesApprove" data-dismiss="modal" style="border-right: 0.1rem solid rgb(224, 224, 224);">예</td>
-				<td class="yn" id="noApprove" data-dismiss="modal" >아니오</td>
+				<td class="yn material-ripple" id="yesApprove" data-dismiss="modal" style="border-right: 0.1rem solid rgb(224, 224, 224);">예</td>
+				<td class="yn material-ripple" id="noApprove" data-dismiss="modal" >아니오</td>
 			</tr>
 		</table>
          </div>

@@ -232,7 +232,7 @@ input[type="datetime-local"]:focus::before, input[type="datetime-local"]:valid::
       	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
       		
 <!--       		<a href="http://www.naver.com" style="float: right; font-weight: bold; font-size: 1.25rem; color:black;">완료</a> -->
-      		<a style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
+      		<a class="material-ripple" style="float: right; font-weight: bold; font-size: 1.25rem; color:black;"
       			onclick="openReturnModal()">완료</a>
 <!--       		<input type="submit" class="form-control" value="완료" style="border:0; float: right; font-weight: bold; font-size: 1.25rem; color:black;" > -->
       			

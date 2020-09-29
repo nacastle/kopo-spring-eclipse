@@ -241,12 +241,12 @@ input[type="datetime-local"]:valid::before {
   	 	
   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
 <!--       		<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
-			<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+			<a href="${pageContext.request.contextPath}/noticeContent" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg material-ripple" style="overflow:unset;" aria-hidden="true"></i>
       			
       			<c:if test="${unreadNotiCnt != 0 }">
 	      			<span id="noticeCnt" style="background: red; color: white;">${unreadNotiCnt }</span>
       			</c:if>
-      			</a>	
+      			</a>
 		</div>
     </nav>
 
@@ -277,7 +277,7 @@ input[type="datetime-local"]:valid::before {
 				<td>진행내역</td>
 			</tr>
 			<tr onclick="goBidWin()">
-				<td>낙찰내역</td>
+				<td>낙찰내역 (매입확정/환불)</td>
 			</tr>
 			<tr onclick="goLikeList()">
 				<td>관심경매</td>
@@ -293,7 +293,7 @@ input[type="datetime-local"]:valid::before {
 <!-- 				<td>매입확정</td> -->
 <!-- 			</tr> -->
 			<tr onclick="goDisplayClosed()">
-				<td>마감내역</td>
+				<td>마감내역 (매입확정/환불)</td>
 			</tr>
 		</table>
 
@@ -374,6 +374,8 @@ input[type="datetime-local"]:valid::before {
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script> -->
       <script type="text/javascript">
       
+//       $("table").removeClass("table-hover")
+//       $("tr").addClass("material-ripple")
       
       function goDisplayClosed() {
     	  location.href = "${pageContext.request.contextPath}/displayClosed"

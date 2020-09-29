@@ -154,7 +154,7 @@ background: rgb(235, 235, 235)
     	  <span style="font-size: 1.25rem; font-weight: bold;top: 0.1rem;
     	  position: relative;margin-left: .4rem;">알림</span>
   	 	</div>
-  	 	<div onclick="readAll()"  style="float: right; font-weight: bold;top: 0.1rem;">
+  	 	<div class="material-ripple" data-color="27b2a5"; onclick="readAll()"  style="float: right; font-weight: bold;top: 0.1rem;">
   	 		모두 읽음
   	 	</div>
     </nav>
@@ -177,8 +177,8 @@ background: rgb(235, 235, 235)
          <div class="modal-footer" style="border-top:0; padding:0; ">
           		<table style="margin-bottom: 0; width: 100%;">
 			<tr style="border-top: 0.1rem solid rgb(224, 224, 224);">
-				<td class="yn" id="yes" onclick="yes()" data-dismiss="modal" style="width:50%; border-right: 0.1rem solid rgb(224, 224, 224);">예</td>
-				<td class="yn" id="no" data-dismiss="modal" style="width:50%;" onclick="no()">아니오</td>
+				<td class="yn material-ripple" id="yes" onclick="yes()" data-dismiss="modal" style="width:50%; border-right: 0.1rem solid rgb(224, 224, 224);">예</td>
+				<td class="yn material-ripple" id="no" data-dismiss="modal" style="width:50%;" onclick="no()">아니오</td>
 			</tr>
 		</table>
          </div>

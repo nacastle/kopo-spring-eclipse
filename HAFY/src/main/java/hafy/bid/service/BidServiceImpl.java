@@ -19,6 +19,7 @@ import hafy.bid.vo.AAccountVO;
 import hafy.bid.vo.ATranzVO;
 import hafy.bid.vo.NoticeVO;
 import hafy.mAccount.dao.MAccountDAO;
+import hafy.mAccount.vo.MAccountVO;
 import hafy.member.dao.MemberDAO;
 import hafy.member.vo.NoticeSettingVO;
 
@@ -45,6 +46,62 @@ public class BidServiceImpl implements BidService {
 		// TODO Auto-generated method stub
 		AAccountVO isBid = bidDAO.isBidding(aAccountVO);
 		return isBid;
+	}
+
+	
+	
+	
+	@Override
+	public void autoPurchaseConfirm(int confirmDay) {
+		// TODO Auto-generated method stub
+		
+		// 낙찰된지 15일 지난 경매 리스트 가져오기
+		List<AucGoodsVO> aucList = aucGoodsDAO.selectNotPurchaseConfirmList(confirmDay);
+		
+		for(AucGoodsVO auc : aucList) {
+			// 경매번호
+			int aucNo = auc.getNo();
+			// 출품자 닉네임
+			String sellerNick = auc.getMemberNick();
+			// 출품자의 첫번째 계좌
+			List<MAccountVO> mAccountList = mAccountDAO.selectMAccountList(sellerNick);
+			String sellerAccount = mAccountList.get(0).getAccountNo();
+			// 낙찰액
+			double winBidMoney = auc.getWinningBid();
+			// 낙찰자 닉네임
+			List<ATranzVO> aTranzVOs = bidDAO.selectBidResult(aucNo);
+			String winner = aTranzVOs.get(0).getTranzMemberNick();
+			
+			// 입출금 내역 추가하기 (낙찰액만큼 출금)
+			ATranzVO withdrawTranzVO = new ATranzVO(aucNo,
+					sellerAccount, -winBidMoney,
+					winner, "출금");
+			bidDAO.insertBidTranz(withdrawTranzVO);
+
+			// 경매모입통장에서 낙찰자의 낙찰액 빠져나가기
+			AAccountVO withdrawAaccountVO = new AAccountVO(aucNo,
+					winner, winBidMoney);
+			bidDAO.withdrawAAccount(withdrawAaccountVO);
+
+			// 낙찰액 판매자 계좌로 입금되기
+			Map<String, Object> depositInfo = new HashMap<String, Object>();
+			depositInfo.put("mAccountNo", sellerAccount);
+			depositInfo.put("winBidMoney", winBidMoney);
+			mAccountDAO.depositMAccount(depositInfo);
+			
+			// 매입확정 정보 알림 테이블에 넣기
+			NoticeSettingVO noticeSettingVO = memberDAO.selectNoticeSettingVOByNick(sellerNick);
+			String sellerPurchaseConfirmNotice = noticeSettingVO.getSellerPurchaseConfirmNotice();
+
+			if (sellerPurchaseConfirmNotice.equals("true")) {
+				String notiMsg = auc.getName() + "' 경매" + "(번호: " + aucNo + ")의 매입이 확정되었습니다.";
+				NoticeVO noticeVO = new NoticeVO(sellerNick, "goodsDetail", aucNo, notiMsg);
+				bidDAO.insertNoti(noticeVO);
+
+			}
+			System.out.println("경매번호:" + aucNo + " 자동 매입확정 처리완료");
+		}
+		
 	}
 
 	@Transactional
@@ -106,10 +163,12 @@ public class BidServiceImpl implements BidService {
 							NoticeVO bidderNoticeVO = new NoticeVO(memberNick, "goodsDetail", aucNo, notiBidderMsg);
 							// 입찰자들에게 경매 임박 알림메세지 삽입
 							bidDAO.insertNoti(bidderNoticeVO);
-							System.out.println(memberNick + notiBidderMsg);
+//							System.out.println(memberNick + notiBidderMsg);
+							System.out.println("경매번호:" + aucNo + " 경매 마감임박 알림 메세지 전송 완료");
 						}
 					}
 				}
+				
 			}
 		}
 	}
@@ -173,7 +232,7 @@ public class BidServiceImpl implements BidService {
 					}
 
 				}
-
+				System.out.println("경매번호:" + aucNo + " 경매 마감 알림메세지 전송 완료");
 			}
 		}
 

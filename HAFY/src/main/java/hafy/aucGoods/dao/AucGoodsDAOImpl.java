@@ -198,6 +198,14 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 		return aucList;
 	}
 
+	
+	@Override
+	public List<AucGoodsVO> selectNotPurchaseConfirmList(int confirmDay) {
+		// TODO Auto-generated method stub
+		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
+		aucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectNotPurchaseConfirmList",confirmDay);
+		return aucList;
+	}
 
 	@Override
 	public List<AucGoodsVO> selectSpecificCategory(String category) {
@@ -261,6 +269,8 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 		sqlSession.update("auction.dao.AucGoodsDAO.incrementViewCnt",aucNo);
 		
 	}
+	
+	
 	
 	
 	@Override

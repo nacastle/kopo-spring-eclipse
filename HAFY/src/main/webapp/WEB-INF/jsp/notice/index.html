@@ -1,0 +1,51 @@
+<html>
+<head>
+    <script src="./index.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+  <body>
+    <input id="myInput" type="file" style="display:none" onchange="myFunc.onFileSelect(event)">
+    <label for="myInput" onclick="{myInput.click}">
+      <img src="./camera.jpg" style='width: 50; height: 50; cursor:pointer'>
+    </label>
+    <div class="results">
+
+    </div>
+    
+    <script type="text/javascript">
+    let myFunc = (function(){
+    	  let onFileSelect = function(event){
+    	    let reader = new FileReader();
+    	    let targetFile = event.target.files[0];
+    	    if(targetFile.type === "image/jpeg" || targetFile.type === "image/png"){
+
+    	      reader.onload = function(readerEvent){
+    	        createImageElement(readerEvent.target.result);
+    	      }
+    	      reader.readAsDataURL(targetFile);
+
+    	    }
+
+    	  }
+    	  let createImageElement = function(src){
+    	    let targetDiv = document.querySelector('div.results');
+    	    let tempImg = document.createElement("img");
+    	    tempImg.setAttribute("src",src);
+    	    tempImg.classList.add('preview_img');
+    	    tempImg.addEventListener('click',function(){
+    	        this.remove();
+    	      })
+    	      
+    	    targetDiv.appendChild(tempImg);
+    	  }
+
+    	  return{
+    	    onFileSelect:onFileSelect,
+    	  };
+    	})();
+
+    
+    </script>
+
+  </body>
+</html>

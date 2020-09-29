@@ -121,7 +121,7 @@ public class BidDAOImpl implements BidDAO {
 	@Override
 	public void withdrawAAccount(AAccountVO aAccountVO) {
 		// TODO Auto-generated method stub
-		sqlSession.update("bid.dao.BidDAO.withdrawBidMoney",aAccountVO);
+		sqlSession.update("bid.dao.BidDAO.withdrawAAccount",aAccountVO);
 				
 	}
 

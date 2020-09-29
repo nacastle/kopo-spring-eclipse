@@ -31,6 +31,9 @@ public interface BidService {
 	void noticeClosedBid();
 	void noticeImminentAucs();
 	
+	// confirmDay 기준으로 낙찰된 날 이후 confrimDay만큼 지나면 알아서 매입확정하기
+	void autoPurchaseConfirm(int confirmDay);
+	
 	void returnBidMoney(AAccountVO aAccountVO,Map<String,Object> depositInfo,ATranzVO aTranzVO);
 	
 }
