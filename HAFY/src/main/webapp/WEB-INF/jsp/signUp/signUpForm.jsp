@@ -40,13 +40,17 @@
               <div class="col-md-6 mb-3">
               <label for="username">닉네임</label>
               <div class="input-group">
-                <input type="text" class="form-control" name="nickname" placeholder="닉네임" onkeydown="hideCheck()">
+                <input type="text" class="form-control" id="inputID" name="nickname" placeholder="닉네임" onkeydown="typing()">
                 <div class="input-group-prepend">
-                  <span class="input-group-text">중복검사</span>
+                  <span onclick="checkID()" class="input-group-text">중복검사</span>
                 </div>
               </div>
+                <div id="okMsg" style="display:none; color: green;">사용가능한 아이디입니다.</div>
+                <div id="notOkMsg" style="display:none; color: red;">중복되는 아이디입니다.</div>
+                <div id="typeMsg" style="display:none; color: red;">아이디를 입력해주세요.</div>
+                <div id="checkDupl" style="display:none; color: red;">아이디 중복검사를 해주세요.</div>
               <div class="check" id="nicknameCheck" style="color: red; display: none;">
-                  	닉네임을 입력해주세요
+                  	아이디를 입력해주세요
                 </div>
                 <div id="nicknameCheck2" style="color: red; display: none;">
                   	닉네임이 중복됩니다. 다른 닉네임을 입력해주세요.
@@ -140,6 +144,61 @@
         text: 'Thumbnail'
       });
       
+      function typing() {
+    	  $("#okMsg").hide()
+    	  $("#notOkMsg").hide()
+    		$("#typeMsg").hide()
+    		$("#nicknameCheck").hide()
+    		isCheck = false;
+    	  idCheck = false;
+    		
+	}
+      
+      let idCheck = false; // 아이디 중복여부
+      let isCheck = false; // 중복검사 여부
+      function checkID() {
+    	  var inputID = $("#inputID").val()
+    	  
+    	  if (inputID == '') {
+    		  $("#typeMsg").show()
+    	  } else {
+//     	  console.log(inputID)
+    	  $.ajax({
+    		  url: "${pageContext.request.contextPath}/checkID",
+    		  type: 'post',
+    		  data: {
+    			  inputID : inputID
+    		  },
+    		  success : function(data) {
+    			  console.log("성공")
+    			  console.log(data)
+    			  console.log(typeof data)
+    			  
+    			  // 아이디가 중복되지않을때
+    			  if (data == "false" ) {
+    				  idCheck = true;
+    				  isCheck = true;
+    				  $("#okMsg").show()
+    				  $("#checkDupl").hide();
+    				  
+    			  // 아이디가 중복될때
+    			  } else {
+    				  $("#notOkMsg").show()
+    				  $("#inputID").empty()
+    				  $("#checkDupl").hide();
+    				  isCheck = true;
+    				  
+    			  }
+			},
+			error : function() {
+				console.log("실패")
+				
+			}
+    	  })
+    	  }
+		
+	}
+      
       // 주민번호 앞자리 최대 길이 지정
       function numberMaxLength(e){
           if(e.value.length > e.maxLength){
@@ -172,6 +231,17 @@
     				$("#nicknameCheck").show();
     				return false
     			}
+    			
+    			if (!isCheck) {
+    				$("#checkDupl").show();
+    				f.nickname.focus()
+					return false						
+				}
+    			if (!idCheck) {
+    				$("#notOkMsg").show();
+    				f.nickname.focus()
+					return false						
+				}
 //     			if (f.password.value == "") {
 //     				f.password.focus()
 //     				$("#passwordCheck").show();

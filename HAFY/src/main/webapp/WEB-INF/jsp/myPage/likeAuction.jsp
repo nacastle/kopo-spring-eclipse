@@ -149,56 +149,58 @@ color: white;
     	  </a>
     	  <span style="font-size: 1.25rem; position:relative; top:0.2rem; left: 3.5rem; font-weight: bold; color:black;">관심경매</span>
   	 	</div>
-  	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;">
-      			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a>
-      			&nbsp;&nbsp;&nbsp;
-      			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
-		</div>
+<!--   	 	<div class="col-4 d-flex justify-content-end align-items-right" style="margin-top: 0.5rem; margin-right: -1rem;"> -->
+<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-search fa-lg" aria-hidden="true"></i></a> -->
+<!--       			&nbsp;&nbsp;&nbsp; -->
+<!--       			<a href="#" style="float: right; color:black;" ><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a> -->
+<!-- 		</div> -->
       
     </nav>
     
     <table class="table table-hover">
 		<tbody>
 		
-		<c:forEach items="${likeMap}" var="like">
-			<tr onclick="goDetail(${like.value.no})">
+		<c:forEach items="${likeMap}" var="auc" >
+			<tr onclick="goDetail(${auc.value.no})">
+<%-- 			<tr class="wow bounceInRight" onclick="goDetail(${auc.value.no})"> --%>
 				<th scope="row">
-<!-- 					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span> -->
-<%-- 					<img src="<%=request.getContextPath()%>/upload/${auc.key}"> --%>
 				<c:choose>
-					<c:when test="${like.value.startDate > nowTime }">
+					<c:when test="${auc.value.startDate > nowTime }">
 						<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
 					</c:when>
-					<c:when test="${like.value.startDate <= nowTime and  like.value.endDate > nowTime  }">
+					<c:when test="${auc.value.startDate <= nowTime and  auc.value.endDate > nowTime  }">
 						<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
 					</c:when>
-					<c:when test="${like.value.purchaseConfirm == '확정' }">
-						<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
-					</c:when>
-					<c:when test="${like.value.endDate <= nowTime }">
+					<c:when test="${auc.value.endDate <= nowTime }">
 						<span class="closed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 마감 </span>
 					</c:when>
 				</c:choose>
-					<img src="${pageContext.request.contextPath }/upload/${like.key}">
+<%-- 					<img src="<%=request.getContextPath()%>/upload/${auc.key}"> --%>
+					<img src="${pageContext.request.contextPath }/upload/${auc.key}">
 
 				</th>
 				<td>
-					<div style="font-weight: bold; font-size: 1rem;">${like.value.name }</div>
-					<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감: ${like.value.endDate }</div>
-<%-- 					<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${like.value.winningBid } 원</div> --%>
+					<div style="font-weight: bold; font-size: 1rem;">${auc.value.name }</div>
 					<c:choose>
-						<c:when test="${like.value.endDate <= nowTime }">
-							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;background: black;display: inline-block;color: wheat;">낙찰가: <fmt:formatNumber value="${like.value.winningBid }" pattern="#,###"/> 원</div>
+						<c:when test="${auc.value.startDate > nowTime }">
+							<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">시작 ${auc.value.detail }</div>
 						</c:when>
 						<c:otherwise>
-						<c:choose>
-							<c:when test="${like.value.winningBid == 0}">
-								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: <fmt:formatNumber value="${like.value.startPrice }" pattern="#,###"/>원</div>
-							</c:when>
-							<c:otherwise>
-								<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: <fmt:formatNumber value="${like.value.winningBid }" pattern="#,###"/> 원</div>
-							</c:otherwise>
-						</c:choose>
+							<div style="display:table; font-size:0.8rem; background: rgb(224, 224, 224);">마감 ${auc.value.detail }</div>
+						</c:otherwise>
+					</c:choose>
+					<c:choose>
+						<c:when test="${auc.value.winningBid == 0}">
+<%-- 							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${auc.value.startPrice } 원</div> --%>
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: 
+							<fmt:formatNumber value="${auc.value.startPrice }" pattern="#,###"/>
+							 원</div>
+						</c:when>
+						<c:otherwise>
+<%-- 							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가: ${auc.value.winningBid } 원</div> --%>
+							<div style="margin-top:0.4rem; font-weight: bold; font-size: 1rem;">현재가:
+							<fmt:formatNumber value="${auc.value.winningBid }" pattern="#,###"/> 
+							원</div>
 						</c:otherwise>
 					</c:choose>
 				</td>

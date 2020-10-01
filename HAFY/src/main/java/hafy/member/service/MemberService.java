@@ -16,6 +16,7 @@ public interface MemberService {
 	MemberVO selectMember(MemberVO memberVO);
 	MemberVO checkLogin(MemberVO inputMemberVO);
 	NoticeSettingVO selectNoticeSettingVOByNick(String nickname);
+	MemberVO checkID(String id);
 	
 	
 //	List<ReplyVO> selectReplyList (int boardNo);

@@ -22,6 +22,13 @@ public class MemberDAOImpl implements MemberDAO {
 
 	
 	@Override
+	public MemberVO checkID(String id) {
+		// TODO Auto-generated method stub
+		MemberVO memberVO = sqlSession.selectOne("member.dao.MemberDAO.checkID",id);
+		return memberVO;
+	}
+
+	@Override
 	public void updateNoticeSetting(NoticeSettingVO noticeSettingVO) {
 		// TODO Auto-generated method stub
 		sqlSession.update("member.dao.MemberDAO.updateNoticeSetting",noticeSettingVO);

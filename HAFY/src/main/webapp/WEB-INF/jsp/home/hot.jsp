@@ -209,8 +209,8 @@ background: rgb(190, 190, 190);
     
     <nav class="na-nav">
     	<div>
-    		<a  id="hotContents" class="top-on" href="#" onclick="showHot()"><span style="display: block;" class="material-ripple">인기 경매</span></a>
-    		<a  id="recentContents" href="#" onclick="showRecent()"><span style="display: block;" class="material-ripple">최신 경매</span></a>
+    		<a  id="hotContents" class="top-on" onclick="showHot()"><span style="display: block;" class="material-ripple">인기 경매</span></a>
+    		<a  id="recentContents" onclick="showRecent()"><span style="display: block;" class="material-ripple">최신 경매</span></a>
     		<span></span>
     	</div>
     

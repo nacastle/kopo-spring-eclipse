@@ -31,6 +31,8 @@ public interface MemberDAO {
 
 	void updateNoticeSetting(NoticeSettingVO noticeSettingVO);
 	
+	MemberVO checkID(String id);
+	
 	
 	
 }	

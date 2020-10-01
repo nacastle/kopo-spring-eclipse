@@ -220,13 +220,13 @@
 
 	<select id="selectSpecificCategory" parameterType="String"
 		resultMap="aucGoodsMap">
-		select no, name, category, reg_date, start_date, end_date, start_price,
+		select 
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
 		member_nick, method, detail,
-		view_cnt, like_cnt, winning_bid, purchase_confirm
+		view_cnt, like_cnt , winning_bid, purchase_confirm
 		from hf_auc_goods
-		where category = #{category} and end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD
-		HH24:MI')
-		order by reg_date desc
+		where category = #{category} and end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
+		order by no desc
 	</select>
 
 	<select id="selectAucGoodsByNo" parameterType="int"
@@ -236,7 +236,7 @@
 		(select code_name from hf_detail_code where uri_name =
 		(select category from hf_auc_goods where no = #{aucNo})
 		) as category
-		, reg_date, start_date, end_date, start_price, member_nick, method,
+		, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price, member_nick, method,
 		detail,
 		view_cnt, like_cnt, winning_bid, purchase_confirm
 		from hf_auc_goods
@@ -253,55 +253,73 @@
 
 	<select id="selectAucSearchWord" parameterType="String"
 		resultMap="aucGoodsMap">
-		select * from
+		select
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
+		from
 		(
 		select *
 		from hf_auc_goods g
-		where g.name like '%'||#{searchWord}||'%' or g.detail like
-		'%'||#{searchWord}||'%'
-		order by g.reg_date desc
+		where g.name like '%'||#{searchWord}||'%' or g.detail like '%'||#{searchWord}||'%'
+		order by g.no desc
 		) a
 		where a.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 	</select>
 
 	<select id="selectBidList" parameterType="memberVO"
 		resultMap="aucGoodsMap">
-		SELECT * FROM (
+		SELECT 
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
+		FROM (
 		select *
 		from HF_AUC_GOODS g,
 		(select auc_no
 		from hf_a_account
-		where bidder_nick = #{nickname}) a
+		where bidder_nick = #{nickname}
+		order by first_bid_date desc
+		) a
 		where a.auc_no = g.no and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
-		ORDER BY REG_DATE desc
 		)
 		union all
-		SELECT * FROM (
+		SELECT 
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
+		FROM (
 		select *
 		from
 		HF_AUC_GOODS g,
 		(select auc_no
 		from hf_a_account
-		where bidder_nick = #{nickname}) a
-		where a.auc_no = g.no and end_date <![CDATA[ <= ]]>
-		to_char(sysdate, 'yyyy-mm-dd hh24:mi') order by end_date desc
+		where bidder_nick = #{nickname}
+		order by first_bid_date desc) a
+		where a.auc_no = g.no and end_date <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi') 
 		)
 	</select>
 
 	<select id="selectDisplayList" parameterType="memberVO"
 		resultMap="aucGoodsMap">
-		select * from
+		select 
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
+		from
 		(select *
 		from hf_auc_goods
-		where member_nick = #{nickname} and end_date > to_char(sysdate, 'yyyy-mm-dd
-		hh24:mi')
-		order by reg_date desc)
+		where member_nick = #{nickname} and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+		order by no desc)
 		union all
-		select * from
+		select 
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
+		from
 		(select *
 		from hf_auc_goods
-		where member_nick = #{nickname} and end_date <![CDATA[ <= ]]>
-		to_char(sysdate, 'yyyy-mm-dd hh24:mi')
+		where member_nick = #{nickname} and end_date <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
 		order by end_date desc)
 	</select>
 
@@ -315,7 +333,7 @@
 	</select>
 
 	<select id="selectHotAucContents" resultMap="aucGoodsMap">
-		select no, name, category, reg_date, start_date, end_date, start_price,
+		select no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
 		member_nick, method, detail,
 		view_cnt, like_cnt , winning_bid,
 		(select count(*) from hf_a_tranz t where t.auc_no = g.no and tranz_type =
@@ -324,18 +342,22 @@
 		from hf_auc_goods g
 		where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 		order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc,
-		reg_date desc
+		no desc
 	</select>
 
 	<select id="selectOnGoingAucContents" parameterType="String"
 		resultMap="aucGoodsMap">
-		select *
+		select
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
 		from HF_AUC_GOODS g,
 		(select auc_no
 		from hf_a_account
-		where bidder_nick = #{memberNick}) a
+		where bidder_nick = #{memberNick}
+		order by first_bid_date desc
+		) a
 		where a.auc_no = g.no and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
-		ORDER BY REG_DATE desc
 	</select>
 
 	<select id="selectDisplayClosedAucContents" parameterType="String"
@@ -343,15 +365,18 @@
 		select *
 		from HF_AUC_GOODS 
 		where member_nick = #{memberNick} and end_date  <![CDATA[ <= ]]> to_char(sysdate, 'yyyy-mm-dd hh24:mi')
-		ORDER BY REG_DATE desc
+		ORDER BY no desc
 	</select>
 
 	<select id="selectDisplayOnGoingAucContents" parameterType="String"
 		resultMap="aucGoodsMap">
-		select *
+		select 
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
 		from HF_AUC_GOODS 
 		where member_nick = #{memberNick} and end_date > to_char(sysdate, 'yyyy-mm-dd hh24:mi')
-		ORDER BY REG_DATE desc
+		ORDER BY no desc
 	</select>
 	
 	<select id="selectDisplayPurchaseConfirmContents" parameterType="String"
@@ -395,7 +420,7 @@
 		(
 		SELECT ROWNUM AS RNUM, A.*
 		FROM (
-		select no, name, category, reg_date, start_date, end_date, start_price,
+		select no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
 		member_nick, method, detail,
 		view_cnt, like_cnt , winning_bid,
 		(select count(*) from hf_a_tranz t where t.auc_no = g.no and tranz_type =
@@ -404,7 +429,7 @@
 		from hf_auc_goods g
 		where g.end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
 		order by bidder_cnt desc, bid_cnt desc, like_cnt desc, view_cnt desc,
-		reg_date desc
+		no desc
 		) A
 		WHERE ROWNUM  <![CDATA[ <= ]]>
 		#{loadCnt} * #{scrollCnt}
@@ -432,10 +457,13 @@
 		(
 		SELECT ROWNUM AS RNUM, A.*
 		FROM (
-		select *
+		select
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
 		from hf_auc_goods
 		where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-		order by reg_date desc
+		order by no desc
 		) A
 		WHERE ROWNUM  <![CDATA[ <= ]]>
 		#{loadCnt} * #{scrollCnt}
@@ -444,10 +472,13 @@
 	</select>
 
 	<select id="selectRecentAucContents" resultMap="aucGoodsMap">
-		select *
+		select
+		no, name, category, reg_date, to_date(start_date,'yyyy-mm-dd hh24:mi:ss') as start_date, to_date(end_date,'yyyy-mm-dd hh24:mi:ss') as end_date, start_price,
+		member_nick, method, detail,
+		view_cnt, like_cnt , winning_bid
 		from hf_auc_goods
 		where end_date > TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI')
-		order by reg_date desc
+		order by no desc
 	</select>
 
 	<select id="selectOpenAucs" resultMap="aucGoodsMap">

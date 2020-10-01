@@ -4,14 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -79,9 +85,17 @@ public class AucGoodsController {
 //		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
 //		recentAucMap = aucGoodsService.selectRecentAuc();
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+
+//		LocalDateTime now = LocalDateTime.now();
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		String nowTime = now.format(formatter);
 //		System.out.println("After : " + nowTime);
 
 		ModelAndView mav = new ModelAndView();
@@ -144,10 +158,13 @@ public class AucGoodsController {
 //		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
 //		recentAucMap = aucGoodsService.selectRecentAuc();
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
-//		System.out.println("After : " + nowTime);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/home/beforeLoadRecent");
@@ -182,11 +199,10 @@ public class AucGoodsController {
 		transferMap.put("sellerAccount", sellerAccount);
 		transferMap.put("winBidMoney", winBidMoney * 0.9); // 수수료 10퍼를 뗀 금액이 출품자에게 입금된다.
 		transferMap.put("winner", winner);
-		
+
 		System.out.println("송금할 낙찰액");
 		System.out.println(winBidMoney * 0.9);
 		System.out.println(winBidMoney * 0.9);
-		
 
 //		System.out.println(aucNo);
 
@@ -211,7 +227,7 @@ public class AucGoodsController {
 
 			request.removeAttribute("aucNo");
 		}
-		
+
 	}
 
 	@Transactional
@@ -262,9 +278,13 @@ public class AucGoodsController {
 		Map<String, AucGoodsVO> aucSearchMap = new LinkedHashMap<String, AucGoodsVO>();
 		aucSearchMap = aucGoodsService.selectAucSearchWord(searchWord);
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 //		System.out.println("After : " + nowTime);
 
 		mav.setViewName("search/searchResult");
@@ -456,9 +476,13 @@ public class AucGoodsController {
 
 		// 환불요청 내역 불러오기
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 //		System.out.println("After : " + nowTime);
 
 		model.addAttribute("nowTime", nowTime);
@@ -476,9 +500,13 @@ public class AucGoodsController {
 		Map<String, AucGoodsVO> likeMap = new LinkedHashMap<String, AucGoodsVO>();
 		likeMap = aucGoodsService.selectLikeMap(memberVO);
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 //		System.out.println("After : " + nowTime);
 
 		model.addAttribute("nowTime", nowTime);
@@ -486,7 +514,7 @@ public class AucGoodsController {
 
 		return "/myPage/likeAuction";
 	}
-	
+
 	@Transactional
 	@GetMapping("/myAuction")
 	public String myAuction(Model model, HttpSession session, HttpServletRequest request) {
@@ -504,27 +532,31 @@ public class AucGoodsController {
 		model.addAttribute("bidMap", bidMap);
 		model.addAttribute("displayMap", displayMap);
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
 //		System.out.println("After : " + nowTime);
 		request.setAttribute("nowTime", nowTime);
-		
+
 //		System.out.println("hot에서 멤버"+memberVO);
 
 		int unreadNotiCnt = 0;
 		String memberNick = memberVO.getNickname();
 //		System.out.println("memberNick" + memberNick);
 		unreadNotiCnt = aucGoodsService.selectUnreadNotiCnt(memberNick);
-		
+
 		request.setAttribute("unreadNotiCnt", unreadNotiCnt);
-		
 
 		return "/myAuction/myAuction";
 	}
 
 	@GetMapping("/goodsCategory")
-	public String goodsCategory(Model model,HttpSession session) {
+	public String goodsCategory(Model model, HttpSession session) {
 		List<CodeVO> goodsCategory = aucGoodsService.selectGoodsCategory("gc");
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 //		System.out.println("hot에서 멤버"+memberVO);
@@ -533,7 +565,7 @@ public class AucGoodsController {
 		String memberNick = memberVO.getNickname();
 //		System.out.println("memberNick" + memberNick);
 		unreadNotiCnt = aucGoodsService.selectUnreadNotiCnt(memberNick);
-		
+
 		model.addAttribute("unreadNotiCnt", unreadNotiCnt);
 		model.addAttribute("goodsCategory", goodsCategory);
 
@@ -670,36 +702,74 @@ public class AucGoodsController {
 		List<AAccountVO> bidderList = new ArrayList<AAccountVO>();
 		bidderList = bidService.selectAAccount(aucNo);
 
-		// 최고 입찰가 구하기
-		// 입찰 기록이 없는 경우 시작가를 최고입찰액으로 설정
-		// 시작가 구하기
-//		AucGoodsVO aucGoodsVO = aucGoodsService.selectAucGoodsByNo(aucNo);
-//		int startPrice = aucGoodsVO.getStartPrice();
+		//// 시작 n분전 계산
+		// 데이트포맷
+		String startLeftTime = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-//		int highestBid = 0;
-//		if (bidderList.isEmpty()) {
-//			highestBid = startPrice;
-////			System.out.println("시작가가 최고입찰가: " + highestBid);
-//		} else {
-//			// 입찰 인원수 구하기
-//
-//			highestBid = bidderList.get(0).getBidMoney();
-//			for (int i = 1; i < bidderList.size(); i++) {
-//				if (bidderList.get(i).getBidMoney() >= highestBid) {
-//
-//					highestBid = bidderList.get(i).getBidMoney();
-//				}
-//			}
-////			System.out.println("쌓아둔게 최고입찰가: " + highestBid);
-//		}
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 시작일시 구하기 (타임스탬프도)
+		for (AucGoodsVO auc : aucMap.keySet()) {
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+			System.out.println("컨트롤러에서 startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					startLeftTime = String.valueOf(startDayLeft) + "일 전";
+					System.out.println("남은 일 수: " + auc.getDetail());
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					startLeftTime = String.valueOf(startHourLeft) + "시간 전";
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					startLeftTime = String.valueOf(minLeft) + "분 전";
+
+				} else {
+					startLeftTime = "조건문 잘못 설정";
+				}
+
+				System.out.println("startLeftTime: " + startLeftTime);
+			}
+
+		}
+
+//		LocalDateTime now = LocalDateTime.now();
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		String nowTime = now.format(formatter);
 //		System.out.println("After : " + nowTime);
 		request.setAttribute("nowTime", nowTime);
 
 //		request.setAttribute("highestBid", highestBid);
 		request.setAttribute("bidderCnt", bidderList.size());
+		request.setAttribute("startLeftTime", startLeftTime);
 		request.setAttribute("isLike", isLike);
 		request.setAttribute("isBid", isBid);
 
@@ -717,9 +787,13 @@ public class AucGoodsController {
 		CodeVO codeVO = aucGoodsService.selectCodeVO(category);
 		String categoryName = codeVO.getCodeName();
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 //		System.out.println("After : " + nowTime);
 
 		request.setAttribute("nowTime", nowTime);
@@ -744,9 +818,13 @@ public class AucGoodsController {
 		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
 		recentAucMap = aucGoodsService.selectRecentAuc();
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 //		System.out.println("After : " + nowTime);
 
 		request.setAttribute("nowTime", nowTime);
@@ -761,9 +839,13 @@ public class AucGoodsController {
 		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
 		hotAucMap = aucGoodsService.selectHotAuc();
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 //		System.out.println("After : " + nowTime);
 
 		request.setAttribute("nowTime", nowTime);
@@ -784,24 +866,32 @@ public class AucGoodsController {
 //		System.out.println("memberNick" + memberNick);
 		unreadNotiCnt = aucGoodsService.selectUnreadNotiCnt(memberNick);
 
-		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
-		hotAucMap = aucGoodsService.selectHotAuc();
+//		Map<String, AucGoodsVO> hotAucMap = new LinkedHashMap<String, AucGoodsVO>();
+//		hotAucMap = aucGoodsService.selectHotAuc();
+//
+//		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
+//		recentAucMap = aucGoodsService.selectRecentAuc();
 
-		Map<String, AucGoodsVO> recentAucMap = new LinkedHashMap<String, AucGoodsVO>();
-		recentAucMap = aucGoodsService.selectRecentAuc();
+//		int hotTotalCnt = aucGoodsService.selectHotAucTotalCnt();
 
-		int hotTotalCnt = aucGoodsService.selectHotAucTotalCnt();
+		// 데이트포맷
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+//		// 한국기준 날짜
+//		Calendar calendar = Calendar.getInstance();
+//		Date date = new Date(calendar.getTimeInMillis());
+//		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+//		String nowTime = sdf.format(date);
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+//		LocalDateTime now = LocalDateTime.now();
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		String nowTime = now.format(formatter);
 //		System.out.println("After : " + nowTime);
-		request.setAttribute("nowTime", nowTime);
+//		request.setAttribute("nowTime", nowTime);
 
 		request.setAttribute("unreadNotiCnt", unreadNotiCnt);
-		request.setAttribute("hotTotalCnt", hotTotalCnt);
-		request.setAttribute("hotAucMap", hotAucMap);
-		request.setAttribute("recentAucMap", recentAucMap);
+//		request.setAttribute("hotTotalCnt", hotTotalCnt);
+//		request.setAttribute("hotAucMap", hotAucMap);
+//		request.setAttribute("recentAucMap", recentAucMap);
 
 		return "/home/hot";
 	}
@@ -815,9 +905,13 @@ public class AucGoodsController {
 		Map<String, AucGoodsVO> onGoingAucMap = new LinkedHashMap<String, AucGoodsVO>();
 		onGoingAucMap = aucGoodsService.selectDisplayOnGoingAuc(memberNick);
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 
 		request.setAttribute("nowTime", nowTime);
 		request.setAttribute("onGoingAucMap", onGoingAucMap);
@@ -835,9 +929,12 @@ public class AucGoodsController {
 		Map<String, AucGoodsVO> onGoingAucMap = new LinkedHashMap<String, AucGoodsVO>();
 		onGoingAucMap = aucGoodsService.selectOnGoingAuc(memberNick);
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String nowTime = now.format(formatter);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
 
 		request.setAttribute("nowTime", nowTime);
 		request.setAttribute("onGoingAucMap", onGoingAucMap);
@@ -1098,44 +1195,44 @@ public class AucGoodsController {
 
 		model.addAttribute("aucGoodsVO", aucGoodsVO);
 		aucGoodsService.insertAucGoods(aucGoodsVO);
-		
-		 List<MultipartFile> fileList = mRequest.getFiles("photos");
+
+		List<MultipartFile> fileList = mRequest.getFiles("photos");
 //	        String src = mRequest.getParameter("src");
 //	        System.out.println("src value : " + src);
 
 //	        String path = "C:\\image\\";
 
-	        for (MultipartFile mFile : fileList) {
-	        	String oriFileName = mFile.getOriginalFilename(); // 원본 파일 명
+		for (MultipartFile mFile : fileList) {
+			String oriFileName = mFile.getOriginalFilename(); // 원본 파일 명
 //	        	System.out.println("다음 오리파일은?" + oriFileName);
-	        	
-				if (oriFileName != null && !oriFileName.equals("") && !oriFileName.equals("delete")) {
 
-					// 확장자 처리
-					String ext = "";
-					// 뒤쪽에 있는 . 의 위치
-					int index = oriFileName.lastIndexOf(".");
-					if (index != -1) {
-						// 파일명에서 확장자명(.포함)을 추출
-						ext = oriFileName.substring(index);
-					}
+			if (oriFileName != null && !oriFileName.equals("") && !oriFileName.equals("delete")) {
 
-					// 파일 사이즈
-					long fileSize = mFile.getSize();
-					System.out.println("파일 사이즈 : " + fileSize);
+				// 확장자 처리
+				String ext = "";
+				// 뒤쪽에 있는 . 의 위치
+				int index = oriFileName.lastIndexOf(".");
+				if (index != -1) {
+					// 파일명에서 확장자명(.포함)을 추출
+					ext = oriFileName.substring(index);
+				}
 
-					// 고유한 파일명 만들기
-					String saveFileName = "hafy-" + UUID.randomUUID().toString() + ext;
-					System.out.println("저장할 파일명 : " + saveFileName);
+				// 파일 사이즈
+				long fileSize = mFile.getSize();
+				System.out.println("파일 사이즈 : " + fileSize);
 
-					// 임시저장된 파일을 원하는 경로에 저장
-					mFile.transferTo(new File(uploadDir + saveFileName));
+				// 고유한 파일명 만들기
+				String saveFileName = "hafy-" + UUID.randomUUID().toString() + ext;
+				System.out.println("저장할 파일명 : " + saveFileName);
 
-					GoodsPhotoVO goodsPhotoVO = new GoodsPhotoVO(oriFileName, saveFileName, fileSize, aucNo);
+				// 임시저장된 파일을 원하는 경로에 저장
+				mFile.transferTo(new File(uploadDir + saveFileName));
+
+				GoodsPhotoVO goodsPhotoVO = new GoodsPhotoVO(oriFileName, saveFileName, fileSize, aucNo);
 //					photoList.add(photoVO);
 
-					aucGoodsService.insertGoodsPhoto(goodsPhotoVO);
-				}
+				aucGoodsService.insertGoodsPhoto(goodsPhotoVO);
+			}
 
 		}
 

@@ -79,8 +79,8 @@
 </update>
 
 <insert id="insertAAccountBid" parameterType="aAccountVO">
-	insert into hf_a_account(auc_no, bidder_nick, bid_money)
-		values(#{aucNo}, #{bidderNick}, #{bidMoney})
+	insert into hf_a_account(auc_no, bidder_nick, bid_money, first_bid_date)
+		values(#{aucNo}, #{bidderNick}, #{bidMoney}, to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'))
 </insert>
 
 <insert id="insertNoti" parameterType="noticeVO">

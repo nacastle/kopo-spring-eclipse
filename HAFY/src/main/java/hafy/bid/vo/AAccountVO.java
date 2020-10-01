@@ -5,6 +5,7 @@ public class AAccountVO {
 	private int aucNo;
 	private String bidderNick;
 	private double bidMoney;
+	private String firstBidDate;
 	
 	
 	public AAccountVO() {
@@ -17,6 +18,26 @@ public class AAccountVO {
 		super();
 		this.aucNo = aucNo;
 		this.bidMoney = bidMoney;
+	}
+	
+
+
+	public AAccountVO(int aucNo, String bidderNick, double bidMoney, String firstBidDate) {
+		super();
+		this.aucNo = aucNo;
+		this.bidderNick = bidderNick;
+		this.bidMoney = bidMoney;
+		this.firstBidDate = firstBidDate;
+	}
+
+
+	public String getFirstBidDate() {
+		return firstBidDate;
+	}
+
+
+	public void setFirstBidDate(String firstBidDate) {
+		this.firstBidDate = firstBidDate;
 	}
 
 
@@ -57,8 +78,11 @@ public class AAccountVO {
 
 	@Override
 	public String toString() {
-		return "AAccountVO [aucNo=" + aucNo + ", bidderNick=" + bidderNick + ", bidMoney=" + bidMoney + "]";
+		return "AAccountVO [aucNo=" + aucNo + ", bidderNick=" + bidderNick + ", bidMoney=" + bidMoney
+				+ ", firstBidDate=" + firstBidDate + "]";
 	}
+
+
 	
 	
 	

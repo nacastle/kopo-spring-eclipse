@@ -1,10 +1,16 @@
 package hafy.aucGoods.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -119,7 +125,7 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 	public void updatePurchaseConfirm(Map<String, Object> updateMap) {
 		// TODO Auto-generated method stub
 		aucGoodsDAO.updatePurchaseConfirm(updateMap);
-		System.out.println("다음 확정된 경매번호는 ? " + updateMap.get("aucNo"));
+//		System.out.println("다음 확정된 경매번호는 ? " + updateMap.get("aucNo"));
 	}
 
 	@Transactional
@@ -161,7 +167,7 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		return returnGoodsMap;
 
 	}
-	
+
 	@Transactional
 	@Override
 	public Map<String, AucGoodsVO> selectDisplayReturnGoodsMap(String memberNick) {
@@ -172,11 +178,11 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 
 		for (AucGoodsVO auc : aucList) {
 
-				int aucNo = auc.getNo();
-				List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
-				String firstPhoto = photoList.get(0);
+			int aucNo = auc.getNo();
+			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+			String firstPhoto = photoList.get(0);
 
-				aucMap.put(firstPhoto, auc);
+			aucMap.put(firstPhoto, auc);
 
 		}
 		return aucMap;
@@ -191,10 +197,10 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		aucList = aucGoodsDAO.selectDisplayPurchaseConfirmContents(memberNick);
 
 		for (AucGoodsVO auc : aucList) {
-				int aucNo = auc.getNo();
-				List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
-				String firstPhoto = photoList.get(0);
-				aucMap.put(firstPhoto, auc);
+			int aucNo = auc.getNo();
+			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
+			String firstPhoto = photoList.get(0);
+			aucMap.put(firstPhoto, auc);
 		}
 		return aucMap;
 	}
@@ -257,6 +263,7 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 				List<ATranzVO> bidResultList = bidDAO.selectBidResult(aucNo);
 				if (bidResultList.size() != 0) {
 
+					// 1등 입찰자 구하기
 					String winnerNick = bidResultList.get(0).getTranzMemberNick();
 //					System.out.println("이 경매의 낙찰자: " + winnerNick);
 
@@ -458,9 +465,93 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> onGoingAucList = new ArrayList<AucGoodsVO>();
 		onGoingAucList = aucGoodsDAO.selectDisplayOnGoingAucContents(memberNick);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : onGoingAucList) {
 
 			int aucNo = auc.getNo();
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//							if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
@@ -479,14 +570,59 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> onGoingAucList = new ArrayList<AucGoodsVO>();
 		onGoingAucList = aucGoodsDAO.selectOnGoingAucContents(memberNick);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : onGoingAucList) {
 
 			int aucNo = auc.getNo();
+
+			// 마감일시 구하기 (타임스탬프도)
+			String endTime = auc.getEndDate();
+			long endTimestamp = 0;
+			try {
+				endTimestamp = sdf.parse(endTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 마감일시의 타임스탬프 구하기
+			long difference = (endTimestamp - nowTimestamp);
+
+			// 남은 시간 수
+			long hourLeft = difference / (60 * 60 * 1000);
+			if (hourLeft > 23) {
+				long dayLeft = difference / (24 * 60 * 60 * 1000);
+				auc.setDetail(String.valueOf(dayLeft) + "일 전");
+			} else if (hourLeft > 0 && hourLeft < 24) {
+
+				auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+			} else if (hourLeft == 0) {
+				long minLeft = difference / (60 * 1000);
+				auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+			} else {
+				auc.setDetail("조건문 잘못 설정");
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
 			onGoingAucMap.put(firstPhoto, auc);
-
 		}
 		return onGoingAucMap;
 	}
@@ -500,9 +636,93 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> hotAucList = new ArrayList<AucGoodsVO>();
 		hotAucList = aucGoodsDAO.selectHotAucContents();
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : hotAucList) {
 
 			int aucNo = auc.getNo();
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//					if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
@@ -520,9 +740,93 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> hotAucList = new ArrayList<AucGoodsVO>();
 		hotAucList = aucGoodsDAO.selectHotAucContentsLazyLoad(loadInfo);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : hotAucList) {
 
 			int aucNo = auc.getNo();
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//			if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
@@ -530,6 +834,7 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 
 		}
 		return hotAucMap;
+
 	}
 
 	@Transactional
@@ -565,9 +870,93 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> recentAucList = new ArrayList<AucGoodsVO>();
 		recentAucList = aucGoodsDAO.selectRecentAucContentsLazyLoad(loadInfo);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : recentAucList) {
 
 			int aucNo = auc.getNo();
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//					if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
@@ -586,9 +975,93 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> recentAucList = new ArrayList<AucGoodsVO>();
 		recentAucList = aucGoodsDAO.selectRecentAucContents();
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : recentAucList) {
 
 			int aucNo = auc.getNo();
+//					System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//					System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//							if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
@@ -627,13 +1100,98 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> bidList = new ArrayList<AucGoodsVO>();
 		bidList = aucGoodsDAO.selectBidList(memberVO);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : bidList) {
 
 			int aucNo = auc.getNo();
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//					if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
 			bidMap.put(firstPhoto, auc);
+
 		}
 		return bidMap;
 	}
@@ -653,13 +1211,98 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> displayList = new ArrayList<AucGoodsVO>();
 		displayList = aucGoodsDAO.selectDisplayList(memberVO);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : displayList) {
 
 			int aucNo = auc.getNo();
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//							if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
 			displayMap.put(firstPhoto, auc);
+
 		}
 		return displayMap;
 
@@ -692,13 +1335,98 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
 		aucList = aucGoodsDAO.selectSpecificCategory(category);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : aucList) {
 
 			int aucNo = auc.getNo();
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//							if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
 			specCategoryMap.put(firstPhoto, auc);
+
 		}
 		return specCategoryMap;
 
@@ -712,13 +1440,98 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<AucGoodsVO> aucList = new ArrayList<AucGoodsVO>();
 		aucList = aucGoodsDAO.selectAucSearchWord(searchWord);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (AucGoodsVO auc : aucList) {
 
 			int aucNo = auc.getNo();
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//							if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
 			aucSearchMap.put(firstPhoto, auc);
+
 		}
 		return aucSearchMap;
 
@@ -733,13 +1546,99 @@ public class AucGoodsServiceImpl implements AucGoodsService {
 		List<LikeVO> likeList = new ArrayList<LikeVO>();
 		likeList = aucGoodsDAO.selectLikeList(memberVO);
 
+		// 데이트포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+		// 한국기준 날짜
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date(calendar.getTimeInMillis());
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		String nowTime = sdf.format(date);
+		// 오늘 타임스탬프(데이트포맷으로 저장했다고 치고 그걸 타임스탬프로 바꿔보는 작업)
+		long nowTimestamp = 0;
+		try {
+			nowTimestamp = sdf.parse(nowTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (LikeVO l : likeList) {
+
 			int aucNo = l.getAucNo();
-			AucGoodsVO aucGoodsVO = aucGoodsDAO.selectAucGoodsByNo(aucNo);
+			AucGoodsVO auc = aucGoodsDAO.selectAucGoodsByNo(aucNo);
+
+//			System.out.println("aucNo : " + String.valueOf(aucNo));
+
+			// 시작일시 구하기 (타임스탬프도)
+			String startTime = auc.getStartDate();
+//			System.out.println("startTime" + startTime);
+			long startTimestamp = 0;
+			try {
+				startTimestamp = sdf.parse(startTime).getTime();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// 현재일시 - 시작일시의 타임스탬프 구하기
+			long startDifference = (startTimestamp - nowTimestamp);
+
+//							if (startDifference > 0) {
+			if (startDifference > 0) {
+				// 남은 시간 수
+				long startHourLeft = startDifference / (60 * 60 * 1000);
+
+				if (startHourLeft > 23) {
+					long startDayLeft = startDifference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(startDayLeft) + "일 전");
+				} else if (startHourLeft > 0 && startHourLeft < 24) {
+
+					auc.setDetail(String.valueOf(startHourLeft) + "시간 전");
+				} else if (startHourLeft == 0) {
+					long minLeft = startDifference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
+			else {
+
+				// 마감일시 구하기 (타임스탬프도)
+				String endTime = auc.getEndDate();
+				long endTimestamp = 0;
+				try {
+					endTimestamp = sdf.parse(endTime).getTime();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// 현재일시 - 마감일시의 타임스탬프 구하기
+				long difference = (endTimestamp - nowTimestamp);
+
+				// 남은 시간 수
+				long hourLeft = difference / (60 * 60 * 1000);
+				if (hourLeft > 23) {
+					long dayLeft = difference / (24 * 60 * 60 * 1000);
+					auc.setDetail(String.valueOf(dayLeft) + "일 전");
+				} else if (hourLeft > 0 && hourLeft < 24) {
+
+					auc.setDetail(String.valueOf(hourLeft) + "시간 전");
+				} else if (hourLeft == 0) {
+					long minLeft = difference / (60 * 1000);
+					auc.setDetail(String.valueOf(minLeft) + "분 전");
+
+				} else {
+					auc.setDetail("조건문 잘못 설정");
+				}
+			}
+
 			List<String> photoList = aucGoodsDAO.selectPhotoNameByAucNo(aucNo);
 			String firstPhoto = photoList.get(0);
 
-			likeMap.put(firstPhoto, aucGoodsVO);
+			likeMap.put(firstPhoto, auc);
 
 		}
 

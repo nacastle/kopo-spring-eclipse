@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import hafy.aucGoods.service.AucGoodsService;
@@ -22,11 +23,8 @@ import hafy.member.service.MemberService;
 import hafy.member.vo.MemberVO;
 import hafy.member.vo.NoticeSettingVO;
 
-
-
-
-//@SessionAttributes({ "memberVO" })	// addObject했을때 loginVO객체를 session공유영역에 등록 (여러개 들어올수있음...배열형태{}) 하지만 이방식은
-									// invalidate로 세션 삭제 안됨
+@SessionAttributes({ "memberVO" })	// addObject했을때 loginVO객체를 session공유영역에 등록 (여러개 들어올수있음...배열형태{}) 하지만 이방식은
+// invalidate로 세션 삭제 안됨
 @Controller
 public class MemberController {
 
@@ -35,70 +33,65 @@ public class MemberController {
 	@Autowired
 	private AucGoodsService aucGoodsService;
 
-	
-	
-	
-	
 	@GetMapping("/noticeSetting")
 	public String noticeSetting(HttpSession session, Model model) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 		String nickname = memberVO.getNickname();
-		
+
 		NoticeSettingVO noticeSettingVO = memberService.selectNoticeSettingVOByNick(nickname);
 //		System.out.println(nickname + "의 " + noticeSettingVO);
 		model.addAttribute("noticeSettingVO", noticeSettingVO);
-		
+
 		return "/myPage/noticeSetting";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/noticeSettingProcess")
 	public void noticeSettingProcess(HttpSession session, NoticeSettingVO noticeSettingVO) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 		String nickname = memberVO.getNickname();
 		noticeSettingVO.setMemberNick(nickname);
-		
+
 //		System.out.println("noticeSettingVO" + noticeSettingVO);
 		memberService.updateNoticeSetting(noticeSettingVO);
-		
+
 	}
-	
+
 	@PostMapping("/changePwdSuccess")
 	public String changePwdSuccess(@RequestParam("tranzPwd") String tranzPwd, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 		String nickname = memberVO.getNickname();
 //		System.out.println("닉넴:"+nickname +", 비번: " + tranzPwd);
-		
+
 		Map<String, String> pwdMap = new HashMap<String, String>();
 		pwdMap.put("nickname", nickname);
 		pwdMap.put("tranzPwd", tranzPwd);
 		memberService.registerPwd(pwdMap);
-		
+
 		memberVO.setTranzPwd(tranzPwd);
 		session.removeAttribute("memberVO");
 		session.setAttribute("memberVO", memberVO);
-		
+
 		return "/myPage/changePwdSuccess";
 	}
 
-	
 	@GetMapping("/changePwdForm")
 	public String changePwdForm() {
 		return "/myPage/changePwdForm";
 	}
-	
+
 	@GetMapping("/changePwd")
 	public String changePwd() {
 		return "/myPage/changePwd";
 	}
-	
+
 	@GetMapping("/confirmSignOut")
 	@ResponseBody
 	public void confirmSignOut(HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 		memberService.deleteMember(memberVO);
 		session.removeAttribute("memberVO");
@@ -113,7 +106,7 @@ public class MemberController {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 		String memberPwd = memberVO.getTranzPwd();
-		
+
 //		System.out.println(inputPwd.equals(memberPwd));
 
 		if (inputPwd.equals(memberPwd)) {
@@ -124,82 +117,107 @@ public class MemberController {
 
 	}
 
+//	@PostMapping("/logout")
+//	@ResponseBody
+//	public void logout(HttpSession session) {
+//
+//		session.removeAttribute("memberVO");
+//	}
+	
 	@PostMapping("/logout")
 	@ResponseBody
-	public void logout(HttpSession session) {
+	public void logout(SessionStatus status) {
 
-		session.removeAttribute("memberVO");
+//		session.invalidate();
+		
+		// session 내 값 지우기
+		status.setComplete();
+		System.out.println(status.isComplete()); // false면 아직 session에 값이 남아있다는 뜻 / true면 값이 다 사라진것
 	}
 
+	@ResponseBody
+	@PostMapping("/checkID")
+	public boolean checkID(HttpServletRequest request) {
+		
+		String inputID = request.getParameter("inputID");
+		System.out.println("inputID: " + inputID);
+		
+		MemberVO isMember = memberService.checkID(inputID);
+		
+		boolean isExist = false;
+		
+		if (isMember != null) {
+			isExist = true;
+		}
+		return isExist;
+		
+	}
+	
 	@RequestMapping("/signOut")
 	public String signOut() {
 
 		return "/myPage/signOut";
 	}
+	
+	
 
-//	@PostMapping("/login")
-//	public ModelAndView loginProcess(MemberVO inputMemberVO, HttpSession session) {
-//		
-//		
-//		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
-//		ModelAndView mav = new ModelAndView();
-//		System.out.println("컨트롤러에서 멤버 받아오는지?"+memberVO);
-//		
-//		if (memberVO == null) {
-//			mav.setViewName("redirect:/login");
-//		} else {
+	@PostMapping("/login")
+	public ModelAndView loginProcess(MemberVO inputMemberVO, HttpSession session) {
+
+		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
+		ModelAndView mav = new ModelAndView();
+		System.out.println("컨트롤러에서 멤버 받아오는지?" + memberVO);
+
+		if (memberVO == null) {
+			mav.setViewName("redirect:/login");
+		}
+//		else {
 ////			System.out.println("로긴프로세스에서 로긴한애 " + memberVO);
 //			session.setAttribute("memberVO", memberVO);
 ////			MemberVO m = (MemberVO)session.getAttribute("memberVO");
 ////			System.out.println("방금로긴한애" + m);
 //			mav.setViewName("redirect:/hot");
 //		}
-//		
-//		
-//		// 로그인 인터셉터 쓸경우 주석 풀어줘야
-////		else {
-////			// 로그인 성공
-//////			HttpSession session = request.getSession();
-////				String dest = (String)session.getAttribute("dest");
-////				System.out.println("멤버 컨트롤러에서 dest: " +dest);
-////				if(dest == null) {
-////					mav.setViewName("redirect:/hot");
-////				} else {
-////					
-////					
-////					mav.setViewName("redirect:" + dest);
-////					session.removeAttribute(dest);
-////					
-////				}
-////				mav.addObject("memberVO", memberVO);
-////			}
-//		// 여기까지 로그인 인터셉터
-//		
-//		
-//		
-////			System.out.println("세션에 등록하나?");
-////			session.setAttribute("memberVO", memberVO);
-////			return "redirect:/hot";
-//		return mav;
-//	}
-	@PostMapping("/login")
-	public String loginProcess(MemberVO inputMemberVO, HttpSession session) {
 
-		
-		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
-//		ModelAndView mav = new ModelAndView();
-//		System.out.println("컨트롤러에서 멤버 받아오는지?"+memberVO);
+		// 로그인 인터셉터 쓸경우 주석 풀어줘야
+		else {
+			// 로그인 성공
+//			HttpSession session = request.getSession();
+			String dest = (String) session.getAttribute("dest");
+			System.out.println("멤버 컨트롤러에서 dest: " + dest);
+			if (dest == null) {
+				mav.setViewName("redirect:/hot");
+			} else {
+				mav.setViewName("redirect:" + dest);
+				session.removeAttribute(dest);
 
-		if (memberVO == null) {
-			return "redirect:/login";
-		} else {
-//			System.out.println("로긴프로세스에서 로긴한애 " + memberVO);
-			session.setAttribute("memberVO", memberVO);
-//			MemberVO m = (MemberVO)session.getAttribute("memberVO");
-//			System.out.println("방금로긴한애" + m);
-			return "redirect:/hot";
+			}
+			mav.addObject("memberVO", memberVO);
 		}
+		// 여기까지 로그인 인터셉터
+
+//			System.out.println("세션에 등록하나?");
+//			session.setAttribute("memberVO", memberVO);
+//			return "redirect:/hot";
+		return mav;
 	}
+//	@PostMapping("/loginProcess")
+//	public String loginProcess(MemberVO inputMemberVO, HttpSession session) {
+//		
+//		MemberVO memberVO = memberService.checkLogin(inputMemberVO);
+////		ModelAndView mav = new ModelAndView();
+////		System.out.println("컨트롤러에서 멤버 받아오는지?"+memberVO);
+//
+//		if (memberVO == null) {
+//			return "redirect:/login";
+//		} else {
+////			System.out.println("로긴프로세스에서 로긴한애 " + memberVO);
+//			session.setAttribute("memberVO", memberVO);
+////			MemberVO m = (MemberVO)session.getAttribute("memberVO");
+////			System.out.println("방금로긴한애" + m);
+//			return "redirect:/hot";
+//		}
+//	}
 
 	@GetMapping("/login")
 	public String login() {
@@ -215,10 +233,9 @@ public class MemberController {
 		String memberNick = memberVO.getNickname();
 //		System.out.println("memberNick" + memberNick);
 		unreadNotiCnt = aucGoodsService.selectUnreadNotiCnt(memberNick);
-		
+
 		request.setAttribute("unreadNotiCnt", unreadNotiCnt);
 
-		
 		return "/myPage/myPage";
 	}
 

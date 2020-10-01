@@ -281,6 +281,10 @@ height: 16rem!important;
 <!-- 				style="background: rgb(22, 160, 133); margin-top: -0.2rem; font-weight: bold;">경매현황</button> -->
 			<c:choose>
 				<c:when test="${nowTime < auc.key.startDate }">
+				
+					<div style="display:inline-block;font-size:1.1rem; margin-left:.3rem; font-weight: bold;
+					background: cadetblue; padding: .2rem; color: wheat; position: absolute;bottom: .5rem;">시작 ${startLeftTime }</div>
+					
 					<button class="btn btn-warning"
 						style="margin-right: -1%; margin-top: -0.2rem; float: right; color: white; font-weight: bold; background: rgb(158, 158, 158); 
 						border: rgb(158, 158, 158); vertical-align: middle; height: 2.2rem; width: 7.8rem;">대기중</button>

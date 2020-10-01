@@ -220,8 +220,8 @@ table th img {
 	<nav class="na-nav">
 			<div>
 				<a class="top-on material-ripple" href="#" onclick="showRank()"><span>경매참여자</span></a> 
-				<a class="material-ripple" onclick="showHistory()" href="#"><span>입/출금</span></a> 
-				<a class="material-ripple" onclick="result()" href="#" ><span>경매결과</span></a> 
+				<a class="material-ripple" onclick="showHistory()" ><span>입/출금</span></a> 
+				<a class="material-ripple" onclick="result()" ><span>경매결과</span></a> 
 				<span></span>
 			</div>
 

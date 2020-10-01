@@ -17,35 +17,37 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="이미지"/>
+		<item key="selection" value="닉네임"/>
 		<list key="findhistory">
-			<item value="이미지"/>
-			<item value="deleteall"/>
-			<item value="최대"/>
-			<item value="oad({"/>
-			<item value="photos"/>
-			<item value="maxl"/>
-			<item value="완료"/>
-			<item value="photo"/>
-			<item value="imgPreview"/>
-			<item value="uploadPhotos"/>
-			<item value="다음 오리파일은"/>
-			<item value="close"/>
-			<item value="prev"/>
-			<item value="modal"/>
-			<item value="openModal"/>
+			<item value="닉네임"/>
+			<item value="거치"/>
+			<item value="checkID"/>
+			<item value="check"/>
+			<item value="setAttribute"/>
+			<item value="response"/>
+			<item value="response."/>
+			<item value="아이디를"/>
+			<item value="typing"/>
+			<item value="hideCheck"/>
+			<item value="중복검사"/>
+			<item value="id"/>
+			<item value="아이디"/>
+			<item value="ajax"/>
+			<item value="중복"/>
 		</list>
 		<list key="replacehistory">
+			<item value="nowTime"/>
+			<item value="nowTime2"/>
 			<item value="tranzDate"/>
 			<item value="memberNick"/>
 			<item value="na-botNav"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="11"/>
-		<item key="DIALOG_Y_ORIGIN" value="171"/>
+		<item key="DIALOG_X_ORIGIN" value="76"/>
+		<item key="DIALOG_Y_ORIGIN" value="126"/>
 		<item key="DIALOG_WIDTH" value="288"/>
-		<item key="DIALOG_HEIGHT" value="391"/>
+		<item key="DIALOG_HEIGHT" value="411"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 	</section>
 	<section name="org.eclipse.jst.jsp.ui.internal.preferences.ui.JSPTemplatePreferencePage$JSPEditTemplateDialog_dialogBounds">

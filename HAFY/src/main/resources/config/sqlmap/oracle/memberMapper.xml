@@ -88,6 +88,12 @@
 		where nickname = #{nickname} and tranz_pwd = #{tranzPwd}
 </select>
 
+<select id="checkID" parameterType="String" resultMap="memberMap">
+	select *
+	from hf_member
+		where nickname = #{id}
+</select>
+
 
 	
 

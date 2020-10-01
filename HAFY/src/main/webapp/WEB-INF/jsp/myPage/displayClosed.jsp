@@ -192,9 +192,9 @@ background: rgb(190, 190, 190);
     
     <nav class="na-nav">
     	<div>
-    		<a class="top-on" href="#" onclick="showClosedAuc()"><span>마감</span></a>
-    		<a href="#" onclick="showConfirmAuc()"><span>매입확정</span></a>
-    		<a  href="#" onclick="showReturn()"><span>환불요청</span></a>
+    		<a class="top-on"  onclick="showClosedAuc()"><span>마감</span></a>
+    		<a onclick="showConfirmAuc()"><span>매입확정</span></a>
+    		<a   onclick="showReturn()"><span>환불요청</span></a>
     		<span></span>
     	</div>
     
@@ -211,12 +211,6 @@ background: rgb(190, 190, 190);
 <!-- 					<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중 </span> -->
 <%-- 					<img src="<%=request.getContextPath()%>/upload/${auc.key}"> --%>
 				<c:choose>
-					<c:when test="${auc.value.startDate > nowTime }">
-						<span class="waiting" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 대기중 </span>
-					</c:when>
-					<c:when test="${auc.value.startDate <= nowTime and  auc.value.endDate > nowTime  }">
-						<span class="ongoing" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 진행중</span>
-					</c:when>
 					<c:when test="${auc.value.purchaseConfirm == '확정' }">
 						<span class="confirmed" style="display: table; font-size: 0.8rem; margin-left: 0.4rem;" > 확정 </span>
 					</c:when>

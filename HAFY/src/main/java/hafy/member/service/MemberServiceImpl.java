@@ -65,6 +65,14 @@ public class MemberServiceImpl implements MemberService{
 
 
 	@Override
+	public MemberVO checkID(String id) {
+		// TODO Auto-generated method stub
+		MemberVO memberVO = memberDAO.checkID(id);
+		return memberVO;
+	}
+
+
+	@Override
 	public void updateNoticeSetting(NoticeSettingVO noticeSettingVO) {
 		// TODO Auto-generated method stub
 		memberDAO.updateNoticeSetting(noticeSettingVO);

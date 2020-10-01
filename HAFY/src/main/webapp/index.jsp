@@ -11,7 +11,7 @@
     
     setTimeout(() => {
 		location.href = "${pageContext.request.contextPath }/login"    
-	}, 5000);
+	}, 3000);
     
     </script>
     

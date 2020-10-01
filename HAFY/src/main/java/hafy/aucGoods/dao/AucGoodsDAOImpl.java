@@ -142,7 +142,8 @@ public class AucGoodsDAOImpl implements AucGoodsDAO{
 	@Override
 	public List<AucGoodsVO> selectHotAucContents() {
 		// TODO Auto-generated method stub
-		List<AucGoodsVO> hotAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectHotAucContents");
+		List<AucGoodsVO> hotAucList = new ArrayList<AucGoodsVO>();
+		hotAucList = sqlSession.selectList("auction.dao.AucGoodsDAO.selectHotAucContents");
 		return hotAucList;
 	}
 	
